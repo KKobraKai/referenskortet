@@ -124,6 +124,15 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
 .landing-cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:4px}
 .landing-cta .btn.primary{font-size:15px;padding:12px 20px}
 .landing-note{font-size:13px;color:var(--muted);max-width:48ch}
+/* Hero example cards — postcard strip at the top */
+.hero-strip{display:flex;gap:14px;overflow-x:auto;padding:6px 2px 18px;margin:4px 0 8px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.hero-strip::-webkit-scrollbar{height:6px}
+.hero-card{flex:0 0 auto;width:min(42vw,220px);scroll-snap-align:start;border:0;background:transparent;padding:0;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.hero-card:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+.hero-card canvas{width:100%;height:auto;display:block;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.16),0 10px 28px rgba(0,0,0,.12);background:#fff}
+.hero-card .hero-cap{display:block;margin-top:8px;font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--muted)}
+.hero-card[aria-pressed="true"] .hero-cap{color:var(--accent)}
+.hero-card[aria-pressed="true"] canvas{box-shadow:0 0 0 2px var(--accent),0 10px 28px rgba(0,0,0,.12)}
 /* Intro stays on-page; scroll into the workbench (no separate landing mode) */
 #landing{margin:8px 0 28px;padding-bottom:8px;border-bottom:1px solid var(--line)}
 #workbench{scroll-margin-top:16px}
@@ -148,6 +157,8 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
     </div>
   </header>
 
+  <p class="landing-note" data-i18n="land_hero" style="margin:0 0 6px"></p>
+  <div class="hero-strip" id="heroStrip" role="list" aria-label="Example postcards"></div>
 
       <section class="landing" id="landing" aria-label="Landing">
         <p class="landing-kicker" data-i18n="land_kicker"></p>
@@ -406,6 +417,7 @@ sv:{
  donate:"Donera", donate_missing:"Lägg till Swish/PayPal/Ko-fi-länk i inställningarna",
  copy_link:"Kopiera länk till appen", link_copied:"Länk kopierad",
  land_kicker:"BNI-referenskort",
+ land_hero:"Fler exempel — tryck för att använda temat",
  land_h:"Ett vykort som öppnar dörrar året runt",
  land_pitch:"Designa en gång. Skriv ut och skicka när som helst — <strong>inte bara till jul</strong>.",
  land_year:"Julkortet i förhandsvisningen är Kajs exempel från BNI Elit Västerås — samma verktyg funkar året runt. Byt till ditt namn när du är redo.",
@@ -416,7 +428,7 @@ sv:{
  land_u5:"Uppföljning efter BNI, mässa eller platsbesök",
  land_cta:"Skapa ditt",
  land_sample:"Visa exempelkort",
- land_sample_note:"Förhandsvisningen uppdateras live när du redigerar.",
+ land_sample_note:"Välj ett exempelkort ovan, eller scrolla ner och skapa ditt eget.",
  sample_rec:"Visar mottagare 1 av {n}", your_name:"Ditt namn"
 },
 en:{
@@ -469,6 +481,7 @@ en:{
  donate:"Donate", donate_missing:"Add Swish/PayPal/Ko-fi link in settings",
  copy_link:"Copy link to the app", link_copied:"Link copied",
  land_kicker:"BNI referral postcard",
+ land_hero:"More examples — tap one to use that theme",
  land_h:"A postcard that opens doors all year",
  land_pitch:"Design once. Print and mail anytime — <strong>not just Christmas</strong>.",
  land_year:"The Christmas card in the preview is Kaj’s sample from BNI Elit Västerås — same tool works all year. Swap in your details when you’re ready.",
@@ -479,7 +492,7 @@ en:{
  land_u5:"Event follow-up (BNI, fairs, site visits)",
  land_cta:"Make yours",
  land_sample:"Show sample card",
- land_sample_note:"The preview updates live as you edit.",
+ land_sample_note:"Pick an example above, or scroll down and make yours.",
  sample_rec:"Showing recipient 1 of {n}", your_name:"Your name"
 },
 de:{
@@ -532,6 +545,7 @@ de:{
  donate:"Spenden", donate_missing:"Swish/PayPal/Ko-fi-Link in den Einstellungen hinterlegen",
  copy_link:"App-Link kopieren", link_copied:"Link kopiert",
  land_kicker:"BNI-Empfehlungspostkarte",
+ land_hero:"Weitere Beispiele — antippen, um das Motiv zu übernehmen",
  land_h:"Eine Postkarte, die ganzjährig Türen öffnet",
  land_pitch:"Einmal gestalten. Jederzeit drucken und versenden — <strong>nicht nur zu Weihnachten</strong>.",
  land_year:"Die Weihnachtskarte oben ist Kajs Beispiel von BNI Elit Västerås — dasselbe Tool ganzjährig. Tauschen Sie Ihre Daten ein, wenn Sie bereit sind.",
@@ -595,6 +609,7 @@ fr:{
  donate:"Faire un don", donate_missing:"Ajoutez un lien Swish/PayPal/Ko-fi dans les paramètres",
  copy_link:"Copier le lien de l'appli", link_copied:"Lien copié",
  land_kicker:"Carte postale BNI",
+ land_hero:"Plus d’exemples — touchez pour utiliser ce thème",
  land_h:"Une carte qui ouvre des portes toute l’année",
  land_pitch:"Concevez une fois. Imprimez et envoyez quand vous voulez — <strong>pas seulement à Noël</strong>.",
  land_year:"La carte de Noël ci-dessus est l’exemple de Kaj (BNI Elit Västerås) — le même outil toute l’année. Remplacez par vos coordonnées quand vous êtes prêt.",
@@ -658,6 +673,7 @@ es:{
  donate:"Donar", donate_missing:"Añada un enlace Swish/PayPal/Ko-fi en la configuración",
  copy_link:"Copiar enlace de la app", link_copied:"Enlace copiado",
  land_kicker:"Postal de referencias BNI",
+ land_hero:"Más ejemplos — toque uno para usar ese tema",
  land_h:"Una postal que abre puertas todo el año",
  land_pitch:"Diseñe una vez. Imprima y envíe cuando quiera — <strong>no solo en Navidad</strong>.",
  land_year:"La tarjeta de Navidad de arriba es el ejemplo de Kaj (BNI Elit Västerås): la misma herramienta todo el año. Cambie sus datos cuando esté listo.",
@@ -721,6 +737,7 @@ it:{
  donate:"Dona", donate_missing:"Aggiungi un link Swish/PayPal/Ko-fi nelle impostazioni",
  copy_link:"Copia link all'app", link_copied:"Link copiato",
  land_kicker:"Cartolina referenze BNI",
+ land_hero:"Altri esempi — tocca per usare il tema",
  land_h:"Una cartolina che apre porte tutto l’anno",
  land_pitch:"Progetta una volta. Stampa e spedisci quando vuoi — <strong>non solo a Natale</strong>.",
  land_year:"La cartolina di Natale sopra è l’esempio di Kaj (BNI Elit Västerås): lo stesso strumento tutto l’anno. Inserisci i tuoi dati quando sei pronto.",
@@ -784,6 +801,7 @@ pt:{
  donate:"Doar", donate_missing:"Adicione um link Swish/PayPal/Ko-fi nas definições",
  copy_link:"Copiar link da app", link_copied:"Link copiado",
  land_kicker:"Postal de indicações BNI",
+ land_hero:"Mais exemplos — toque para usar o tema",
  land_h:"Um postal que abre portas o ano todo",
  land_pitch:"Desenhe uma vez. Imprima e envie quando quiser — <strong>não só no Natal</strong>.",
  land_year:"O cartão de Natal acima é o exemplo do Kaj (BNI Elit Västerås) — a mesma ferramenta o ano todo. Troque pelos seus dados quando estiver pronto.",
@@ -1724,6 +1742,104 @@ function renderGuide() {
     <div class="card"><h3 style="margin:0 0 6px">${esc(t("timeline_h"))}</h3><p>${esc(t("timeline"))}</p></div>`;
 }
 
+// ---------- Hero example cards ----------
+const HERO_WORD_KEYS = ["law","web","accounting","coaching","photo","electrician","hvac","cloud","graphic","events","telecom","chiro","waste","promo","massage","bizconsult"];
+const HERO_SAMPLES = [
+  { id: "xmas", edition: "xmas", palette: "spruce", layout: "words",
+    head: { sv: "God Jul & Gott Nytt År", en: "Merry Christmas" },
+    sub:  { sv: "Tack för året som gått", en: "Thank you for this year" },
+    cap:  { sv: "Julgran", en: "Christmas tree" }, words: "trades" },
+  { id: "yes", edition: "thanks", palette: "ink", layout: "words",
+    head: { sv: "Yes!", en: "Yes!" },
+    sub:  { sv: "Vi tar det vidare", en: "We’ll take it from here" },
+    cap:  { sv: "Yes!", en: "Yes!" }, words: "few" },
+  { id: "gotyou", edition: "thanks", palette: "meadow", layout: "words",
+    head: { sv: "We Got You", en: "We Got You" },
+    sub:  { sv: "När du behöver någon", en: "When you need someone" },
+    cap:  { sv: "We Got You", en: "We Got You" }, words: "few" },
+  { id: "thanks", edition: "thanks", palette: "linen", layout: "words",
+    head: { sv: "Tack för förtroendet", en: "Thank you for your trust" },
+    sub:  { sv: "Jag finns här", en: "I’m here for you" },
+    cap:  { sv: "Tack", en: "Thank you" }, words: "few" },
+  { id: "season", edition: "season", palette: "night", layout: "words",
+    head: { sv: "Öppna dörrar", en: "Open doors" },
+    sub:  { sv: "Ett kort. En intro.", en: "One card. One intro." },
+    cap:  { sv: "Öppna dörrar", en: "Open doors" }, words: "trades" },
+  { id: "summer", edition: "summer", palette: "sun", layout: "words",
+    head: { sv: "Vi hörs snart", en: "Let’s connect" },
+    sub:  { sv: "Varm hälsning från nätverket", en: "A warm hello from the network" },
+    cap:  { sv: "Connect", en: "Let’s connect" }, words: "trades" }
+];
+function heroLang() { return (S.ui === "sv" || S.cardLang === "sv") ? "sv" : "en"; }
+function heroText(map) { const L = heroLang(); return (map && (map[L] || map.en)) || ""; }
+function withCardState(patch, fn) {
+  const snap = {
+    edition: S.edition, palette: S.palette, layout: S.layout, cardLang: S.cardLang,
+    text: { ...S.text }, selected: S.selected.slice(), showCh: S.showCh
+  };
+  try {
+    if (patch.edition != null) S.edition = patch.edition;
+    if (patch.palette != null) S.palette = patch.palette;
+    if (patch.layout != null) S.layout = patch.layout;
+    if (patch.cardLang != null) S.cardLang = patch.cardLang;
+    if (patch.showCh != null) S.showCh = patch.showCh;
+    if (patch.selected) S.selected = patch.selected.slice();
+    if (patch.text) S.text = { head: null, sub: null, backHead: null, body: null, ...patch.text };
+    fn();
+  } finally {
+    S.edition = snap.edition; S.palette = snap.palette; S.layout = snap.layout; S.cardLang = snap.cardLang;
+    S.text = snap.text; S.selected = snap.selected; S.showCh = snap.showCh;
+  }
+}
+function heroSelected(mode) {
+  const keys = mode === "few" ? HERO_WORD_KEYS.slice(0, 6) : HERO_WORD_KEYS;
+  return keys.map(id => "lib:" + id);
+}
+function paintHeroCanvas(cv, sample) {
+  withCardState({
+    edition: sample.edition,
+    palette: sample.palette,
+    layout: sample.layout || "words",
+    cardLang: heroLang(),
+    showCh: false,
+    selected: heroSelected(sample.words),
+    text: { head: heroText(sample.head), sub: heroText(sample.sub), backHead: null, body: null }
+  }, () => {
+    const d = dims();
+    const cssW = cv.clientWidth || 220;
+    const wpx = Math.max(180, Math.round(cssW * Math.min(2, window.devicePixelRatio || 1)));
+    const k = wpx / (d.W + 2 * d.b);
+    const g = setup(cv, k);
+    drawFront(g);
+  });
+}
+function applyHeroSample(sample) {
+  S.edition = sample.edition;
+  S.palette = sample.palette;
+  S.layout = sample.layout || "words";
+  S.cardLang = heroLang();
+  S.text = { head: heroText(sample.head), sub: heroText(sample.sub), backHead: null, body: null };
+  if (!S.selected.length) S.selected = heroSelected("trades");
+  save(); renderCardForm(); schedule();
+  document.querySelectorAll(".hero-card").forEach(b => b.setAttribute("aria-pressed", b.dataset.hero === sample.id ? "true" : "false"));
+  enterWorkbench();
+}
+function renderHero() {
+  const strip = $("heroStrip");
+  if (!strip) return;
+  const L = heroLang();
+  strip.innerHTML = HERO_SAMPLES.map(s => {
+    const cap = heroText(s.cap);
+    return `<button type="button" class="hero-card" role="listitem" data-hero="${s.id}" aria-pressed="false" aria-label="${esc(cap)}"><canvas width="540" height="390"></canvas><span class="hero-cap">${esc(cap)}</span></button>`;
+  }).join("");
+  strip.querySelectorAll(".hero-card").forEach(btn => {
+    const sample = HERO_SAMPLES.find(s => s.id === btn.dataset.hero);
+    const cv = btn.querySelector("canvas");
+    paintHeroCanvas(cv, sample);
+    btn.onclick = () => applyHeroSample(sample);
+  });
+}
+
 // ---------- Landing ----------
 function enterWorkbench() {
   showStep(S.step || 1);
@@ -1754,7 +1870,7 @@ function renderSupport() {
     hint.textContent = t("donate_missing"); hint.hidden = false;
   }
 }
-function renderAll() { applyText(); renderChapters(); renderTrades(); renderCardForm(); renderSupport(); renderGuide(); showStep(S.step); setRecipients(RECIPIENTS); schedule(); }
+function renderAll() { applyText(); renderChapters(); renderTrades(); renderCardForm(); renderSupport(); renderGuide(); showStep(S.step); setRecipients(RECIPIENTS); renderHero(); schedule(); }
 
 // ---------- Events ----------
 $("uiLang").onchange = e => { S.ui = e.target.value; save(); renderAll(); };
