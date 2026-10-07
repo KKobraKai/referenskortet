@@ -281,7 +281,7 @@ body.landing-on .grid{gap:32px}
         <div class="row">
           <label class="check"><input type="checkbox" id="showShare"><span data-i18n="share_show"></span></label>
         </div>
-        <label class="f" for="shareUrl"><span data-i18n="share_url"></span><input type="url" id="shareUrl" placeholder="referenskortet.se" autocomplete="url"></label>
+        <label class="f" for="shareUrl"><span data-i18n="share_url"></span><input type="url" id="shareUrl" placeholder="referralcard.ai" autocomplete="url"></label>
         <div class="cols2">
           <label class="f" for="size"><span data-i18n="size"></span><select id="size"><option value="a6">A6 · 148 × 105 mm</option><option value="us">US · 6 × 4 in</option></select></label>
           <label class="f" for="bleed"><span data-i18n="bleed"></span><select id="bleed"><option value="3">3 mm</option><option value="2">2 mm</option><option value="0">0 mm</option></select></label>
@@ -1067,8 +1067,8 @@ const S = {
   selected: [...PRESET_CHAPTERS[0].items], order: "auto", own: [], ai: [], showAll: false,
   edition: ED0, cardLang: REGION_LANG[R0] || "en", layout: "words", palette: EDITIONS[ED0].pal, style: "photo",
   text: { head: null, sub: null, backHead: null, body: null },
-  sender: { name: "Kaj Nybom", company: "Mediahive AB", phone: "072-982 04 84", web: "mediahiveab.se", email: "", address: "Genuagatan 5, 723 56 Västerås" },
-  showCh: true, stamp: true, showShare: true, shareUrl: "", donateUrl: "", size: US_SIZE.includes(R0) ? "us" : "a6", bleed: 3, step: 1, trim: true
+  sender: { name: "Kaj Nybom", company: "Mediahive AB", phone: "072-982 04 84", web: "mediahiveab.com", email: "", address: "Genuagatan 5, 723 56 Västerås" },
+  showCh: true, stamp: true, showShare: true, shareUrl: "referralcard.ai", donateUrl: "", size: US_SIZE.includes(R0) ? "us" : "a6", bleed: 3, step: 1, trim: true
 };
 const STORE = "refcard.v1";
 const LAND_STORE = "refcard.landed";
@@ -1080,8 +1080,10 @@ let LANDING = true;
 try { LANDING = localStorage.getItem(LAND_STORE) !== "1"; } catch (e) {}
 if (typeof S.showShare !== "boolean") S.showShare = true;
 if (typeof S.shareUrl !== "string") S.shareUrl = "";
+if (S.shareUrl === "referenskortet.se" || /referenskortet\.pages\.dev/i.test(S.shareUrl || "")) S.shareUrl = "referralcard.ai";
+if (S.sender && S.sender.web === "mediahiveab.se") S.sender.web = "mediahiveab.com";
 if (typeof S.donateUrl !== "string") S.donateUrl = "";
-if (!S.sender || typeof S.sender !== "object") S.sender = { name: "Kaj Nybom", company: "Mediahive AB", phone: "072-982 04 84", web: "mediahiveab.se", email: "", address: "Genuagatan 5, 723 56 Västerås" };
+if (!S.sender || typeof S.sender !== "object") S.sender = { name: "Kaj Nybom", company: "Mediahive AB", phone: "072-982 04 84", web: "mediahiveab.com", email: "", address: "Genuagatan 5, 723 56 Västerås" };
 if (!UI[S.ui]) S.ui = "en";
 if (!CARD[S.cardLang]) S.cardLang = "en";
 if (!editionAllowed(S.edition, S.region)) S.edition = defaultEdition(S.region);
@@ -1246,7 +1248,7 @@ function publicShareUrl() {
     if (typeof location !== "undefined" && location.protocol && location.protocol !== "file:" && location.origin && location.origin !== "null")
       return location.origin + (location.pathname || "/");
   } catch (e) {}
-  return "referenskortet.se";
+  return "referralcard.ai";
 }
 function chapterShort() { const c = S.chapters.find(c => c.include); return c ? c.name.replace(/^BNI\s+/i, "") : ""; }
 function defText(k) {

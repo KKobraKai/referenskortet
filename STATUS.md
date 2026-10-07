@@ -1,16 +1,19 @@
 # Referenskortet — status
 
 ## Live
-- Production: https://referenskortet.pages.dev/
+- **Primary:** https://referralcard.ai/
+- Also: https://myreferralcard.com/ (same app)
+- Cloudflare Pages: https://referenskortet.pages.dev/
 - Cloudflare Pages project: `referenskortet` (account Kaj.nybom@gmail.com)
-- Sample sender: Mediahive AB / Kaj Nybom
+- Sample sender: Mediahive AB / Kaj Nybom (mediahiveab.com)
+- Share / make-your-own default URL: referralcard.ai
 
 ## Done
 - Share / make-your-own on card back + Support (donate + copy link)
 - Local SE printers in guide (Graf & Bild, JustNu, Västeråskopia, KPH, …)
+- Custom domains referralcard.ai + myreferralcard.com
+- Sample defaults use referralcard.ai + mediahiveab.com (not pages.dev / .se placeholders)
 
 ## Next
-1. Create GitHub repo for Codex coshare + connect Pages to Git
-2. Custom domain on Cloudflare
-3. Draft printer outreach (include live URL)
-4. Optional: Swish donate URL, AI trade in Elit roster
+1. Draft printer outreach (include live URL referralcard.ai)
+2. Optional: Swish donate URL, AI trade in Elit roster
