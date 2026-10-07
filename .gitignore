@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.cache/
+.wrangler/
+.wrangler-home/
+*.b64
+.DS_Store
+.env
+.env.*
+package-lock.json
+package.json
