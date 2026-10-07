@@ -112,6 +112,27 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+/* Landing: sample card first, then CTA into the workbench */
+.landing{display:flex;flex-direction:column;gap:18px;padding:8px 0 4px}
+.landing-kicker{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0}
+.landing h2{font-family:var(--f-display);font-weight:600;font-size:clamp(28px,3.6vw,36px);line-height:1.08;margin:0}
+.landing-pitch{font-size:16px;color:var(--ink);max-width:42ch;margin:0}
+.landing-pitch strong{font-weight:600;color:var(--accent)}
+.landing-uses{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.landing-uses li{font-size:13px;line-height:1.35;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);max-width:100%}
+.landing-cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:4px}
+.landing-cta .btn.primary{font-size:15px;padding:12px 20px}
+.landing-note{font-size:13px;color:var(--muted);max-width:48ch}
+body.landing-on .steps,
+body.landing-on #workbench{display:none!important}
+body:not(.landing-on) #landing{display:none!important}
+body.landing-on .grid{gap:32px}
+@media (min-width:1000px){
+  body.landing-on .grid{grid-template-columns:minmax(0,1fr) minmax(0,560px);align-items:start}
+  body.landing-on .preview{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+}
+.show-sample{margin:10px 0 0}
 </style>
 
 <div class="wrap">
@@ -126,7 +147,7 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
     </div>
   </header>
 
-  <nav class="steps" aria-label="Steps">
+  <nav class="steps" id="workbenchSteps" aria-label="Steps">
     <ol>
       <li><button type="button" data-step="1"><span class="num">1</span><span data-i18n="s1"></span></button></li>
       <li><button type="button" data-step="2"><span class="num">2</span><span data-i18n="s2"></span></button></li>
@@ -135,9 +156,29 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
       <li><button type="button" data-step="5"><span class="num">5</span><span data-i18n="s5"></span></button></li>
     </ol>
   </nav>
+  <p class="show-sample" id="showSampleWrap" hidden><button type="button" class="linkish" id="showSample" data-i18n="land_sample"></button></p>
 
   <div class="grid">
     <div>
+      <section class="landing" id="landing" aria-label="Landing">
+        <p class="landing-kicker" data-i18n="land_kicker"></p>
+        <h2 data-i18n="land_h"></h2>
+        <p class="landing-pitch" data-i18n="land_pitch"></p>
+        <p class="landing-note" data-i18n="land_year"></p>
+        <ul class="landing-uses" id="landingUses">
+          <li data-i18n="land_u1"></li>
+          <li data-i18n="land_u2"></li>
+          <li data-i18n="land_u3"></li>
+          <li data-i18n="land_u4"></li>
+          <li data-i18n="land_u5"></li>
+        </ul>
+        <div class="landing-cta">
+          <button type="button" class="btn primary" id="makeYours" data-i18n="land_cta"></button>
+        </div>
+        <p class="landing-note" data-i18n="land_sample_note"></p>
+      </section>
+
+      <div id="workbench">
       <!-- STEP 1: chapters -->
       <section class="panel" id="p1">
         <h2 data-i18n="s1"></h2>
@@ -291,6 +332,7 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
         <button class="btn" type="button" id="prevBtn" data-i18n="prev"></button>
         <button class="btn primary" type="button" id="nextBtn" data-i18n="next"></button>
       </div>
+      </div><!-- /workbench -->
     </div>
 
     <aside class="preview" aria-label="Preview">
@@ -313,7 +355,7 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
 // ---------- UI strings (7 languages). Add a language by copying one block. ----------
 const UI = {
 sv:{
- name:"Referenskortet", tag:"Ett referenskort för BNI-medlemmar. Välj branscher, skapa kortet och skriv ut.",
+ name:"Referenskortet", tag:"Året-runt referenskort för BNI-medlemmar. Designa en gång, skriv ut och skicka när det passar.",
  lang_ui:"Språk", region:"Region", s1:"Team", s2:"Branscher", s3:"Kort", s4:"Mottagare & PDF", s5:"Tryck & utskick",
  next:"Nästa", prev:"Tillbaka",
  s1_lead:"Välj de BNI-team vars branscher du vill visa. Ditt eget team först, sedan grannteamen.",
@@ -353,7 +395,7 @@ sv:{
  k_pm:"Tryck + utskick", k_p:"Endast tryck", min:"Minsta antal", lead:"Leveranstid", days:"{n} arbetsdagar", price:"Exempelpris", input:"Tar emot", src:"Källa",
  quote:"Offert", in_tool:"Visas vid beställning", need_bleed:"Kräver {n} mm utfall. Ändra under Kort.", coverage:"Täcker",
  postage_h:"Porto", postage_se:"Frimärke inrikes, brev upp till 50 g: 22 kr (2026).",
- timeline_h:"Tidsplan", timeline:"Ska korten landa första veckan i december? Beställ senast i mitten av november.",
+ timeline_h:"Tidsplan", timeline:"Korten fungerar året runt — tack efter en referral, varm intro eller eventuppföljning. Ska de landa första veckan i december? Beställ senast i mitten av november.",
  local_h:"I {r}", intl_h:"Internationellt", unverified:"Ej granskad i detalj",
  preview:"Förhandsvisning", front:"Framsida", back:"Baksida", trim:"Visa skärlinje", saved_local:"Dina val sparas i den här webbläsaren. Bild och adresser sparas inte.",
  share_h:"Dela / skapa eget", share_show:"Visa länk för att skapa eget kort på baksidan", share_url:"Publik webbadress",
@@ -361,10 +403,22 @@ sv:{
  support_h:"Stöd", support_note:"Gratis för BNI-medlemmar. En valfri liten donation håller tjänsten igång.",
  donate:"Donera", donate_missing:"Lägg till Swish/PayPal/Ko-fi-länk i inställningarna",
  copy_link:"Kopiera länk till appen", link_copied:"Länk kopierad",
+ land_kicker:"BNI-referenskort",
+ land_h:"Ett vykort som öppnar dörrar året runt",
+ land_pitch:"Designa en gång. Skriv ut och skicka när som helst — <strong>inte bara till jul</strong>.",
+ land_year:"Exemplet till höger är Kajs kort från BNI Elit Västerås. Byt till ditt namn när du är redo.",
+ land_u1:"Tack efter en referral",
+ land_u2:"Varm intro när du träffar någon ny",
+ land_u3:"Väck en tyst kontakt igen",
+ land_u4:"Ge bort i teamet / kapitlet",
+ land_u5:"Uppföljning efter BNI, mässa eller platsbesök",
+ land_cta:"Skapa ditt",
+ land_sample:"Visa exempelkort",
+ land_sample_note:"Förhandsvisningen uppdateras live när du redigerar.",
  sample_rec:"Visar mottagare 1 av {n}", your_name:"Ditt namn"
 },
 en:{
- name:"The Referral Card", tag:"A referral postcard for BNI members. Pick the trades, design the card, print it.",
+ name:"The Referral Card", tag:"Year-round referral postcards for BNI members. Design once, print and mail whenever it fits.",
  lang_ui:"Language", region:"Region", s1:"Chapters", s2:"Trades", s3:"Card", s4:"Recipients & PDF", s5:"Print & mail",
  next:"Next", prev:"Back",
  s1_lead:"Choose the BNI chapters whose trades you want to show. Your own chapter first, then the ones nearby.",
@@ -404,7 +458,7 @@ en:{
  k_pm:"Print + mail", k_p:"Print only", min:"Minimum", lead:"Turnaround", days:"{n} working days", price:"Example price", input:"Accepts", src:"Source",
  quote:"On request", in_tool:"Shown when ordering", need_bleed:"Needs {n} mm bleed. Change it under Card.", coverage:"Covers",
  postage_h:"Postage", postage_se:"Domestic stamp, letters up to 50 g: SEK 22 (2026).",
- timeline_h:"Timing", timeline:"Want the cards to land in the first week of December? Order by mid-November.",
+ timeline_h:"Timing", timeline:"Use the cards year-round — thank-yous after a referral, warm intros, or event follow-ups. Want them to land in the first week of December? Order by mid-November.",
  local_h:"In {r}", intl_h:"International", unverified:"Not checked in detail",
  preview:"Preview", front:"Front", back:"Back", trim:"Show trim line", saved_local:"Your choices are saved in this browser. Images and addresses are not.",
  share_h:"Share / make your own", share_show:"Show make-your-own link on back", share_url:"Public URL",
@@ -412,10 +466,22 @@ en:{
  support_h:"Support", support_note:"Free for BNI members. An optional small donation keeps it online.",
  donate:"Donate", donate_missing:"Add Swish/PayPal/Ko-fi link in settings",
  copy_link:"Copy link to the app", link_copied:"Link copied",
+ land_kicker:"BNI referral postcard",
+ land_h:"A postcard that opens doors all year",
+ land_pitch:"Design once. Print and mail anytime — <strong>not just Christmas</strong>.",
+ land_year:"The sample on the right is Kaj’s card from BNI Elit Västerås. Swap in your details when you’re ready.",
+ land_u1:"Thank-you after a referral",
+ land_u2:"Warm intro when you meet someone new",
+ land_u3:"Re-open a quiet contact",
+ land_u4:"Chapter / team giveaways",
+ land_u5:"Event follow-up (BNI, fairs, site visits)",
+ land_cta:"Make yours",
+ land_sample:"Show sample card",
+ land_sample_note:"The preview updates live as you edit.",
  sample_rec:"Showing recipient 1 of {n}", your_name:"Your name"
 },
 de:{
- name:"Die Empfehlungskarte", tag:"Eine Empfehlungspostkarte für BNI-Mitglieder. Branchen wählen, Karte gestalten, drucken.",
+ name:"Die Empfehlungskarte", tag:"Ganzjährige Empfehlungspostkarten für BNI-Mitglieder. Einmal gestalten, jederzeit drucken und versenden.",
  lang_ui:"Sprache", region:"Region", s1:"Chapter", s2:"Branchen", s3:"Karte", s4:"Empfänger & PDF", s5:"Druck & Versand",
  next:"Weiter", prev:"Zurück",
  s1_lead:"Wählen Sie die BNI-Chapter, deren Branchen auf die Karte sollen. Zuerst Ihr eigenes, dann die in der Nähe.",
@@ -455,7 +521,7 @@ de:{
  k_pm:"Druck + Versand", k_p:"Nur Druck", min:"Mindestmenge", lead:"Lieferzeit", days:"{n} Werktage", price:"Beispielpreis", input:"Nimmt an", src:"Quelle",
  quote:"Auf Anfrage", in_tool:"Bei der Bestellung", need_bleed:"Benötigt {n} mm Beschnitt. Unter Karte ändern.", coverage:"Gebiet",
  postage_h:"Porto", postage_se:"Schweden, Inlandsbrief bis 50 g: 22 SEK (2026).",
- timeline_h:"Zeitplan", timeline:"Sollen die Karten in der ersten Dezemberwoche ankommen? Spätestens Mitte November bestellen.",
+ timeline_h:"Zeitplan", timeline:"Die Karten eignen sich das ganze Jahr — Danke nach einer Empfehlung, warme Intros oder Event-Follow-ups. Ankunft in der ersten Dezemberwoche? Spätestens Mitte November bestellen.",
  local_h:"In {r}", intl_h:"International", unverified:"Nicht im Detail geprüft",
  preview:"Vorschau", front:"Vorderseite", back:"Rückseite", trim:"Schnittlinie zeigen", saved_local:"Ihre Auswahl wird in diesem Browser gespeichert. Bilder und Adressen nicht.",
  share_h:"Teilen / eigene Karte", share_show:"Link „eigene Karte erstellen“ auf der Rückseite zeigen", share_url:"Öffentliche URL",
@@ -463,10 +529,22 @@ de:{
  support_h:"Unterstützung", support_note:"Kostenlos für BNI-Mitglieder. Eine optionale kleine Spende hält den Dienst online.",
  donate:"Spenden", donate_missing:"Swish/PayPal/Ko-fi-Link in den Einstellungen hinterlegen",
  copy_link:"App-Link kopieren", link_copied:"Link kopiert",
+ land_kicker:"BNI-Empfehlungspostkarte",
+ land_h:"Eine Postkarte, die ganzjährig Türen öffnet",
+ land_pitch:"Einmal gestalten. Jederzeit drucken und versenden — <strong>nicht nur zu Weihnachten</strong>.",
+ land_year:"Rechts sehen Sie Kajs Beispielkarte von BNI Elit Västerås. Tauschen Sie Ihre Daten ein, wenn Sie bereit sind.",
+ land_u1:"Danke nach einer Empfehlung",
+ land_u2:"Warme Vorstellung bei neuen Kontakten",
+ land_u3:"Stillen Kontakt wieder öffnen",
+ land_u4:"Chapter- / Team-Giveaways",
+ land_u5:"Follow-up nach BNI, Messe oder Vor-Ort-Besuch",
+ land_cta:"Eigene erstellen",
+ land_sample:"Beispielkarte zeigen",
+ land_sample_note:"Die Vorschau aktualisiert sich live beim Bearbeiten.",
  sample_rec:"Empfänger 1 von {n}", your_name:"Ihr Name"
 },
 fr:{
- name:"La carte de recommandation", tag:"Une carte postale de recommandation pour les membres BNI. Choisissez les métiers, créez la carte, imprimez-la.",
+ name:"La carte de recommandation", tag:"Cartes postales de recommandation toute l’année pour les membres BNI. Concevez une fois, imprimez et envoyez quand vous voulez.",
  lang_ui:"Langue", region:"Région", s1:"Chapitres", s2:"Métiers", s3:"Carte", s4:"Destinataires & PDF", s5:"Impression & envoi",
  next:"Suivant", prev:"Retour",
  s1_lead:"Choisissez les chapitres BNI dont vous voulez afficher les métiers. Le vôtre d'abord, puis ceux à proximité.",
@@ -506,7 +584,7 @@ fr:{
  k_pm:"Impression + envoi", k_p:"Impression seule", min:"Minimum", lead:"Délai", days:"{n} jours ouvrés", price:"Prix indicatif", input:"Accepte", src:"Source",
  quote:"Sur devis", in_tool:"Affiché à la commande", need_bleed:"Exige {n} mm de fond perdu. À modifier sous Carte.", coverage:"Couverture",
  postage_h:"Affranchissement", postage_se:"Suède, lettre nationale jusqu'à 50 g : 22 SEK (2026).",
- timeline_h:"Calendrier", timeline:"Pour une arrivée la première semaine de décembre, commandez avant la mi-novembre.",
+ timeline_h:"Calendrier", timeline:"Utilisez les cartes toute l’année — remerciements après une recommandation, intros chaleureuses ou suivis d’événement. Pour une arrivée la première semaine de décembre, commandez avant la mi-novembre.",
  local_h:"En {r}", intl_h:"International", unverified:"Non vérifié en détail",
  preview:"Aperçu", front:"Recto", back:"Verso", trim:"Afficher la coupe", saved_local:"Vos choix sont enregistrés dans ce navigateur, sauf les images et les adresses.",
  share_h:"Partager / créer la vôtre", share_show:"Afficher le lien « créez la vôtre » au verso", share_url:"URL publique",
@@ -514,10 +592,22 @@ fr:{
  support_h:"Soutien", support_note:"Gratuit pour les membres BNI. Un petit don optionnel maintient le service en ligne.",
  donate:"Faire un don", donate_missing:"Ajoutez un lien Swish/PayPal/Ko-fi dans les paramètres",
  copy_link:"Copier le lien de l'appli", link_copied:"Lien copié",
+ land_kicker:"Carte postale BNI",
+ land_h:"Une carte qui ouvre des portes toute l’année",
+ land_pitch:"Concevez une fois. Imprimez et envoyez quand vous voulez — <strong>pas seulement à Noël</strong>.",
+ land_year:"L’exemple à droite est la carte de Kaj (BNI Elit Västerås). Remplacez par vos coordonnées quand vous êtes prêt.",
+ land_u1:"Remerciement après une recommandation",
+ land_u2:"Intro chaleureuse quand vous rencontrez quelqu’un",
+ land_u3:"Rallumer un contact silencieux",
+ land_u4:"Cadeaux pour le chapitre / l’équipe",
+ land_u5:"Suivi d’événement (BNI, salons, visites)",
+ land_cta:"Créer la vôtre",
+ land_sample:"Voir la carte exemple",
+ land_sample_note:"L’aperçu se met à jour en direct pendant que vous modifiez.",
  sample_rec:"Destinataire 1 sur {n}", your_name:"Votre nom"
 },
 es:{
- name:"La tarjeta de referencias", tag:"Una postal de referencias para miembros de BNI. Elija los sectores, diseñe la tarjeta e imprímala.",
+ name:"La tarjeta de referencias", tag:"Postales de referencias todo el año para miembros de BNI. Diseñe una vez, imprima y envíe cuando quiera.",
  lang_ui:"Idioma", region:"Región", s1:"Capítulos", s2:"Sectores", s3:"Tarjeta", s4:"Destinatarios y PDF", s5:"Impresión y envío",
  next:"Siguiente", prev:"Atrás",
  s1_lead:"Elija los capítulos de BNI cuyos sectores quiere mostrar. Primero el suyo y después los cercanos.",
@@ -557,7 +647,7 @@ es:{
  k_pm:"Impresión + envío", k_p:"Solo impresión", min:"Mínimo", lead:"Plazo", days:"{n} días laborables", price:"Precio de ejemplo", input:"Acepta", src:"Fuente",
  quote:"Bajo presupuesto", in_tool:"Se muestra al pedir", need_bleed:"Requiere {n} mm de sangrado. Cámbielo en Tarjeta.", coverage:"Cobertura",
  postage_h:"Franqueo", postage_se:"Suecia, carta nacional hasta 50 g: 22 SEK (2026).",
- timeline_h:"Plazos", timeline:"¿Quiere que lleguen la primera semana de diciembre? Haga el pedido antes de mediados de noviembre.",
+ timeline_h:"Plazos", timeline:"Use las tarjetas todo el año: agradecimientos tras una referencia, intros cálidas o seguimientos de eventos. ¿Quiere que lleguen la primera semana de diciembre? Haga el pedido antes de mediados de noviembre.",
  local_h:"En {r}", intl_h:"Internacional", unverified:"No comprobado en detalle",
  preview:"Vista previa", front:"Anverso", back:"Reverso", trim:"Mostrar línea de corte", saved_local:"Sus elecciones se guardan en este navegador, salvo imágenes y direcciones.",
  share_h:"Compartir / cree la suya", share_show:"Mostrar enlace para crear su propia tarjeta en el reverso", share_url:"URL pública",
@@ -565,10 +655,22 @@ es:{
  support_h:"Apoyo", support_note:"Gratis para miembros de BNI. Una pequeña donación opcional mantiene el servicio en línea.",
  donate:"Donar", donate_missing:"Añada un enlace Swish/PayPal/Ko-fi en la configuración",
  copy_link:"Copiar enlace de la app", link_copied:"Enlace copiado",
+ land_kicker:"Postal de referencias BNI",
+ land_h:"Una postal que abre puertas todo el año",
+ land_pitch:"Diseñe una vez. Imprima y envíe cuando quiera — <strong>no solo en Navidad</strong>.",
+ land_year:"El ejemplo a la derecha es la tarjeta de Kaj (BNI Elit Västerås). Cambie sus datos cuando esté listo.",
+ land_u1:"Agradecimiento tras una referencia",
+ land_u2:"Intro cálida al conocer a alguien nuevo",
+ land_u3:"Reactivar un contacto silencioso",
+ land_u4:"Regalos del capítulo / equipo",
+ land_u5:"Seguimiento de eventos (BNI, ferias, visitas)",
+ land_cta:"Cree la suya",
+ land_sample:"Ver tarjeta de ejemplo",
+ land_sample_note:"La vista previa se actualiza en vivo mientras edita.",
  sample_rec:"Destinatario 1 de {n}", your_name:"Su nombre"
 },
 it:{
- name:"La cartolina delle referenze", tag:"Una cartolina di referenze per i membri BNI. Scegli i settori, crea la cartolina, stampala.",
+ name:"La cartolina delle referenze", tag:"Cartoline di referenze tutto l’anno per i membri BNI. Progetta una volta, stampa e spedisci quando vuoi.",
  lang_ui:"Lingua", region:"Regione", s1:"Capitoli", s2:"Settori", s3:"Cartolina", s4:"Destinatari e PDF", s5:"Stampa e spedizione",
  next:"Avanti", prev:"Indietro",
  s1_lead:"Scegli i capitoli BNI di cui mostrare i settori. Prima il tuo, poi quelli vicini.",
@@ -608,7 +710,7 @@ it:{
  k_pm:"Stampa + spedizione", k_p:"Solo stampa", min:"Minimo", lead:"Tempi", days:"{n} giorni lavorativi", price:"Prezzo indicativo", input:"Accetta", src:"Fonte",
  quote:"Su preventivo", in_tool:"Indicato all'ordine", need_bleed:"Richiede {n} mm di abbondanza. Modificala in Cartolina.", coverage:"Copertura",
  postage_h:"Affrancatura", postage_se:"Svezia, lettera nazionale fino a 50 g: 22 SEK (2026).",
- timeline_h:"Tempistiche", timeline:"Vuoi che arrivino nella prima settimana di dicembre? Ordina entro metà novembre.",
+ timeline_h:"Tempistiche", timeline:"Usa le cartoline tutto l’anno — ringraziamenti dopo una referenza, intro calde o follow-up di eventi. Vuoi che arrivino nella prima settimana di dicembre? Ordina entro metà novembre.",
  local_h:"In {r}", intl_h:"Internazionale", unverified:"Non verificato nel dettaglio",
  preview:"Anteprima", front:"Fronte", back:"Retro", trim:"Mostra linea di taglio", saved_local:"Le tue scelte sono salvate in questo browser, tranne immagini e indirizzi.",
  share_h:"Condividi / crea la tua", share_show:"Mostra il link «crea la tua cartolina» sul retro", share_url:"URL pubblica",
@@ -616,10 +718,22 @@ it:{
  support_h:"Supporto", support_note:"Gratis per i membri BNI. Una piccola donazione facoltativa tiene il servizio online.",
  donate:"Dona", donate_missing:"Aggiungi un link Swish/PayPal/Ko-fi nelle impostazioni",
  copy_link:"Copia link all'app", link_copied:"Link copiato",
+ land_kicker:"Cartolina referenze BNI",
+ land_h:"Una cartolina che apre porte tutto l’anno",
+ land_pitch:"Progetta una volta. Stampa e spedisci quando vuoi — <strong>non solo a Natale</strong>.",
+ land_year:"L’esempio a destra è la cartolina di Kaj (BNI Elit Västerås). Inserisci i tuoi dati quando sei pronto.",
+ land_u1:"Ringraziamento dopo una referenza",
+ land_u2:"Intro calda quando incontri qualcuno di nuovo",
+ land_u3:"Riaprire un contatto silenzioso",
+ land_u4:"Omaggi per capitolo / team",
+ land_u5:"Follow-up eventi (BNI, fiere, visite in sede)",
+ land_cta:"Crea la tua",
+ land_sample:"Mostra cartolina esempio",
+ land_sample_note:"L’anteprima si aggiorna in tempo reale mentre modifichi.",
  sample_rec:"Destinatario 1 di {n}", your_name:"Il tuo nome"
 },
 pt:{
- name:"O cartão de indicações", tag:"Um postal de indicações para membros do BNI. Escolha os setores, crie o cartão e imprima.",
+ name:"O cartão de indicações", tag:"Postais de indicações o ano todo para membros do BNI. Desenhe uma vez, imprima e envie quando quiser.",
  lang_ui:"Idioma", region:"Região", s1:"Capítulos", s2:"Setores", s3:"Cartão", s4:"Destinatários e PDF", s5:"Impressão e envio",
  next:"Avançar", prev:"Voltar",
  s1_lead:"Escolha os capítulos do BNI cujos setores quer mostrar. Primeiro o seu, depois os próximos.",
@@ -659,7 +773,7 @@ pt:{
  k_pm:"Impressão + envio", k_p:"Só impressão", min:"Mínimo", lead:"Prazo", days:"{n} dias úteis", price:"Preço de exemplo", input:"Aceita", src:"Fonte",
  quote:"Sob orçamento", in_tool:"Mostrado no pedido", need_bleed:"Exige {n} mm de sangria. Altere em Cartão.", coverage:"Cobertura",
  postage_h:"Franquia", postage_se:"Suécia, carta nacional até 50 g: 22 SEK (2026).",
- timeline_h:"Prazos", timeline:"Quer que cheguem na primeira semana de dezembro? Encomende até meados de novembro.",
+ timeline_h:"Prazos", timeline:"Use os cartões o ano todo — agradecimentos após uma indicação, intros calorosas ou follow-ups de eventos. Quer que cheguem na primeira semana de dezembro? Encomende até meados de novembro.",
  local_h:"Em {r}", intl_h:"Internacional", unverified:"Não verificado em detalhe",
  preview:"Pré-visualização", front:"Frente", back:"Verso", trim:"Mostrar linha de corte", saved_local:"Suas escolhas ficam salvas neste navegador, exceto imagens e endereços.",
  share_h:"Partilhar / crie o seu", share_show:"Mostrar link para criar o seu cartão no verso", share_url:"URL pública",
@@ -667,6 +781,18 @@ pt:{
  support_h:"Apoio", support_note:"Grátis para membros do BNI. Uma pequena doação opcional mantém o serviço online.",
  donate:"Doar", donate_missing:"Adicione um link Swish/PayPal/Ko-fi nas definições",
  copy_link:"Copiar link da app", link_copied:"Link copiado",
+ land_kicker:"Postal de indicações BNI",
+ land_h:"Um postal que abre portas o ano todo",
+ land_pitch:"Desenhe uma vez. Imprima e envie quando quiser — <strong>não só no Natal</strong>.",
+ land_year:"O exemplo à direita é o cartão do Kaj (BNI Elit Västerås). Troque pelos seus dados quando estiver pronto.",
+ land_u1:"Agradecimento após uma indicação",
+ land_u2:"Intro calorosa ao conhecer alguém novo",
+ land_u3:"Reabrir um contacto silencioso",
+ land_u4:"Brindes do capítulo / equipa",
+ land_u5:"Follow-up de eventos (BNI, feiras, visitas)",
+ land_cta:"Crie o seu",
+ land_sample:"Ver cartão de exemplo",
+ land_sample_note:"A pré-visualização atualiza em direto enquanto edita.",
  sample_rec:"Destinatário 1 de {n}", your_name:"Seu nome"
 }
 };
@@ -922,6 +1048,9 @@ function detectRegion() {
   return REGIONS.includes(loc) ? loc : "SE";
 }
 function defaultEdition(region) {
+  // Fresh visits / no saved edition: year-round thank-you sample (not Christmas-heavy).
+  // Seasonal editions remain selectable in the Card step; localStorage edition is respected.
+  if (editionAllowed("thanks", region)) return "thanks";
   const m = new Date().getMonth();
   let e = "autumn";
   if (m >= 9) e = "xmas"; else if (m === 0) e = "newyear"; else if (m <= 4) e = "spring";
@@ -942,7 +1071,13 @@ const S = {
   showCh: true, stamp: true, showShare: true, shareUrl: "", donateUrl: "", size: US_SIZE.includes(R0) ? "us" : "a6", bleed: 3, step: 1, trim: true
 };
 const STORE = "refcard.v1";
-try { const saved = JSON.parse(localStorage.getItem(STORE) || "null"); if (saved && saved.v === 1) Object.assign(S, saved); } catch (e) {}
+const LAND_STORE = "refcard.landed";
+let HAD_SAVED = false;
+try { const saved = JSON.parse(localStorage.getItem(STORE) || "null"); if (saved && saved.v === 1) { HAD_SAVED = true; Object.assign(S, saved); } } catch (e) {}
+// Fresh install: sample edition stays thanks even in Oct–Dec (seasonal still available later).
+if (!HAD_SAVED && editionAllowed("thanks", S.region)) { S.edition = "thanks"; S.palette = EDITIONS.thanks.pal; }
+let LANDING = true;
+try { LANDING = localStorage.getItem(LAND_STORE) !== "1"; } catch (e) {}
 if (typeof S.showShare !== "boolean") S.showShare = true;
 if (typeof S.shareUrl !== "string") S.shareUrl = "";
 if (typeof S.donateUrl !== "string") S.donateUrl = "";
@@ -1009,7 +1144,11 @@ function chip(key, opts) {
 // ---------- Static text + selects ----------
 function applyText() {
   document.documentElement.lang = S.ui;
-  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.dataset.i18n;
+    const val = t(key);
+    if (key === "land_pitch") el.innerHTML = val; else el.textContent = val;
+  });
   document.querySelectorAll("[data-i18n-ph]").forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
   $("uiLang").innerHTML = LANG_ORDER.map(l => `<option value="${l}"${l === S.ui ? " selected" : ""}>${esc(langName(l))}</option>`).join("");
   const regs = REGIONS.map(r => [r, regionName(r)]).sort((a, b) => a[1].localeCompare(b[1], S.ui));
@@ -1584,6 +1723,24 @@ function renderGuide() {
     <div class="card"><h3 style="margin:0 0 6px">${esc(t("timeline_h"))}</h3><p>${esc(t("timeline"))}</p></div>`;
 }
 
+// ---------- Landing ----------
+function setLanding(on) {
+  LANDING = !!on;
+  document.body.classList.toggle("landing-on", LANDING);
+  const wrap = $("showSampleWrap");
+  if (wrap) wrap.hidden = LANDING;
+  if (!LANDING) {
+    try { localStorage.setItem(LAND_STORE, "1"); } catch (e) {}
+  }
+  schedule();
+}
+function enterWorkbench() {
+  setLanding(false);
+  showStep(S.step || 1);
+  const wb = $("workbench");
+  if (wb) wb.scrollIntoView({ block: "start", behavior: "smooth" });
+}
+
 // ---------- Steps ----------
 function showStep(n) {
   S.step = Math.min(5, Math.max(1, n)); save();
@@ -1607,7 +1764,7 @@ function renderSupport() {
     hint.textContent = t("donate_missing"); hint.hidden = false;
   }
 }
-function renderAll() { applyText(); renderChapters(); renderTrades(); renderCardForm(); renderSupport(); renderGuide(); showStep(S.step); setRecipients(RECIPIENTS); schedule(); }
+function renderAll() { applyText(); renderChapters(); renderTrades(); renderCardForm(); renderSupport(); renderGuide(); showStep(S.step); setRecipients(RECIPIENTS); setLanding(LANDING); schedule(); }
 
 // ---------- Events ----------
 $("uiLang").onchange = e => { S.ui = e.target.value; save(); renderAll(); };
@@ -1701,6 +1858,9 @@ $("dlPrint").onclick = () => doDownload("print");
 $("dlAddr").onclick = () => doDownload("addr");
 $("dlCsv").onclick = () => doDownload("csv");
 window.addEventListener("resize", schedule);
+
+$("makeYours").onclick = () => enterWorkbench();
+$("showSample").onclick = () => { setLanding(true); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
 // ---------- Boot ----------
 renderAll();
