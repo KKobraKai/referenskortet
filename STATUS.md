@@ -5,7 +5,7 @@
 - Also: https://myreferralcard.com/ (same app)
 - Cloudflare Pages: https://referenskortet.pages.dev/
 - Cloudflare Pages project: `referenskortet` (account Kaj.nybom@gmail.com)
-- Sample sender: Mediahive AB / Kaj Nybom (mediahiveab.com)
+- Sample sender: Mediahive AB / Kaj Nybom (kai@mediahiveab.com, mediahiveab.com)
 - Share / make-your-own default URL: referralcard.ai
 
 ## Done
