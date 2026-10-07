@@ -124,18 +124,16 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
 .landing-cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:4px}
 .landing-cta .btn.primary{font-size:15px;padding:12px 20px}
 .landing-note{font-size:13px;color:var(--muted);max-width:48ch}
-body.landing-on .steps,
-body.landing-on #workbench{display:none!important}
-body:not(.landing-on) #landing{display:none!important}
-/* Card first so the Christmas sample meets the visitor before the pitch */
-body.landing-on .grid{display:flex;flex-direction:column;gap:24px}
-body.landing-on .preview{order:-1}
-body.landing-on .preview .preview-head{margin-top:4px}
-@media (min-width:1000px){
-  body.landing-on .grid{display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);align-items:start;gap:32px}
-  body.landing-on .preview{order:-1;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+/* Intro stays on-page; scroll into the workbench (no separate landing mode) */
+#landing{margin:8px 0 28px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+#workbench{scroll-margin-top:16px}
+.steps{scroll-margin-top:12px}
+/* Mobile: Christmas preview meets you right under the intro, before the editor */
+@media (max-width:999px){
+  .grid{display:flex;flex-direction:column;gap:24px}
+  .preview{order:-1}
 }
-.show-sample{margin:10px 0 0}
+
 </style>
 
 <div class="wrap">
@@ -150,19 +148,7 @@ body.landing-on .preview .preview-head{margin-top:4px}
     </div>
   </header>
 
-  <nav class="steps" id="workbenchSteps" aria-label="Steps">
-    <ol>
-      <li><button type="button" data-step="1"><span class="num">1</span><span data-i18n="s1"></span></button></li>
-      <li><button type="button" data-step="2"><span class="num">2</span><span data-i18n="s2"></span></button></li>
-      <li><button type="button" data-step="3"><span class="num">3</span><span data-i18n="s3"></span></button></li>
-      <li><button type="button" data-step="4"><span class="num">4</span><span data-i18n="s4"></span></button></li>
-      <li><button type="button" data-step="5"><span class="num">5</span><span data-i18n="s5"></span></button></li>
-    </ol>
-  </nav>
-  <p class="show-sample" id="showSampleWrap" hidden><button type="button" class="linkish" id="showSample" data-i18n="land_sample"></button></p>
 
-  <div class="grid">
-    <div>
       <section class="landing" id="landing" aria-label="Landing">
         <p class="landing-kicker" data-i18n="land_kicker"></p>
         <h2 data-i18n="land_h"></h2>
@@ -181,6 +167,19 @@ body.landing-on .preview .preview-head{margin-top:4px}
         <p class="landing-note" data-i18n="land_sample_note"></p>
       </section>
 
+  <nav class="steps" id="workbenchSteps" aria-label="Steps">
+    <ol>
+      <li><button type="button" data-step="1"><span class="num">1</span><span data-i18n="s1"></span></button></li>
+      <li><button type="button" data-step="2"><span class="num">2</span><span data-i18n="s2"></span></button></li>
+      <li><button type="button" data-step="3"><span class="num">3</span><span data-i18n="s3"></span></button></li>
+      <li><button type="button" data-step="4"><span class="num">4</span><span data-i18n="s4"></span></button></li>
+      <li><button type="button" data-step="5"><span class="num">5</span><span data-i18n="s5"></span></button></li>
+    </ol>
+  </nav>
+  <!-- show-sample removed: intro scrolls into workbench -->
+
+  <div class="grid">
+    <div>
       <div id="workbench">
       <!-- STEP 1: chapters -->
       <section class="panel" id="p1">
@@ -409,7 +408,7 @@ sv:{
  land_kicker:"BNI-referenskort",
  land_h:"Ett vykort som öppnar dörrar året runt",
  land_pitch:"Designa en gång. Skriv ut och skicka när som helst — <strong>inte bara till jul</strong>.",
- land_year:"Julkortet ovan är Kajs exempel från BNI Elit Västerås — samma verktyg funkar året runt. Byt till ditt namn när du är redo.",
+ land_year:"Julkortet i förhandsvisningen är Kajs exempel från BNI Elit Västerås — samma verktyg funkar året runt. Byt till ditt namn när du är redo.",
  land_u1:"Tack efter en referral",
  land_u2:"Varm intro när du träffar någon ny",
  land_u3:"Väck en tyst kontakt igen",
@@ -472,7 +471,7 @@ en:{
  land_kicker:"BNI referral postcard",
  land_h:"A postcard that opens doors all year",
  land_pitch:"Design once. Print and mail anytime — <strong>not just Christmas</strong>.",
- land_year:"The Christmas card above is Kaj’s sample from BNI Elit Västerås — same tool works all year. Swap in your details when you’re ready.",
+ land_year:"The Christmas card in the preview is Kaj’s sample from BNI Elit Västerås — same tool works all year. Swap in your details when you’re ready.",
  land_u1:"Thank-you after a referral",
  land_u2:"Warm intro when you meet someone new",
  land_u3:"Re-open a quiet contact",
@@ -1074,13 +1073,10 @@ const S = {
   showCh: true, stamp: true, showShare: true, shareUrl: "referralcard.ai", donateUrl: "", size: US_SIZE.includes(R0) ? "us" : "a6", bleed: 3, step: 1, trim: true
 };
 const STORE = "refcard.v1";
-const LAND_STORE = "refcard.landed";
 let HAD_SAVED = false;
 try { const saved = JSON.parse(localStorage.getItem(STORE) || "null"); if (saved && saved.v === 1) { HAD_SAVED = true; Object.assign(S, saved); } } catch (e) {}
-// Fresh install: sample edition stays thanks even in Oct–Dec (seasonal still available later).
+// Fresh visit: Christmas sample for the aha moment (seasonal still available later).
 if (!HAD_SAVED && editionAllowed("xmas", S.region)) { S.edition = "xmas"; S.palette = EDITIONS.xmas.pal; }
-let LANDING = true;
-try { LANDING = localStorage.getItem(LAND_STORE) !== "1"; } catch (e) {}
 if (typeof S.showShare !== "boolean") S.showShare = true;
 if (typeof S.shareUrl !== "string") S.shareUrl = "";
 if (S.shareUrl === "referenskortet.se" || /referenskortet\.pages\.dev/i.test(S.shareUrl || "")) S.shareUrl = "referralcard.ai";
@@ -1729,21 +1725,10 @@ function renderGuide() {
 }
 
 // ---------- Landing ----------
-function setLanding(on) {
-  LANDING = !!on;
-  document.body.classList.toggle("landing-on", LANDING);
-  const wrap = $("showSampleWrap");
-  if (wrap) wrap.hidden = LANDING;
-  if (!LANDING) {
-    try { localStorage.setItem(LAND_STORE, "1"); } catch (e) {}
-  }
-  schedule();
-}
 function enterWorkbench() {
-  setLanding(false);
   showStep(S.step || 1);
-  const wb = $("workbench");
-  if (wb) wb.scrollIntoView({ block: "start", behavior: "smooth" });
+  const target = $("workbenchSteps") || $("workbench");
+  if (target) target.scrollIntoView({ block: "start", behavior: "smooth" });
 }
 
 // ---------- Steps ----------
@@ -1769,7 +1754,7 @@ function renderSupport() {
     hint.textContent = t("donate_missing"); hint.hidden = false;
   }
 }
-function renderAll() { applyText(); renderChapters(); renderTrades(); renderCardForm(); renderSupport(); renderGuide(); showStep(S.step); setRecipients(RECIPIENTS); setLanding(LANDING); schedule(); }
+function renderAll() { applyText(); renderChapters(); renderTrades(); renderCardForm(); renderSupport(); renderGuide(); showStep(S.step); setRecipients(RECIPIENTS); schedule(); }
 
 // ---------- Events ----------
 $("uiLang").onchange = e => { S.ui = e.target.value; save(); renderAll(); };
@@ -1865,7 +1850,6 @@ $("dlCsv").onclick = () => doDownload("csv");
 window.addEventListener("resize", schedule);
 
 $("makeYours").onclick = () => enterWorkbench();
-$("showSample").onclick = () => { setLanding(true); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
 // ---------- Boot ----------
 renderAll();
