@@ -127,10 +127,13 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
 body.landing-on .steps,
 body.landing-on #workbench{display:none!important}
 body:not(.landing-on) #landing{display:none!important}
-body.landing-on .grid{gap:32px}
+/* Card first so the Christmas sample meets the visitor before the pitch */
+body.landing-on .grid{display:flex;flex-direction:column;gap:24px}
+body.landing-on .preview{order:-1}
+body.landing-on .preview .preview-head{margin-top:4px}
 @media (min-width:1000px){
-  body.landing-on .grid{grid-template-columns:minmax(0,1fr) minmax(0,560px);align-items:start}
-  body.landing-on .preview{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+  body.landing-on .grid{display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);align-items:start;gap:32px}
+  body.landing-on .preview{order:-1;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
 }
 .show-sample{margin:10px 0 0}
 </style>
@@ -406,7 +409,7 @@ sv:{
  land_kicker:"BNI-referenskort",
  land_h:"Ett vykort som öppnar dörrar året runt",
  land_pitch:"Designa en gång. Skriv ut och skicka när som helst — <strong>inte bara till jul</strong>.",
- land_year:"Exemplet till höger är Kajs kort från BNI Elit Västerås. Byt till ditt namn när du är redo.",
+ land_year:"Julkortet ovan är Kajs exempel från BNI Elit Västerås — samma verktyg funkar året runt. Byt till ditt namn när du är redo.",
  land_u1:"Tack efter en referral",
  land_u2:"Varm intro när du träffar någon ny",
  land_u3:"Väck en tyst kontakt igen",
@@ -469,7 +472,7 @@ en:{
  land_kicker:"BNI referral postcard",
  land_h:"A postcard that opens doors all year",
  land_pitch:"Design once. Print and mail anytime — <strong>not just Christmas</strong>.",
- land_year:"The sample on the right is Kaj’s card from BNI Elit Västerås. Swap in your details when you’re ready.",
+ land_year:"The Christmas card above is Kaj’s sample from BNI Elit Västerås — same tool works all year. Swap in your details when you’re ready.",
  land_u1:"Thank-you after a referral",
  land_u2:"Warm intro when you meet someone new",
  land_u3:"Re-open a quiet contact",
@@ -532,7 +535,7 @@ de:{
  land_kicker:"BNI-Empfehlungspostkarte",
  land_h:"Eine Postkarte, die ganzjährig Türen öffnet",
  land_pitch:"Einmal gestalten. Jederzeit drucken und versenden — <strong>nicht nur zu Weihnachten</strong>.",
- land_year:"Rechts sehen Sie Kajs Beispielkarte von BNI Elit Västerås. Tauschen Sie Ihre Daten ein, wenn Sie bereit sind.",
+ land_year:"Die Weihnachtskarte oben ist Kajs Beispiel von BNI Elit Västerås — dasselbe Tool ganzjährig. Tauschen Sie Ihre Daten ein, wenn Sie bereit sind.",
  land_u1:"Danke nach einer Empfehlung",
  land_u2:"Warme Vorstellung bei neuen Kontakten",
  land_u3:"Stillen Kontakt wieder öffnen",
@@ -595,7 +598,7 @@ fr:{
  land_kicker:"Carte postale BNI",
  land_h:"Une carte qui ouvre des portes toute l’année",
  land_pitch:"Concevez une fois. Imprimez et envoyez quand vous voulez — <strong>pas seulement à Noël</strong>.",
- land_year:"L’exemple à droite est la carte de Kaj (BNI Elit Västerås). Remplacez par vos coordonnées quand vous êtes prêt.",
+ land_year:"La carte de Noël ci-dessus est l’exemple de Kaj (BNI Elit Västerås) — le même outil toute l’année. Remplacez par vos coordonnées quand vous êtes prêt.",
  land_u1:"Remerciement après une recommandation",
  land_u2:"Intro chaleureuse quand vous rencontrez quelqu’un",
  land_u3:"Rallumer un contact silencieux",
@@ -658,7 +661,7 @@ es:{
  land_kicker:"Postal de referencias BNI",
  land_h:"Una postal que abre puertas todo el año",
  land_pitch:"Diseñe una vez. Imprima y envíe cuando quiera — <strong>no solo en Navidad</strong>.",
- land_year:"El ejemplo a la derecha es la tarjeta de Kaj (BNI Elit Västerås). Cambie sus datos cuando esté listo.",
+ land_year:"La tarjeta de Navidad de arriba es el ejemplo de Kaj (BNI Elit Västerås): la misma herramienta todo el año. Cambie sus datos cuando esté listo.",
  land_u1:"Agradecimiento tras una referencia",
  land_u2:"Intro cálida al conocer a alguien nuevo",
  land_u3:"Reactivar un contacto silencioso",
@@ -721,7 +724,7 @@ it:{
  land_kicker:"Cartolina referenze BNI",
  land_h:"Una cartolina che apre porte tutto l’anno",
  land_pitch:"Progetta una volta. Stampa e spedisci quando vuoi — <strong>non solo a Natale</strong>.",
- land_year:"L’esempio a destra è la cartolina di Kaj (BNI Elit Västerås). Inserisci i tuoi dati quando sei pronto.",
+ land_year:"La cartolina di Natale sopra è l’esempio di Kaj (BNI Elit Västerås): lo stesso strumento tutto l’anno. Inserisci i tuoi dati quando sei pronto.",
  land_u1:"Ringraziamento dopo una referenza",
  land_u2:"Intro calda quando incontri qualcuno di nuovo",
  land_u3:"Riaprire un contatto silenzioso",
@@ -784,7 +787,7 @@ pt:{
  land_kicker:"Postal de indicações BNI",
  land_h:"Um postal que abre portas o ano todo",
  land_pitch:"Desenhe uma vez. Imprima e envie quando quiser — <strong>não só no Natal</strong>.",
- land_year:"O exemplo à direita é o cartão do Kaj (BNI Elit Västerås). Troque pelos seus dados quando estiver pronto.",
+ land_year:"O cartão de Natal acima é o exemplo do Kaj (BNI Elit Västerås) — a mesma ferramenta o ano todo. Troque pelos seus dados quando estiver pronto.",
  land_u1:"Agradecimento após uma indicação",
  land_u2:"Intro calorosa ao conhecer alguém novo",
  land_u3:"Reabrir um contacto silencioso",
@@ -1075,7 +1078,7 @@ const LAND_STORE = "refcard.landed";
 let HAD_SAVED = false;
 try { const saved = JSON.parse(localStorage.getItem(STORE) || "null"); if (saved && saved.v === 1) { HAD_SAVED = true; Object.assign(S, saved); } } catch (e) {}
 // Fresh install: sample edition stays thanks even in Oct–Dec (seasonal still available later).
-if (!HAD_SAVED && editionAllowed("thanks", S.region)) { S.edition = "thanks"; S.palette = EDITIONS.thanks.pal; }
+if (!HAD_SAVED && editionAllowed("xmas", S.region)) { S.edition = "xmas"; S.palette = EDITIONS.xmas.pal; }
 let LANDING = true;
 try { LANDING = localStorage.getItem(LAND_STORE) !== "1"; } catch (e) {}
 if (typeof S.showShare !== "boolean") S.showShare = true;
