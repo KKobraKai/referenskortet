@@ -1,0 +1,1718 @@
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Referenskortet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: two-pane workbench — numbered steps on the left, a live print proof pinned on the right; stacks on phones. */
+:root{
+  --bg:#F1F3EE; --surface:#FFFFFF; --ink:#18211C; --muted:#56605A; --line:#D5DBD1;
+  --accent:#1E5A43; --accent-ink:#FFFFFF; --accent-soft:#DCEBE2; --gold:#8C6A22;
+  --warn:#8A5200; --warn-soft:#F7EBD6; --bad:#A12B2B; --bad-soft:#F6E0DE; --ok:#2B6A3C; --chip:#E9EDE5;
+  --proof:#DCE1D8;
+  --f-display:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --f-body:"Work Sans", "Helvetica Neue", Arial, sans-serif;
+  --r:6px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101512; --surface:#18201B; --ink:#E6EBE4; --muted:#9BA69E; --line:#2B352F;
+  --accent:#73C29A; --accent-ink:#0D1510; --accent-soft:#1F3A2C; --gold:#D5B062;
+  --warn:#E3A54C; --warn-soft:#3A2C17; --bad:#F09090; --bad-soft:#3B1D1D; --ok:#7FCB98; --chip:#222B25;
+  --proof:#0B0F0D; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#101512; --surface:#18201B; --ink:#E6EBE4; --muted:#9BA69E; --line:#2B352F;
+  --accent:#73C29A; --accent-ink:#0D1510; --accent-soft:#1F3A2C; --gold:#D5B062;
+  --warn:#E3A54C; --warn-soft:#3A2C17; --bad:#F09090; --bad-soft:#3B1D1D; --ok:#7FCB98; --chip:#222B25;
+  --proof:#0B0F0D; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1320px;margin:0 auto;padding-inline:clamp(16px,3vw,32px);padding-block:20px 48px}
+h1,h2,h3,h4{text-wrap:balance;margin:0}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(30px,4vw,40px);line-height:1}
+h2{font-family:var(--f-display);font-weight:600;font-size:28px;line-height:1.1}
+h3{font-size:15px;font-weight:600;margin-top:22px}
+h4{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 8px}
+p{margin:0}
+.top{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:flex-end;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.brand p{color:var(--muted);margin-top:6px;max-width:60ch}
+.prefs{display:flex;flex-wrap:wrap;gap:12px}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:500;color:var(--muted);min-width:0}
+select,input[type=text],input[type=email],input[type=tel],input[type=url],textarea{
+  font:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px 10px;min-width:0;width:100%}
+textarea{resize:vertical;min-height:84px;line-height:1.45}
+select:focus-visible,input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.steps{margin:18px 0 22px;overflow-x:auto}
+.steps ol{list-style:none;margin:0;padding:0;display:flex;gap:6px;min-width:max-content}
+.steps button{font:inherit;font-size:14px;display:flex;gap:8px;align-items:center;background:transparent;color:var(--muted);border:1px solid transparent;border-radius:999px;padding:7px 14px 7px 8px;cursor:pointer}
+.steps .num{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;border:1px solid var(--line);font-size:12px;font-variant-numeric:tabular-nums}
+.steps button[aria-current="step"]{color:var(--ink);border-color:var(--line);background:var(--surface)}
+.steps button[aria-current="step"] .num{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
+@media (min-width:1000px){.grid{grid-template-columns:minmax(0,1fr) minmax(0,540px)}}
+.panel{display:flex;flex-direction:column;gap:12px}
+.lead{color:var(--muted);max-width:62ch}
+.note{color:var(--muted);font-size:13px;max-width:66ch}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+.row>*{flex:1 1 200px}
+.cols2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.btn{font:inherit;font-size:14px;font-weight:500;border-radius:var(--r);padding:9px 14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn.small{padding:5px 10px;font-size:13px}
+.linkish{font:inherit;font-size:13px;background:none;border:none;color:var(--accent);cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px}
+a{color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.chapter{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
+.chapter .meta{min-width:0}
+.chapter .nm{font-weight:600}
+.chapter .sub{font-size:13px;color:var(--muted)}
+.badge{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-left:8px}
+.check{display:inline-flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:13px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);padding:5px 11px;cursor:pointer;line-height:1.3}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip .x{margin-left:6px;opacity:.7}
+.selbar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:8px;z-index:2;border-bottom:1px solid var(--line)}
+.count{font-weight:600;font-variant-numeric:tabular-nums}
+.msg{font-size:13px;border-radius:var(--r);padding:8px 10px}
+.msg.warn{background:var(--warn-soft);color:var(--warn)}
+.msg.bad{background:var(--bad-soft);color:var(--bad)}
+.msg.ok{background:var(--accent-soft);color:var(--ok)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{font:inherit;font-size:13px;padding:7px 12px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.seg button[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);font-weight:600}
+.swatch{width:40px;height:40px;border-radius:50%;border:2px solid var(--line);cursor:pointer;position:relative;padding:0}
+.swatch[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}
+.swatch i{position:absolute;right:4px;bottom:4px;width:12px;height:12px;border-radius:50%}
+fieldset{border:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+legend{font-size:12px;font-weight:500;color:var(--muted);padding:0;margin-bottom:4px}
+details summary{cursor:pointer;font-weight:600;font-size:14px}
+details[open] summary{margin-bottom:10px}
+.navbtns{display:flex;justify-content:space-between;gap:12px;margin-top:18px}
+.preview{align-self:start}
+@media (min-width:1000px){.preview{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}}
+.proof{background:var(--proof);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:14px}
+.proof canvas{width:100%;height:auto;display:block;box-shadow:0 1px 2px rgba(0,0,0,.18),0 8px 24px rgba(0,0,0,.12);border-radius:2px;background:#fff}
+.proof figure{margin:0;display:flex;flex-direction:column;gap:6px}
+.proof figcaption{font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+.preview-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.provider{display:grid;gap:6px}
+.provider .hd{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 12px;align-items:baseline}
+.provider .nm{font-weight:600}
+.kind{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--muted)}
+.kind.pm{background:var(--accent-soft);color:var(--ok)}
+dl.facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:2px 14px;margin:0;font-size:13px}
+dl.facts dt{color:var(--muted)}
+dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
+.stack{display:flex;flex-direction:column;gap:10px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1 data-i18n="name">Referenskortet</h1>
+      <p data-i18n="tag"></p>
+    </div>
+    <div class="prefs">
+      <label class="f" for="uiLang"><span data-i18n="lang_ui"></span><select id="uiLang"></select></label>
+      <label class="f" for="region"><span data-i18n="region"></span><select id="region"></select></label>
+    </div>
+  </header>
+
+  <nav class="steps" aria-label="Steps">
+    <ol>
+      <li><button type="button" data-step="1"><span class="num">1</span><span data-i18n="s1"></span></button></li>
+      <li><button type="button" data-step="2"><span class="num">2</span><span data-i18n="s2"></span></button></li>
+      <li><button type="button" data-step="3"><span class="num">3</span><span data-i18n="s3"></span></button></li>
+      <li><button type="button" data-step="4"><span class="num">4</span><span data-i18n="s4"></span></button></li>
+      <li><button type="button" data-step="5"><span class="num">5</span><span data-i18n="s5"></span></button></li>
+    </ol>
+  </nav>
+
+  <div class="grid">
+    <div>
+      <!-- STEP 1: chapters -->
+      <section class="panel" id="p1">
+        <h2 data-i18n="s1"></h2>
+        <p class="lead" data-i18n="s1_lead"></p>
+        <div id="chapterList" class="stack"></div>
+        <details class="card" id="addChapter">
+          <summary data-i18n="add_ch"></summary>
+          <form id="chForm" class="stack">
+            <div class="row">
+              <label class="f" for="chName"><span data-i18n="ch_name"></span><input type="text" id="chName" required></label>
+              <label class="f" for="chCity"><span data-i18n="ch_city"></span><input type="text" id="chCity"></label>
+            </div>
+            <label class="f" for="chPaste"><span data-i18n="ch_paste"></span><textarea id="chPaste" rows="5"></textarea></label>
+            <p class="note" data-i18n="ch_paste_hint"></p>
+            <div><button class="btn primary" type="submit" data-i18n="add"></button></div>
+          </form>
+        </details>
+        <h3 data-i18n="find_h"></h3>
+        <div class="row">
+          <label class="f" for="findCity"><span data-i18n="find_city"></span><input type="text" id="findCity"></label>
+        </div>
+        <div class="row" id="findLinks"></div>
+        <div id="nearby" class="stack"></div>
+      </section>
+
+      <!-- STEP 2: trades -->
+      <section class="panel" id="p2" hidden>
+        <h2 data-i18n="s2"></h2>
+        <p class="lead" data-i18n="s2_lead"></p>
+        <div class="selbar">
+          <span class="count" id="selCount"></span>
+          <label class="f" for="order" style="flex-direction:row;align-items:center;gap:8px"><span data-i18n="order"></span>
+            <select id="order" style="width:auto"><option value="auto" data-i18n="order_auto"></option><option value="manual" data-i18n="order_manual"></option></select></label>
+          <button class="linkish" type="button" id="clearSel" data-i18n="clear_sel"></button>
+        </div>
+        <div id="tooMany" class="msg warn" hidden data-i18n="too_many"></div>
+        <h3 data-i18n="from_ch"></h3>
+        <div class="chips" id="chChips"></div>
+        <div id="aiBox" class="stack" hidden>
+          <h3 data-i18n="ai_h"></h3>
+          <div class="row" style="align-items:center"><div style="flex:0 0 auto"><button class="btn" type="button" id="aiBtn" data-i18n="ai_btn"></button></div><span id="aiStatus" class="note" role="status"></span></div>
+          <div class="chips" id="aiChips"></div>
+        </div>
+        <h3 id="commonH"></h3>
+        <p class="note" data-i18n="common_note"></p>
+        <h4 data-i18n="biz"></h4>
+        <div class="chips" id="libBiz"></div>
+        <h4 data-i18n="priv"></h4>
+        <div class="chips" id="libPriv"></div>
+        <div><button class="linkish" type="button" id="showAll"></button></div>
+        <h3 data-i18n="own"></h3>
+        <label class="f" for="ownInput"><span class="sr" data-i18n="own"></span><input type="text" id="ownInput" data-i18n-ph="own_ph"></label>
+        <div class="chips" id="ownChips"></div>
+      </section>
+
+      <!-- STEP 3: card -->
+      <section class="panel" id="p3" hidden>
+        <h2 data-i18n="s3"></h2>
+        <p class="lead" data-i18n="s3_lead"></p>
+        <div class="cols2">
+          <label class="f" for="edition"><span data-i18n="edition"></span><select id="edition"></select></label>
+          <label class="f" for="cardLang"><span data-i18n="card_lang"></span><select id="cardLang"></select></label>
+        </div>
+        <fieldset><legend data-i18n="layout"></legend><div class="seg" id="layoutSeg"></div></fieldset>
+        <fieldset><legend data-i18n="palette"></legend><div class="seg" id="paletteSeg"></div></fieldset>
+        <div id="imgBox" class="card stack" hidden>
+          <h3 style="margin:0" data-i18n="img_h"></h3>
+          <div class="row" style="align-items:center">
+            <div style="flex:0 0 auto"><label class="btn" for="imgFile"><span data-i18n="img_upload"></span></label><input class="sr" type="file" id="imgFile" accept="image/*"></div>
+            <span id="imgStatus" class="note"></span>
+          </div>
+          <div id="imgDpi" class="msg" hidden></div>
+          <h3 data-i18n="prompt_h"></h3>
+          <p class="note" data-i18n="prompt_note"></p>
+          <div class="row"><label class="f" for="style" style="flex:0 1 240px"><span data-i18n="style"></span><select id="style"></select></label></div>
+          <label class="f" for="imgPrompt"><span class="sr" data-i18n="prompt_h"></span><textarea id="imgPrompt" rows="6" readonly class="mono"></textarea></label>
+          <div><button class="btn small" type="button" id="copyPrompt" data-i18n="copy"></button></div>
+        </div>
+        <h3 data-i18n="txt_h"></h3>
+        <label class="f" for="tHead"><span data-i18n="headline"></span><input type="text" id="tHead"></label>
+        <label class="f" for="tSub"><span data-i18n="subline"></span><textarea id="tSub" rows="2"></textarea></label>
+        <label class="f" for="tBackHead"><span data-i18n="back_head"></span><input type="text" id="tBackHead"></label>
+        <label class="f" for="tBody"><span data-i18n="back_body"></span><textarea id="tBody" rows="4"></textarea></label>
+        <div><button class="linkish" type="button" id="resetText" data-i18n="reset"></button></div>
+        <h3 data-i18n="sender_h"></h3>
+        <p class="note" data-i18n="sender_note"></p>
+        <div class="cols2">
+          <label class="f" for="sName"><span data-i18n="f_name"></span><input type="text" id="sName" autocomplete="name"></label>
+          <label class="f" for="sCompany"><span data-i18n="f_company"></span><input type="text" id="sCompany" autocomplete="organization"></label>
+          <label class="f" for="sPhone"><span data-i18n="f_phone"></span><input type="tel" id="sPhone" autocomplete="tel"></label>
+          <label class="f" for="sWeb"><span data-i18n="f_web"></span><input type="text" id="sWeb" autocomplete="url"></label>
+          <label class="f" for="sEmail"><span data-i18n="f_email"></span><input type="email" id="sEmail" autocomplete="email"></label>
+          <label class="f" for="sAddress"><span data-i18n="f_address"></span><input type="text" id="sAddress" autocomplete="street-address"></label>
+        </div>
+        <div class="row">
+          <label class="check"><input type="checkbox" id="showCh"><span data-i18n="show_ch"></span></label>
+          <label class="check"><input type="checkbox" id="stamp"><span data-i18n="stamp"></span></label>
+        </div>
+        <h3 data-i18n="share_h"></h3>
+        <div class="row">
+          <label class="check"><input type="checkbox" id="showShare"><span data-i18n="share_show"></span></label>
+        </div>
+        <label class="f" for="shareUrl"><span data-i18n="share_url"></span><input type="url" id="shareUrl" placeholder="referenskortet.se" autocomplete="url"></label>
+        <div class="cols2">
+          <label class="f" for="size"><span data-i18n="size"></span><select id="size"><option value="a6">A6 · 148 × 105 mm</option><option value="us">US · 6 × 4 in</option></select></label>
+          <label class="f" for="bleed"><span data-i18n="bleed"></span><select id="bleed"><option value="3">3 mm</option><option value="2">2 mm</option><option value="0">0 mm</option></select></label>
+        </div>
+      </section>
+
+      <!-- STEP 4: recipients + export -->
+      <section class="panel" id="p4" hidden>
+        <h2 data-i18n="s4"></h2>
+        <p class="lead" data-i18n="s4_lead"></p>
+        <label class="f" for="recText"><span data-i18n="rec_paste"></span><textarea id="recText" rows="7" class="mono"></textarea></label>
+        <p class="note" data-i18n="rec_hint"></p>
+        <div class="row" style="align-items:center">
+          <div style="flex:0 0 auto"><label class="btn" for="recFile"><span data-i18n="rec_file"></span></label><input class="sr" type="file" id="recFile" accept=".csv,.txt,.tsv,.xlsx,.xls,text/csv,text/plain"></div>
+          <span class="count" id="recCount"></span>
+          <button class="linkish" type="button" id="recClear" data-i18n="clear_rec" hidden></button>
+        </div>
+        <p class="msg ok" data-i18n="rec_priv"></p>
+        <h3 data-i18n="export_h"></h3>
+        <div class="stack">
+          <div class="card row" style="align-items:center"><div style="flex:1 1 260px"><strong data-i18n="dl_print"></strong><p class="note" data-i18n="dl_print_note"></p></div><div style="flex:0 0 auto"><button class="btn primary" type="button" id="dlPrint">PDF</button></div></div>
+          <div class="card row" style="align-items:center"><div style="flex:1 1 260px"><strong data-i18n="dl_addr"></strong><p class="note" data-i18n="dl_addr_note"></p></div><div style="flex:0 0 auto"><button class="btn" type="button" id="dlAddr">PDF</button></div></div>
+          <div class="card row" style="align-items:center"><div style="flex:1 1 260px"><strong data-i18n="dl_csv"></strong><p class="note" data-i18n="dl_csv_note"></p></div><div style="flex:0 0 auto"><button class="btn" type="button" id="dlCsv">CSV</button></div></div>
+        </div>
+        <div id="dlStatus" class="msg" role="status" hidden></div>
+        <div class="card stack" id="supportBox" style="margin-top:16px">
+          <h3 style="margin:0" data-i18n="support_h"></h3>
+          <p class="note" data-i18n="support_note"></p>
+          <label class="f" for="donateUrl"><span data-i18n="donate"></span><input type="url" id="donateUrl" placeholder="https://…" autocomplete="url"></label>
+          <div class="row" style="align-items:center;gap:12px">
+            <a class="btn" id="donateBtn" href="#" target="_blank" rel="noopener" data-i18n="donate"></a>
+            <span id="donateHint" class="note"></span>
+          </div>
+          <div class="row" style="align-items:center;gap:12px">
+            <button class="btn" type="button" id="copyShare" data-i18n="copy_link"></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 5: print guide -->
+      <section class="panel" id="p5" hidden>
+        <h2 data-i18n="s5"></h2>
+        <p class="lead" data-i18n="s5_lead"></p>
+        <div id="guide" class="stack"></div>
+      </section>
+
+      <div class="navbtns">
+        <button class="btn" type="button" id="prevBtn" data-i18n="prev"></button>
+        <button class="btn primary" type="button" id="nextBtn" data-i18n="next"></button>
+      </div>
+    </div>
+
+    <aside class="preview" aria-label="Preview">
+      <div class="preview-head">
+        <h2 data-i18n="preview" style="font-size:22px"></h2>
+        <label class="check"><input type="checkbox" id="trim" checked><span data-i18n="trim"></span></label>
+      </div>
+      <div class="proof">
+        <figure><canvas id="cvFront" width="1080" height="780" role="img" aria-label="Front"></canvas><figcaption><span data-i18n="front"></span><span id="dimFront" class="mono"></span></figcaption></figure>
+        <figure><canvas id="cvBack" width="1080" height="780" role="img" aria-label="Back"></canvas><figcaption><span data-i18n="back"></span><span id="sampleRec"></span></figcaption></figure>
+      </div>
+      <p class="note" style="margin-top:10px" data-i18n="saved_local"></p>
+    </aside>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+// ---------- UI strings (7 languages). Add a language by copying one block. ----------
+const UI = {
+sv:{
+ name:"Referenskortet", tag:"Ett referenskort för BNI-medlemmar. Välj branscher, skapa kortet och skriv ut.",
+ lang_ui:"Språk", region:"Region", s1:"Team", s2:"Branscher", s3:"Kort", s4:"Mottagare & PDF", s5:"Tryck & utskick",
+ next:"Nästa", prev:"Tillbaka",
+ s1_lead:"Välj de BNI-team vars branscher du vill visa. Ditt eget team först, sedan grannteamen.",
+ preset:"Förinställt", cats_n:"{n} branscher", include:"Ta med", remove:"Ta bort", add_ch:"Lägg till team",
+ ch_name:"Teamets namn", ch_city:"Ort", ch_paste:"Klistra in branscher",
+ ch_paste_hint:"En per rad, eller kopiera listan från BNI Connect. Rader som ser ut som namn kan du avmarkera efteråt.",
+ add:"Lägg till", find_h:"Hitta team i närheten", find_city:"Din ort", find_google:"Sök på Google", find_bni:"BNI:s teamsökare", find_map:"Karta över team",
+ nearby_h:"Team i närheten", nearby_note:"Medlemslistan är inte publik. Lägg till teamet och klistra in branscherna från BNI Connect.", add_this:"Lägg till det här teamet",
+ s2_lead:"Välj de branscher som ska stå på kortet. 20–32 brukar se bäst ut.",
+ sel:"{n} valda", too_many:"Många branscher gör texten liten. Ta bort några för bättre läsbarhet.",
+ from_ch:"Från dina team", common:"Vanligt efterfrågat i {r}",
+ common_note:"Sammanställt av AI utifrån vanliga behov av lokala tjänster i regionen, ungefär i ordning efter hur ofta folk ber om en rekommendation.",
+ biz:"Företag", priv:"Privat", show_all:"Visa alla", show_less:"Visa färre", own:"Egna", own_ph:"Skriv en bransch och tryck Enter",
+ ai_h:"AI-förslag för din ort", ai_btn:"Föreslå branscher", ai_think:"AI tänker…", ai_err:"Kunde inte hämta förslag. Försök igen om en stund.", ai_none:"AI-förslag är inte tillgängliga här.",
+ clear_sel:"Avmarkera alla", order:"Ordning", order_auto:"Automatisk", order_manual:"Som jag valt",
+ s3_lead:"Välj tillfälle, språk och utseende. Allt syns direkt i förhandsvisningen.",
+ edition:"Tillfälle", card_lang:"Kortets språk", layout:"Framsida", lay_words:"Branschträd", lay_image:"Bild", lay_mixed:"Bild + branscher", palette:"Färger",
+ img_h:"Bild till framsidan", img_upload:"Välj bild", img_none:"Ingen bild vald",
+ img_ok:"Bra upplösning, {dpi} dpi.", img_warn:"Godkänd men mjuk, {dpi} dpi. 300 dpi är bäst.", img_low:"För låg upplösning, {dpi} dpi. Bilden blir suddig i tryck.",
+ prompt_h:"Prompt till bild-AI", prompt_note:"Klistra in i valfri bildgenerator och ladda sedan upp bilden här.", style:"Stil",
+ st_photo:"Foto", st_water:"Akvarell", st_paper:"Papperssnitt", st_flat:"Minimalistisk", copy:"Kopiera", copied:"Kopierat",
+ txt_h:"Texter", headline:"Rubrik", subline:"Budskap", back_head:"Baksida, rubrik", back_body:"Baksida, text", reset:"Återställ texterna",
+ sender_h:"Avsändare", sender_note:"Det enda namnet på kortet är ditt.",
+ f_name:"Namn", f_company:"Företag", f_phone:"Telefon", f_web:"Webbplats", f_email:"E-post", f_address:"Adress",
+ show_ch:"Visa teamets namn på baksidan", stamp:"Ruta för frimärke", size:"Format", bleed:"Utfall",
+ s4_lead:"Valfritt: lägg till mottagare så skrivs adressen ut på varje kort.",
+ rec_paste:"Klistra in adresser", rec_hint:"Ett block per mottagare, tom rad emellan. Eller en rad per mottagare med kommatecken mellan fälten.",
+ rec_file:"Ladda upp fil (Excel, CSV, text)", rec_n:"{n} mottagare", clear_rec:"Rensa",
+ rec_priv:"Adresserna stannar i din webbläsare. De sparas inte och skickas ingenstans.",
+ export_h:"Ladda ner", dl_print:"Tryckfil", dl_print_note:"Fram- och baksida med utfall, utan adress.",
+ dl_addr:"Adresserade kort", dl_addr_note:"Fram- och baksida per mottagare, för variabeltryck.",
+ dl_csv:"Adresslista", dl_csv_note:"Till tjänster där du laddar upp kort och adresser separat.",
+ dl_busy:"Skapar filen…", dl_ok:"Klart: {f}", dl_no:"Nedladdningen avbröts.", dl_err:"Kunde inte skapa filen. Ladda om sidan och försök igen.", need_rec:"Lägg till minst en mottagare först.",
+ s5_lead:"Var du kan trycka korten och få dem skickade. Uppgifterna kontrollerades i oktober 2026. Priser ändras, så stäm av innan du beställer.",
+ spec_h:"Din tryckfil", spec:"{size}, {bleed} mm utfall, 300 dpi. Online-tryckerier konverterar själva till CMYK. Text hålls minst 6 mm från kanten.",
+ bni_h:"Fråga nätverket först", bni_tip:"Sök på kategorin Reklam & Marknadsföring › Tryckeri i BNI Connect. Be om offert på en körning med variabeltryck, så kan varje medlem få sin egen baksida.",
+ k_pm:"Tryck + utskick", k_p:"Endast tryck", min:"Minsta antal", lead:"Leveranstid", days:"{n} arbetsdagar", price:"Exempelpris", input:"Tar emot", src:"Källa",
+ quote:"Offert", in_tool:"Visas vid beställning", need_bleed:"Kräver {n} mm utfall. Ändra under Kort.", coverage:"Täcker",
+ postage_h:"Porto", postage_se:"Frimärke inrikes, brev upp till 50 g: 22 kr (2026).",
+ timeline_h:"Tidsplan", timeline:"Ska korten landa första veckan i december? Beställ senast i mitten av november.",
+ local_h:"I {r}", intl_h:"Internationellt", unverified:"Ej granskad i detalj",
+ preview:"Förhandsvisning", front:"Framsida", back:"Baksida", trim:"Visa skärlinje", saved_local:"Dina val sparas i den här webbläsaren. Bild och adresser sparas inte.",
+ share_h:"Dela / skapa eget", share_show:"Visa länk för att skapa eget kort på baksidan", share_url:"Publik webbadress",
+ share_on_card:"Skapa ditt eget kort: {url}",
+ support_h:"Stöd", support_note:"Gratis för BNI-medlemmar. En valfri liten donation håller tjänsten igång.",
+ donate:"Donera", donate_missing:"Lägg till Swish/PayPal/Ko-fi-länk i inställningarna",
+ copy_link:"Kopiera länk till appen", link_copied:"Länk kopierad",
+ sample_rec:"Visar mottagare 1 av {n}", your_name:"Ditt namn"
+},
+en:{
+ name:"The Referral Card", tag:"A referral postcard for BNI members. Pick the trades, design the card, print it.",
+ lang_ui:"Language", region:"Region", s1:"Chapters", s2:"Trades", s3:"Card", s4:"Recipients & PDF", s5:"Print & mail",
+ next:"Next", prev:"Back",
+ s1_lead:"Choose the BNI chapters whose trades you want to show. Your own chapter first, then the ones nearby.",
+ preset:"Preset", cats_n:"{n} trades", include:"Include", remove:"Remove", add_ch:"Add a chapter",
+ ch_name:"Chapter name", ch_city:"City", ch_paste:"Paste the trades",
+ ch_paste_hint:"One per line, or copy the list from BNI Connect. You can untick lines that look like names afterwards.",
+ add:"Add", find_h:"Find chapters nearby", find_city:"Your city", find_google:"Search Google", find_bni:"BNI chapter finder", find_map:"Chapter map",
+ nearby_h:"Chapters nearby", nearby_note:"The member list isn't public. Add the chapter and paste its trades from BNI Connect.", add_this:"Add this chapter",
+ s2_lead:"Choose the trades to print on the card. 20–32 usually looks best.",
+ sel:"{n} selected", too_many:"Many trades make the text small. Remove a few to keep it readable.",
+ from_ch:"From your chapters", common:"Commonly requested in {r}",
+ common_note:"Compiled by AI from common local-service needs in the region, roughly in order of how often people ask for a recommendation.",
+ biz:"Business", priv:"Private", show_all:"Show all", show_less:"Show fewer", own:"Your own", own_ph:"Type a trade and press Enter",
+ ai_h:"AI suggestions for your city", ai_btn:"Suggest trades", ai_think:"AI is thinking…", ai_err:"Couldn't get suggestions. Try again in a moment.", ai_none:"AI suggestions aren't available here.",
+ clear_sel:"Clear all", order:"Order", order_auto:"Automatic", order_manual:"As I picked them",
+ s3_lead:"Choose the occasion, language and look. Every change shows in the preview.",
+ edition:"Occasion", card_lang:"Card language", layout:"Front", lay_words:"Trade tree", lay_image:"Image", lay_mixed:"Image + trades", palette:"Colours",
+ img_h:"Front image", img_upload:"Choose image", img_none:"No image chosen",
+ img_ok:"Good resolution, {dpi} dpi.", img_warn:"Usable but soft, {dpi} dpi. 300 dpi is best.", img_low:"Resolution too low, {dpi} dpi. It will print blurry.",
+ prompt_h:"Prompt for an image AI", prompt_note:"Paste it into any image generator, then upload the result here.", style:"Style",
+ st_photo:"Photo", st_water:"Watercolour", st_paper:"Paper cut", st_flat:"Minimal", copy:"Copy", copied:"Copied",
+ txt_h:"Text", headline:"Headline", subline:"Message", back_head:"Back, heading", back_body:"Back, text", reset:"Reset text",
+ sender_h:"Sender", sender_note:"Yours is the only name on the card.",
+ f_name:"Name", f_company:"Company", f_phone:"Phone", f_web:"Website", f_email:"Email", f_address:"Address",
+ show_ch:"Show the chapter name on the back", stamp:"Stamp box", size:"Size", bleed:"Bleed",
+ s4_lead:"Optional: add recipients and each card gets its address printed.",
+ rec_paste:"Paste addresses", rec_hint:"One block per recipient with a blank line between. Or one line per recipient with commas between fields.",
+ rec_file:"Upload a file (Excel, CSV, text)", rec_n:"{n} recipients", clear_rec:"Clear",
+ rec_priv:"Addresses stay in your browser. They are not saved or sent anywhere.",
+ export_h:"Download", dl_print:"Print file", dl_print_note:"Front and back with bleed, no address.",
+ dl_addr:"Addressed cards", dl_addr_note:"Front and back for each recipient, for variable-data printing.",
+ dl_csv:"Address list", dl_csv_note:"For services where you upload the card and the addresses separately.",
+ dl_busy:"Creating the file…", dl_ok:"Done: {f}", dl_no:"Download cancelled.", dl_err:"Couldn't create the file. Reload the page and try again.", need_rec:"Add at least one recipient first.",
+ s5_lead:"Where to print the cards and have them mailed. Details checked in October 2026. Prices change, so confirm before ordering.",
+ spec_h:"Your print file", spec:"{size}, {bleed} mm bleed, 300 dpi. Online printers convert to CMYK themselves. Text stays at least 6 mm from the edge.",
+ bni_h:"Ask your network first", bni_tip:"In BNI Connect, search the category Advertising & Marketing › Printing. Ask for a quote on one variable-data run so every member gets their own back.",
+ k_pm:"Print + mail", k_p:"Print only", min:"Minimum", lead:"Turnaround", days:"{n} working days", price:"Example price", input:"Accepts", src:"Source",
+ quote:"On request", in_tool:"Shown when ordering", need_bleed:"Needs {n} mm bleed. Change it under Card.", coverage:"Covers",
+ postage_h:"Postage", postage_se:"Domestic stamp, letters up to 50 g: SEK 22 (2026).",
+ timeline_h:"Timing", timeline:"Want the cards to land in the first week of December? Order by mid-November.",
+ local_h:"In {r}", intl_h:"International", unverified:"Not checked in detail",
+ preview:"Preview", front:"Front", back:"Back", trim:"Show trim line", saved_local:"Your choices are saved in this browser. Images and addresses are not.",
+ share_h:"Share / make your own", share_show:"Show make-your-own link on back", share_url:"Public URL",
+ share_on_card:"Make your own card: {url}",
+ support_h:"Support", support_note:"Free for BNI members. An optional small donation keeps it online.",
+ donate:"Donate", donate_missing:"Add Swish/PayPal/Ko-fi link in settings",
+ copy_link:"Copy link to the app", link_copied:"Link copied",
+ sample_rec:"Showing recipient 1 of {n}", your_name:"Your name"
+},
+de:{
+ name:"Die Empfehlungskarte", tag:"Eine Empfehlungspostkarte für BNI-Mitglieder. Branchen wählen, Karte gestalten, drucken.",
+ lang_ui:"Sprache", region:"Region", s1:"Chapter", s2:"Branchen", s3:"Karte", s4:"Empfänger & PDF", s5:"Druck & Versand",
+ next:"Weiter", prev:"Zurück",
+ s1_lead:"Wählen Sie die BNI-Chapter, deren Branchen auf die Karte sollen. Zuerst Ihr eigenes, dann die in der Nähe.",
+ preset:"Vorgabe", cats_n:"{n} Branchen", include:"Verwenden", remove:"Entfernen", add_ch:"Chapter hinzufügen",
+ ch_name:"Name des Chapters", ch_city:"Ort", ch_paste:"Branchen einfügen",
+ ch_paste_hint:"Eine pro Zeile, oder die Liste aus BNI Connect kopieren. Zeilen, die wie Namen aussehen, können Sie danach abwählen.",
+ add:"Hinzufügen", find_h:"Chapter in der Nähe finden", find_city:"Ihr Ort", find_google:"Bei Google suchen", find_bni:"BNI-Chapter-Suche", find_map:"Chapter-Karte",
+ nearby_h:"Chapter in der Nähe", nearby_note:"Die Mitgliederliste ist nicht öffentlich. Chapter hinzufügen und die Branchen aus BNI Connect einfügen.", add_this:"Dieses Chapter hinzufügen",
+ s2_lead:"Wählen Sie die Branchen für die Karte. 20–32 sehen meist am besten aus.",
+ sel:"{n} ausgewählt", too_many:"Viele Branchen machen die Schrift klein. Entfernen Sie einige für bessere Lesbarkeit.",
+ from_ch:"Aus Ihren Chaptern", common:"Häufig gefragt in {r}",
+ common_note:"Von KI zusammengestellt aus häufigen Bedarfen an lokalen Dienstleistungen, ungefähr danach geordnet, wie oft nach einer Empfehlung gefragt wird.",
+ biz:"Geschäftlich", priv:"Privat", show_all:"Alle zeigen", show_less:"Weniger zeigen", own:"Eigene", own_ph:"Branche eingeben und Enter drücken",
+ ai_h:"KI-Vorschläge für Ihren Ort", ai_btn:"Branchen vorschlagen", ai_think:"KI denkt nach…", ai_err:"Keine Vorschläge erhalten. Bitte gleich noch einmal versuchen.", ai_none:"KI-Vorschläge sind hier nicht verfügbar.",
+ clear_sel:"Alle abwählen", order:"Reihenfolge", order_auto:"Automatisch", order_manual:"Wie ausgewählt",
+ s3_lead:"Wählen Sie Anlass, Sprache und Gestaltung. Jede Änderung erscheint sofort in der Vorschau.",
+ edition:"Anlass", card_lang:"Sprache der Karte", layout:"Vorderseite", lay_words:"Branchenbaum", lay_image:"Bild", lay_mixed:"Bild + Branchen", palette:"Farben",
+ img_h:"Bild für die Vorderseite", img_upload:"Bild wählen", img_none:"Kein Bild gewählt",
+ img_ok:"Gute Auflösung, {dpi} dpi.", img_warn:"Brauchbar, aber weich, {dpi} dpi. 300 dpi sind ideal.", img_low:"Auflösung zu gering, {dpi} dpi. Der Druck wird unscharf.",
+ prompt_h:"Prompt für eine Bild-KI", prompt_note:"In einen beliebigen Bildgenerator einfügen und das Ergebnis hier hochladen.", style:"Stil",
+ st_photo:"Foto", st_water:"Aquarell", st_paper:"Scherenschnitt", st_flat:"Minimalistisch", copy:"Kopieren", copied:"Kopiert",
+ txt_h:"Texte", headline:"Überschrift", subline:"Botschaft", back_head:"Rückseite, Überschrift", back_body:"Rückseite, Text", reset:"Texte zurücksetzen",
+ sender_h:"Absender", sender_note:"Ihr Name ist der einzige auf der Karte.",
+ f_name:"Name", f_company:"Firma", f_phone:"Telefon", f_web:"Website", f_email:"E-Mail", f_address:"Adresse",
+ show_ch:"Chapter-Namen auf der Rückseite zeigen", stamp:"Feld für Briefmarke", size:"Format", bleed:"Beschnitt",
+ s4_lead:"Optional: Empfänger hinzufügen, dann wird auf jede Karte die Adresse gedruckt.",
+ rec_paste:"Adressen einfügen", rec_hint:"Ein Block pro Empfänger, dazwischen eine Leerzeile. Oder eine Zeile pro Empfänger mit Kommas zwischen den Feldern.",
+ rec_file:"Datei hochladen (Excel, CSV, Text)", rec_n:"{n} Empfänger", clear_rec:"Leeren",
+ rec_priv:"Die Adressen bleiben in Ihrem Browser. Sie werden weder gespeichert noch versendet.",
+ export_h:"Herunterladen", dl_print:"Druckdatei", dl_print_note:"Vorder- und Rückseite mit Beschnitt, ohne Adresse.",
+ dl_addr:"Adressierte Karten", dl_addr_note:"Vorder- und Rückseite je Empfänger, für den Variablendruck.",
+ dl_csv:"Adressliste", dl_csv_note:"Für Dienste, bei denen Karte und Adressen getrennt hochgeladen werden.",
+ dl_busy:"Datei wird erstellt…", dl_ok:"Fertig: {f}", dl_no:"Download abgebrochen.", dl_err:"Datei konnte nicht erstellt werden. Seite neu laden und erneut versuchen.", need_rec:"Bitte zuerst mindestens einen Empfänger hinzufügen.",
+ s5_lead:"Wo Sie die Karten drucken und versenden lassen können. Angaben geprüft im Oktober 2026. Preise ändern sich, bitte vor der Bestellung prüfen.",
+ spec_h:"Ihre Druckdatei", spec:"{size}, {bleed} mm Beschnitt, 300 dpi. Online-Druckereien wandeln selbst in CMYK um. Text hält mindestens 6 mm Abstand zum Rand.",
+ bni_h:"Zuerst im Netzwerk fragen", bni_tip:"Suchen Sie in BNI Connect die Kategorie Werbung & Marketing › Druckerei. Fragen Sie ein Angebot für einen Variablendruck an, damit jedes Mitglied seine eigene Rückseite bekommt.",
+ k_pm:"Druck + Versand", k_p:"Nur Druck", min:"Mindestmenge", lead:"Lieferzeit", days:"{n} Werktage", price:"Beispielpreis", input:"Nimmt an", src:"Quelle",
+ quote:"Auf Anfrage", in_tool:"Bei der Bestellung", need_bleed:"Benötigt {n} mm Beschnitt. Unter Karte ändern.", coverage:"Gebiet",
+ postage_h:"Porto", postage_se:"Schweden, Inlandsbrief bis 50 g: 22 SEK (2026).",
+ timeline_h:"Zeitplan", timeline:"Sollen die Karten in der ersten Dezemberwoche ankommen? Spätestens Mitte November bestellen.",
+ local_h:"In {r}", intl_h:"International", unverified:"Nicht im Detail geprüft",
+ preview:"Vorschau", front:"Vorderseite", back:"Rückseite", trim:"Schnittlinie zeigen", saved_local:"Ihre Auswahl wird in diesem Browser gespeichert. Bilder und Adressen nicht.",
+ share_h:"Teilen / eigene Karte", share_show:"Link „eigene Karte erstellen“ auf der Rückseite zeigen", share_url:"Öffentliche URL",
+ share_on_card:"Erstellen Sie Ihre eigene Karte: {url}",
+ support_h:"Unterstützung", support_note:"Kostenlos für BNI-Mitglieder. Eine optionale kleine Spende hält den Dienst online.",
+ donate:"Spenden", donate_missing:"Swish/PayPal/Ko-fi-Link in den Einstellungen hinterlegen",
+ copy_link:"App-Link kopieren", link_copied:"Link kopiert",
+ sample_rec:"Empfänger 1 von {n}", your_name:"Ihr Name"
+},
+fr:{
+ name:"La carte de recommandation", tag:"Une carte postale de recommandation pour les membres BNI. Choisissez les métiers, créez la carte, imprimez-la.",
+ lang_ui:"Langue", region:"Région", s1:"Chapitres", s2:"Métiers", s3:"Carte", s4:"Destinataires & PDF", s5:"Impression & envoi",
+ next:"Suivant", prev:"Retour",
+ s1_lead:"Choisissez les chapitres BNI dont vous voulez afficher les métiers. Le vôtre d'abord, puis ceux à proximité.",
+ preset:"Préréglé", cats_n:"{n} métiers", include:"Inclure", remove:"Retirer", add_ch:"Ajouter un chapitre",
+ ch_name:"Nom du chapitre", ch_city:"Ville", ch_paste:"Coller les métiers",
+ ch_paste_hint:"Un par ligne, ou copiez la liste depuis BNI Connect. Vous pourrez ensuite décocher les lignes qui ressemblent à des noms.",
+ add:"Ajouter", find_h:"Trouver des chapitres à proximité", find_city:"Votre ville", find_google:"Rechercher sur Google", find_bni:"Recherche de chapitres BNI", find_map:"Carte des chapitres",
+ nearby_h:"Chapitres à proximité", nearby_note:"La liste des membres n'est pas publique. Ajoutez le chapitre et collez ses métiers depuis BNI Connect.", add_this:"Ajouter ce chapitre",
+ s2_lead:"Choisissez les métiers à imprimer sur la carte. Entre 20 et 32, c'est en général le plus lisible.",
+ sel:"{n} sélectionnés", too_many:"Trop de métiers rendent le texte petit. Retirez-en quelques-uns.",
+ from_ch:"De vos chapitres", common:"Souvent demandés en {r}",
+ common_note:"Liste établie par une IA à partir des besoins courants en services locaux, à peu près dans l'ordre où l'on demande une recommandation.",
+ biz:"Professionnel", priv:"Particulier", show_all:"Tout afficher", show_less:"Afficher moins", own:"Les vôtres", own_ph:"Saisissez un métier puis Entrée",
+ ai_h:"Suggestions IA pour votre ville", ai_btn:"Suggérer des métiers", ai_think:"L'IA réfléchit…", ai_err:"Impossible d'obtenir des suggestions. Réessayez dans un instant.", ai_none:"Les suggestions IA ne sont pas disponibles ici.",
+ clear_sel:"Tout désélectionner", order:"Ordre", order_auto:"Automatique", order_manual:"Selon mon choix",
+ s3_lead:"Choisissez l'occasion, la langue et le style. Chaque modification apparaît dans l'aperçu.",
+ edition:"Occasion", card_lang:"Langue de la carte", layout:"Recto", lay_words:"Arbre des métiers", lay_image:"Image", lay_mixed:"Image + métiers", palette:"Couleurs",
+ img_h:"Image du recto", img_upload:"Choisir une image", img_none:"Aucune image",
+ img_ok:"Bonne résolution, {dpi} dpi.", img_warn:"Utilisable mais un peu floue, {dpi} dpi. L'idéal est 300 dpi.", img_low:"Résolution trop faible, {dpi} dpi. L'impression sera floue.",
+ prompt_h:"Prompt pour une IA d'images", prompt_note:"Collez-le dans le générateur d'images de votre choix, puis importez le résultat ici.", style:"Style",
+ st_photo:"Photo", st_water:"Aquarelle", st_paper:"Papier découpé", st_flat:"Minimaliste", copy:"Copier", copied:"Copié",
+ txt_h:"Textes", headline:"Titre", subline:"Message", back_head:"Verso, titre", back_body:"Verso, texte", reset:"Rétablir les textes",
+ sender_h:"Expéditeur", sender_note:"Votre nom est le seul sur la carte.",
+ f_name:"Nom", f_company:"Entreprise", f_phone:"Téléphone", f_web:"Site web", f_email:"E-mail", f_address:"Adresse",
+ show_ch:"Afficher le nom du chapitre au verso", stamp:"Case pour le timbre", size:"Format", bleed:"Fond perdu",
+ s4_lead:"Facultatif : ajoutez des destinataires et l'adresse sera imprimée sur chaque carte.",
+ rec_paste:"Coller des adresses", rec_hint:"Un bloc par destinataire, séparé par une ligne vide. Ou une ligne par destinataire, champs séparés par des virgules.",
+ rec_file:"Importer un fichier (Excel, CSV, texte)", rec_n:"{n} destinataires", clear_rec:"Effacer",
+ rec_priv:"Les adresses restent dans votre navigateur. Elles ne sont ni enregistrées ni envoyées.",
+ export_h:"Télécharger", dl_print:"Fichier d'impression", dl_print_note:"Recto et verso avec fond perdu, sans adresse.",
+ dl_addr:"Cartes adressées", dl_addr_note:"Recto et verso pour chaque destinataire, pour l'impression de données variables.",
+ dl_csv:"Liste d'adresses", dl_csv_note:"Pour les services où l'on importe la carte et les adresses séparément.",
+ dl_busy:"Création du fichier…", dl_ok:"Terminé : {f}", dl_no:"Téléchargement annulé.", dl_err:"Impossible de créer le fichier. Rechargez la page et réessayez.", need_rec:"Ajoutez d'abord au moins un destinataire.",
+ s5_lead:"Où imprimer les cartes et les faire envoyer. Informations vérifiées en octobre 2026. Les prix changent : vérifiez avant de commander.",
+ spec_h:"Votre fichier d'impression", spec:"{size}, fond perdu de {bleed} mm, 300 dpi. Les imprimeurs en ligne convertissent eux-mêmes en CMJN. Le texte reste à au moins 6 mm du bord.",
+ bni_h:"Demandez d'abord à votre réseau", bni_tip:"Dans BNI Connect, cherchez la catégorie Publicité & Marketing › Imprimerie. Demandez un devis pour un tirage en données variables afin que chaque membre ait son propre verso.",
+ k_pm:"Impression + envoi", k_p:"Impression seule", min:"Minimum", lead:"Délai", days:"{n} jours ouvrés", price:"Prix indicatif", input:"Accepte", src:"Source",
+ quote:"Sur devis", in_tool:"Affiché à la commande", need_bleed:"Exige {n} mm de fond perdu. À modifier sous Carte.", coverage:"Couverture",
+ postage_h:"Affranchissement", postage_se:"Suède, lettre nationale jusqu'à 50 g : 22 SEK (2026).",
+ timeline_h:"Calendrier", timeline:"Pour une arrivée la première semaine de décembre, commandez avant la mi-novembre.",
+ local_h:"En {r}", intl_h:"International", unverified:"Non vérifié en détail",
+ preview:"Aperçu", front:"Recto", back:"Verso", trim:"Afficher la coupe", saved_local:"Vos choix sont enregistrés dans ce navigateur, sauf les images et les adresses.",
+ share_h:"Partager / créer la vôtre", share_show:"Afficher le lien « créez la vôtre » au verso", share_url:"URL publique",
+ share_on_card:"Créez votre propre carte : {url}",
+ support_h:"Soutien", support_note:"Gratuit pour les membres BNI. Un petit don optionnel maintient le service en ligne.",
+ donate:"Faire un don", donate_missing:"Ajoutez un lien Swish/PayPal/Ko-fi dans les paramètres",
+ copy_link:"Copier le lien de l'appli", link_copied:"Lien copié",
+ sample_rec:"Destinataire 1 sur {n}", your_name:"Votre nom"
+},
+es:{
+ name:"La tarjeta de referencias", tag:"Una postal de referencias para miembros de BNI. Elija los sectores, diseñe la tarjeta e imprímala.",
+ lang_ui:"Idioma", region:"Región", s1:"Capítulos", s2:"Sectores", s3:"Tarjeta", s4:"Destinatarios y PDF", s5:"Impresión y envío",
+ next:"Siguiente", prev:"Atrás",
+ s1_lead:"Elija los capítulos de BNI cuyos sectores quiere mostrar. Primero el suyo y después los cercanos.",
+ preset:"Predefinido", cats_n:"{n} sectores", include:"Incluir", remove:"Quitar", add_ch:"Añadir capítulo",
+ ch_name:"Nombre del capítulo", ch_city:"Ciudad", ch_paste:"Pegar los sectores",
+ ch_paste_hint:"Uno por línea, o copie la lista de BNI Connect. Después puede desmarcar las líneas que parezcan nombres.",
+ add:"Añadir", find_h:"Buscar capítulos cercanos", find_city:"Su ciudad", find_google:"Buscar en Google", find_bni:"Buscador de capítulos BNI", find_map:"Mapa de capítulos",
+ nearby_h:"Capítulos cercanos", nearby_note:"La lista de miembros no es pública. Añada el capítulo y pegue sus sectores desde BNI Connect.", add_this:"Añadir este capítulo",
+ s2_lead:"Elija los sectores que aparecerán en la tarjeta. Entre 20 y 32 suele quedar mejor.",
+ sel:"{n} seleccionados", too_many:"Con muchos sectores el texto queda pequeño. Quite algunos para que se lea bien.",
+ from_ch:"De sus capítulos", common:"Lo más solicitado en {r}",
+ common_note:"Recopilado por IA a partir de necesidades habituales de servicios locales, más o menos en el orden en que la gente pide una recomendación.",
+ biz:"Empresa", priv:"Particular", show_all:"Ver todos", show_less:"Ver menos", own:"Propios", own_ph:"Escriba un sector y pulse Intro",
+ ai_h:"Sugerencias de IA para su ciudad", ai_btn:"Sugerir sectores", ai_think:"La IA está pensando…", ai_err:"No se pudieron obtener sugerencias. Inténtelo de nuevo en un momento.", ai_none:"Las sugerencias de IA no están disponibles aquí.",
+ clear_sel:"Desmarcar todo", order:"Orden", order_auto:"Automático", order_manual:"Según mi selección",
+ s3_lead:"Elija la ocasión, el idioma y el estilo. Cada cambio se ve en la vista previa.",
+ edition:"Ocasión", card_lang:"Idioma de la tarjeta", layout:"Anverso", lay_words:"Árbol de sectores", lay_image:"Imagen", lay_mixed:"Imagen + sectores", palette:"Colores",
+ img_h:"Imagen del anverso", img_upload:"Elegir imagen", img_none:"Ninguna imagen",
+ img_ok:"Buena resolución, {dpi} ppp.", img_warn:"Aceptable pero suave, {dpi} ppp. Lo ideal son 300 ppp.", img_low:"Resolución demasiado baja, {dpi} ppp. Saldrá borrosa.",
+ prompt_h:"Prompt para una IA de imágenes", prompt_note:"Péguelo en cualquier generador de imágenes y suba aquí el resultado.", style:"Estilo",
+ st_photo:"Foto", st_water:"Acuarela", st_paper:"Papel recortado", st_flat:"Minimalista", copy:"Copiar", copied:"Copiado",
+ txt_h:"Textos", headline:"Título", subline:"Mensaje", back_head:"Reverso, título", back_body:"Reverso, texto", reset:"Restablecer textos",
+ sender_h:"Remitente", sender_note:"El único nombre en la tarjeta es el suyo.",
+ f_name:"Nombre", f_company:"Empresa", f_phone:"Teléfono", f_web:"Web", f_email:"Correo", f_address:"Dirección",
+ show_ch:"Mostrar el nombre del capítulo en el reverso", stamp:"Recuadro para el sello", size:"Formato", bleed:"Sangrado",
+ s4_lead:"Opcional: añada destinatarios y cada tarjeta llevará su dirección impresa.",
+ rec_paste:"Pegar direcciones", rec_hint:"Un bloque por destinatario con una línea en blanco entre ellos. O una línea por destinatario con comas entre los campos.",
+ rec_file:"Subir archivo (Excel, CSV, texto)", rec_n:"{n} destinatarios", clear_rec:"Borrar",
+ rec_priv:"Las direcciones se quedan en su navegador. No se guardan ni se envían a ningún sitio.",
+ export_h:"Descargar", dl_print:"Archivo de impresión", dl_print_note:"Anverso y reverso con sangrado, sin dirección.",
+ dl_addr:"Tarjetas con dirección", dl_addr_note:"Anverso y reverso por destinatario, para impresión de datos variables.",
+ dl_csv:"Lista de direcciones", dl_csv_note:"Para servicios donde se suben la tarjeta y las direcciones por separado.",
+ dl_busy:"Creando el archivo…", dl_ok:"Listo: {f}", dl_no:"Descarga cancelada.", dl_err:"No se pudo crear el archivo. Recargue la página e inténtelo de nuevo.", need_rec:"Añada primero al menos un destinatario.",
+ s5_lead:"Dónde imprimir las tarjetas y enviarlas. Datos comprobados en octubre de 2026. Los precios cambian: confírmelos antes de pedir.",
+ spec_h:"Su archivo de impresión", spec:"{size}, {bleed} mm de sangrado, 300 ppp. Las imprentas en línea convierten a CMYK. El texto queda al menos a 6 mm del borde.",
+ bni_h:"Pregunte primero en su red", bni_tip:"En BNI Connect, busque la categoría Publicidad y Marketing › Imprenta. Pida presupuesto para una tirada con datos variables, así cada miembro tendrá su propio reverso.",
+ k_pm:"Impresión + envío", k_p:"Solo impresión", min:"Mínimo", lead:"Plazo", days:"{n} días laborables", price:"Precio de ejemplo", input:"Acepta", src:"Fuente",
+ quote:"Bajo presupuesto", in_tool:"Se muestra al pedir", need_bleed:"Requiere {n} mm de sangrado. Cámbielo en Tarjeta.", coverage:"Cobertura",
+ postage_h:"Franqueo", postage_se:"Suecia, carta nacional hasta 50 g: 22 SEK (2026).",
+ timeline_h:"Plazos", timeline:"¿Quiere que lleguen la primera semana de diciembre? Haga el pedido antes de mediados de noviembre.",
+ local_h:"En {r}", intl_h:"Internacional", unverified:"No comprobado en detalle",
+ preview:"Vista previa", front:"Anverso", back:"Reverso", trim:"Mostrar línea de corte", saved_local:"Sus elecciones se guardan en este navegador, salvo imágenes y direcciones.",
+ share_h:"Compartir / cree la suya", share_show:"Mostrar enlace para crear su propia tarjeta en el reverso", share_url:"URL pública",
+ share_on_card:"Cree su propia tarjeta: {url}",
+ support_h:"Apoyo", support_note:"Gratis para miembros de BNI. Una pequeña donación opcional mantiene el servicio en línea.",
+ donate:"Donar", donate_missing:"Añada un enlace Swish/PayPal/Ko-fi en la configuración",
+ copy_link:"Copiar enlace de la app", link_copied:"Enlace copiado",
+ sample_rec:"Destinatario 1 de {n}", your_name:"Su nombre"
+},
+it:{
+ name:"La cartolina delle referenze", tag:"Una cartolina di referenze per i membri BNI. Scegli i settori, crea la cartolina, stampala.",
+ lang_ui:"Lingua", region:"Regione", s1:"Capitoli", s2:"Settori", s3:"Cartolina", s4:"Destinatari e PDF", s5:"Stampa e spedizione",
+ next:"Avanti", prev:"Indietro",
+ s1_lead:"Scegli i capitoli BNI di cui mostrare i settori. Prima il tuo, poi quelli vicini.",
+ preset:"Predefinito", cats_n:"{n} settori", include:"Includi", remove:"Rimuovi", add_ch:"Aggiungi un capitolo",
+ ch_name:"Nome del capitolo", ch_city:"Città", ch_paste:"Incolla i settori",
+ ch_paste_hint:"Uno per riga, oppure copia l'elenco da BNI Connect. Poi puoi deselezionare le righe che sembrano nomi.",
+ add:"Aggiungi", find_h:"Trova capitoli vicini", find_city:"La tua città", find_google:"Cerca su Google", find_bni:"Ricerca capitoli BNI", find_map:"Mappa dei capitoli",
+ nearby_h:"Capitoli vicini", nearby_note:"L'elenco dei membri non è pubblico. Aggiungi il capitolo e incolla i settori da BNI Connect.", add_this:"Aggiungi questo capitolo",
+ s2_lead:"Scegli i settori da stampare. Tra 20 e 32 di solito è il risultato migliore.",
+ sel:"{n} selezionati", too_many:"Troppi settori rendono il testo piccolo. Togline qualcuno.",
+ from_ch:"Dai tuoi capitoli", common:"Più richiesti in {r}",
+ common_note:"Elenco compilato dall'IA in base ai bisogni comuni di servizi locali, all'incirca nell'ordine in cui si chiede una raccomandazione.",
+ biz:"Aziende", priv:"Privati", show_all:"Mostra tutti", show_less:"Mostra meno", own:"Tuoi", own_ph:"Scrivi un settore e premi Invio",
+ ai_h:"Suggerimenti IA per la tua città", ai_btn:"Suggerisci settori", ai_think:"L'IA sta pensando…", ai_err:"Impossibile ottenere suggerimenti. Riprova tra poco.", ai_none:"I suggerimenti IA non sono disponibili qui.",
+ clear_sel:"Deseleziona tutto", order:"Ordine", order_auto:"Automatico", order_manual:"Come li ho scelti",
+ s3_lead:"Scegli occasione, lingua e stile. Ogni modifica appare nell'anteprima.",
+ edition:"Occasione", card_lang:"Lingua della cartolina", layout:"Fronte", lay_words:"Albero dei settori", lay_image:"Immagine", lay_mixed:"Immagine + settori", palette:"Colori",
+ img_h:"Immagine del fronte", img_upload:"Scegli immagine", img_none:"Nessuna immagine",
+ img_ok:"Buona risoluzione, {dpi} dpi.", img_warn:"Utilizzabile ma morbida, {dpi} dpi. L'ideale è 300 dpi.", img_low:"Risoluzione troppo bassa, {dpi} dpi. In stampa risulterà sfocata.",
+ prompt_h:"Prompt per un'IA di immagini", prompt_note:"Incollalo in un qualsiasi generatore di immagini e carica qui il risultato.", style:"Stile",
+ st_photo:"Foto", st_water:"Acquerello", st_paper:"Carta intagliata", st_flat:"Minimalista", copy:"Copia", copied:"Copiato",
+ txt_h:"Testi", headline:"Titolo", subline:"Messaggio", back_head:"Retro, titolo", back_body:"Retro, testo", reset:"Ripristina testi",
+ sender_h:"Mittente", sender_note:"Il tuo è l'unico nome sulla cartolina.",
+ f_name:"Nome", f_company:"Azienda", f_phone:"Telefono", f_web:"Sito web", f_email:"E-mail", f_address:"Indirizzo",
+ show_ch:"Mostra il nome del capitolo sul retro", stamp:"Riquadro francobollo", size:"Formato", bleed:"Abbondanza",
+ s4_lead:"Facoltativo: aggiungi i destinatari e ogni cartolina avrà l'indirizzo stampato.",
+ rec_paste:"Incolla indirizzi", rec_hint:"Un blocco per destinatario con una riga vuota in mezzo. Oppure una riga per destinatario con virgole tra i campi.",
+ rec_file:"Carica un file (Excel, CSV, testo)", rec_n:"{n} destinatari", clear_rec:"Svuota",
+ rec_priv:"Gli indirizzi restano nel tuo browser. Non vengono salvati né inviati.",
+ export_h:"Scarica", dl_print:"File di stampa", dl_print_note:"Fronte e retro con abbondanza, senza indirizzo.",
+ dl_addr:"Cartoline con indirizzo", dl_addr_note:"Fronte e retro per ogni destinatario, per la stampa a dati variabili.",
+ dl_csv:"Elenco indirizzi", dl_csv_note:"Per i servizi in cui carichi cartolina e indirizzi separatamente.",
+ dl_busy:"Creazione del file…", dl_ok:"Fatto: {f}", dl_no:"Download annullato.", dl_err:"Impossibile creare il file. Ricarica la pagina e riprova.", need_rec:"Aggiungi prima almeno un destinatario.",
+ s5_lead:"Dove stampare le cartoline e spedirle. Dati verificati a ottobre 2026. I prezzi cambiano: controlla prima di ordinare.",
+ spec_h:"Il tuo file di stampa", spec:"{size}, abbondanza {bleed} mm, 300 dpi. Le tipografie online convertono in CMYK. Il testo resta ad almeno 6 mm dal bordo.",
+ bni_h:"Chiedi prima alla tua rete", bni_tip:"In BNI Connect cerca la categoria Pubblicità e Marketing › Tipografia. Chiedi un preventivo per una tiratura a dati variabili, così ogni membro avrà il proprio retro.",
+ k_pm:"Stampa + spedizione", k_p:"Solo stampa", min:"Minimo", lead:"Tempi", days:"{n} giorni lavorativi", price:"Prezzo indicativo", input:"Accetta", src:"Fonte",
+ quote:"Su preventivo", in_tool:"Indicato all'ordine", need_bleed:"Richiede {n} mm di abbondanza. Modificala in Cartolina.", coverage:"Copertura",
+ postage_h:"Affrancatura", postage_se:"Svezia, lettera nazionale fino a 50 g: 22 SEK (2026).",
+ timeline_h:"Tempistiche", timeline:"Vuoi che arrivino nella prima settimana di dicembre? Ordina entro metà novembre.",
+ local_h:"In {r}", intl_h:"Internazionale", unverified:"Non verificato nel dettaglio",
+ preview:"Anteprima", front:"Fronte", back:"Retro", trim:"Mostra linea di taglio", saved_local:"Le tue scelte sono salvate in questo browser, tranne immagini e indirizzi.",
+ share_h:"Condividi / crea la tua", share_show:"Mostra il link «crea la tua cartolina» sul retro", share_url:"URL pubblica",
+ share_on_card:"Crea la tua cartolina: {url}",
+ support_h:"Supporto", support_note:"Gratis per i membri BNI. Una piccola donazione facoltativa tiene il servizio online.",
+ donate:"Dona", donate_missing:"Aggiungi un link Swish/PayPal/Ko-fi nelle impostazioni",
+ copy_link:"Copia link all'app", link_copied:"Link copiato",
+ sample_rec:"Destinatario 1 di {n}", your_name:"Il tuo nome"
+},
+pt:{
+ name:"O cartão de indicações", tag:"Um postal de indicações para membros do BNI. Escolha os setores, crie o cartão e imprima.",
+ lang_ui:"Idioma", region:"Região", s1:"Capítulos", s2:"Setores", s3:"Cartão", s4:"Destinatários e PDF", s5:"Impressão e envio",
+ next:"Avançar", prev:"Voltar",
+ s1_lead:"Escolha os capítulos do BNI cujos setores quer mostrar. Primeiro o seu, depois os próximos.",
+ preset:"Predefinido", cats_n:"{n} setores", include:"Incluir", remove:"Remover", add_ch:"Adicionar capítulo",
+ ch_name:"Nome do capítulo", ch_city:"Cidade", ch_paste:"Colar os setores",
+ ch_paste_hint:"Um por linha, ou copie a lista do BNI Connect. Depois pode desmarcar as linhas que pareçam nomes.",
+ add:"Adicionar", find_h:"Encontrar capítulos próximos", find_city:"Sua cidade", find_google:"Pesquisar no Google", find_bni:"Busca de capítulos BNI", find_map:"Mapa de capítulos",
+ nearby_h:"Capítulos próximos", nearby_note:"A lista de membros não é pública. Adicione o capítulo e cole os setores do BNI Connect.", add_this:"Adicionar este capítulo",
+ s2_lead:"Escolha os setores que vão no cartão. Entre 20 e 32 costuma ficar melhor.",
+ sel:"{n} selecionados", too_many:"Muitos setores deixam o texto pequeno. Remova alguns.",
+ from_ch:"Dos seus capítulos", common:"Mais procurados em {r}",
+ common_note:"Lista feita por IA com base nas necessidades comuns de serviços locais, mais ou menos na ordem em que as pessoas pedem uma indicação.",
+ biz:"Empresas", priv:"Particulares", show_all:"Mostrar todos", show_less:"Mostrar menos", own:"Seus", own_ph:"Escreva um setor e tecle Enter",
+ ai_h:"Sugestões de IA para sua cidade", ai_btn:"Sugerir setores", ai_think:"A IA está pensando…", ai_err:"Não foi possível obter sugestões. Tente de novo daqui a pouco.", ai_none:"As sugestões de IA não estão disponíveis aqui.",
+ clear_sel:"Desmarcar todos", order:"Ordem", order_auto:"Automática", order_manual:"Como escolhi",
+ s3_lead:"Escolha a ocasião, o idioma e o visual. Cada mudança aparece na pré-visualização.",
+ edition:"Ocasião", card_lang:"Idioma do cartão", layout:"Frente", lay_words:"Árvore de setores", lay_image:"Imagem", lay_mixed:"Imagem + setores", palette:"Cores",
+ img_h:"Imagem da frente", img_upload:"Escolher imagem", img_none:"Nenhuma imagem",
+ img_ok:"Boa resolução, {dpi} dpi.", img_warn:"Aceitável, mas suave, {dpi} dpi. O ideal é 300 dpi.", img_low:"Resolução baixa demais, {dpi} dpi. A impressão ficará borrada.",
+ prompt_h:"Prompt para uma IA de imagens", prompt_note:"Cole em qualquer gerador de imagens e depois envie o resultado aqui.", style:"Estilo",
+ st_photo:"Foto", st_water:"Aquarela", st_paper:"Papel recortado", st_flat:"Minimalista", copy:"Copiar", copied:"Copiado",
+ txt_h:"Textos", headline:"Título", subline:"Mensagem", back_head:"Verso, título", back_body:"Verso, texto", reset:"Restaurar textos",
+ sender_h:"Remetente", sender_note:"O único nome no cartão é o seu.",
+ f_name:"Nome", f_company:"Empresa", f_phone:"Telefone", f_web:"Site", f_email:"E-mail", f_address:"Endereço",
+ show_ch:"Mostrar o nome do capítulo no verso", stamp:"Espaço para selo", size:"Formato", bleed:"Sangria",
+ s4_lead:"Opcional: adicione destinatários e cada cartão sai com o endereço impresso.",
+ rec_paste:"Colar endereços", rec_hint:"Um bloco por destinatário, com uma linha em branco entre eles. Ou uma linha por destinatário com vírgulas entre os campos.",
+ rec_file:"Enviar arquivo (Excel, CSV, texto)", rec_n:"{n} destinatários", clear_rec:"Limpar",
+ rec_priv:"Os endereços ficam no seu navegador. Não são guardados nem enviados.",
+ export_h:"Baixar", dl_print:"Arquivo de impressão", dl_print_note:"Frente e verso com sangria, sem endereço.",
+ dl_addr:"Cartões com endereço", dl_addr_note:"Frente e verso por destinatário, para impressão de dados variáveis.",
+ dl_csv:"Lista de endereços", dl_csv_note:"Para serviços em que o cartão e os endereços são enviados separadamente.",
+ dl_busy:"Criando o arquivo…", dl_ok:"Pronto: {f}", dl_no:"Download cancelado.", dl_err:"Não foi possível criar o arquivo. Recarregue a página e tente de novo.", need_rec:"Adicione pelo menos um destinatário primeiro.",
+ s5_lead:"Onde imprimir os cartões e enviá-los. Dados verificados em outubro de 2026. Os preços mudam, confirme antes de encomendar.",
+ spec_h:"Seu arquivo de impressão", spec:"{size}, sangria de {bleed} mm, 300 dpi. As gráficas online convertem para CMYK. O texto fica a pelo menos 6 mm da borda.",
+ bni_h:"Pergunte primeiro à sua rede", bni_tip:"No BNI Connect, procure a categoria Publicidade e Marketing › Gráfica. Peça orçamento para uma tiragem com dados variáveis, assim cada membro tem o seu próprio verso.",
+ k_pm:"Impressão + envio", k_p:"Só impressão", min:"Mínimo", lead:"Prazo", days:"{n} dias úteis", price:"Preço de exemplo", input:"Aceita", src:"Fonte",
+ quote:"Sob orçamento", in_tool:"Mostrado no pedido", need_bleed:"Exige {n} mm de sangria. Altere em Cartão.", coverage:"Cobertura",
+ postage_h:"Franquia", postage_se:"Suécia, carta nacional até 50 g: 22 SEK (2026).",
+ timeline_h:"Prazos", timeline:"Quer que cheguem na primeira semana de dezembro? Encomende até meados de novembro.",
+ local_h:"Em {r}", intl_h:"Internacional", unverified:"Não verificado em detalhe",
+ preview:"Pré-visualização", front:"Frente", back:"Verso", trim:"Mostrar linha de corte", saved_local:"Suas escolhas ficam salvas neste navegador, exceto imagens e endereços.",
+ share_h:"Partilhar / crie o seu", share_show:"Mostrar link para criar o seu cartão no verso", share_url:"URL pública",
+ share_on_card:"Crie o seu próprio cartão: {url}",
+ support_h:"Apoio", support_note:"Grátis para membros do BNI. Uma pequena doação opcional mantém o serviço online.",
+ donate:"Doar", donate_missing:"Adicione um link Swish/PayPal/Ko-fi nas definições",
+ copy_link:"Copiar link da app", link_copied:"Link copiado",
+ sample_rec:"Destinatário 1 de {n}", your_name:"Seu nome"
+}
+};
+
+// ---------- Card copy per language ----------
+const CARD = {
+sv:{ sub:"Vad du än behöver – i företaget eller hemma – har jag en referens du kan lita på.",
+ body:"Genom BNI {chapter} samarbetar jag med lokala företagare som jag känner och litar på. Behöver du en advokat, en hantverkare, en fotograf – eller någon att prata med? I jobbet eller privat: hör av dig, så ser jag till att du hamnar rätt.",
+ body_nc:"Jag samarbetar med lokala företagare som jag känner och litar på. Behöver du en advokat, en hantverkare, en fotograf – eller någon att prata med? I jobbet eller privat: hör av dig, så ser jag till att du hamnar rätt.",
+ regards:"Varma hälsningar,", stamp:"Frimärke" },
+en:{ sub:"Whatever you need, at work or at home, I know someone you can trust.",
+ body:"Through BNI {chapter} I work with local business owners I know and trust. Need a lawyer, a tradesperson, a photographer, or someone to talk to? At work or at home, get in touch and I'll put you in good hands.",
+ body_nc:"I work with local business owners I know and trust. Need a lawyer, a tradesperson, a photographer, or someone to talk to? At work or at home, get in touch and I'll put you in good hands.",
+ regards:"Warm regards,", stamp:"Stamp" },
+de:{ sub:"Was immer Sie brauchen – beruflich oder privat – ich kenne jemanden, dem Sie vertrauen können.",
+ body:"Über BNI {chapter} arbeite ich mit lokalen Unternehmern zusammen, die ich kenne und denen ich vertraue. Sie brauchen einen Anwalt, einen Handwerker, einen Fotografen oder jemanden zum Reden? Beruflich oder privat: Melden Sie sich, ich vermittle Sie in gute Hände.",
+ body_nc:"Ich arbeite mit lokalen Unternehmern zusammen, die ich kenne und denen ich vertraue. Sie brauchen einen Anwalt, einen Handwerker, einen Fotografen oder jemanden zum Reden? Beruflich oder privat: Melden Sie sich, ich vermittle Sie in gute Hände.",
+ regards:"Herzliche Grüße", stamp:"Briefmarke" },
+fr:{ sub:"Quel que soit votre besoin, au travail ou à la maison, je connais quelqu'un de confiance.",
+ body:"Grâce à BNI {chapter}, je travaille avec des entrepreneurs locaux que je connais et en qui j'ai confiance. Besoin d'un avocat, d'un artisan, d'un photographe ou de quelqu'un à qui parler ? Au travail ou à la maison, contactez-moi et je vous orienterai vers la bonne personne.",
+ body_nc:"Je travaille avec des entrepreneurs locaux que je connais et en qui j'ai confiance. Besoin d'un avocat, d'un artisan, d'un photographe ou de quelqu'un à qui parler ? Au travail ou à la maison, contactez-moi et je vous orienterai vers la bonne personne.",
+ regards:"Bien cordialement,", stamp:"Timbre" },
+es:{ sub:"Necesite lo que necesite, en el trabajo o en casa, conozco a alguien de confianza.",
+ body:"A través de BNI {chapter} colaboro con empresarios locales que conozco y en quienes confío. ¿Necesita un abogado, un profesional de reformas, un fotógrafo o alguien con quien hablar? En el trabajo o en casa, escríbame y le pondré en buenas manos.",
+ body_nc:"Colaboro con empresarios locales que conozco y en quienes confío. ¿Necesita un abogado, un profesional de reformas, un fotógrafo o alguien con quien hablar? En el trabajo o en casa, escríbame y le pondré en buenas manos.",
+ regards:"Un cordial saludo,", stamp:"Sello" },
+it:{ sub:"Qualunque cosa Le serva, al lavoro o a casa, conosco qualcuno di fiducia.",
+ body:"Grazie a BNI {chapter} collaboro con imprenditori locali che conosco e di cui mi fido. Le serve un avvocato, un artigiano, un fotografo o qualcuno con cui parlare? Al lavoro o a casa, mi contatti e La metterò in buone mani.",
+ body_nc:"Collaboro con imprenditori locali che conosco e di cui mi fido. Le serve un avvocato, un artigiano, un fotografo o qualcuno con cui parlare? Al lavoro o a casa, mi contatti e La metterò in buone mani.",
+ regards:"Cordiali saluti,", stamp:"Francobollo" },
+pt:{ sub:"Seja o que for, no trabalho ou em casa, conheço alguém de confiança.",
+ body:"Pelo BNI {chapter} trabalho com empresários locais que conheço e em quem confio. Precisa de um advogado, de um prestador de serviços, de um fotógrafo ou de alguém para conversar? No trabalho ou em casa, fale comigo e eu indico a pessoa certa.",
+ body_nc:"Trabalho com empresários locais que conheço e em quem confio. Precisa de um advogado, de um prestador de serviços, de um fotógrafo ou de alguém para conversar? No trabalho ou em casa, fale comigo e eu indico a pessoa certa.",
+ regards:"Um abraço,", stamp:"Selo" }
+};
+
+// Occasion texts: [front headline, back heading] per language
+const ED_TEXT = {
+ xmas:{sv:["God Jul & Gott Nytt År","Tack för året som gått!"],en:["Merry Christmas & Happy New Year","Thank you for this year!"],de:["Frohe Weihnachten & ein gutes neues Jahr","Danke für dieses Jahr!"],fr:["Joyeux Noël & bonne année","Merci pour cette année !"],es:["Feliz Navidad y próspero Año Nuevo","¡Gracias por este año!"],it:["Buon Natale e felice Anno Nuovo","Grazie per quest'anno!"],pt:["Feliz Natal e próspero Ano Novo","Obrigado por este ano!"]},
+ season:{sv:["Varma vinterhälsningar","Tack för året som gått!"],en:["Season's Greetings","Thank you for this year!"],de:["Herzliche Festtagsgrüße","Danke für dieses Jahr!"],fr:["Joyeuses fêtes","Merci pour cette année !"],es:["Felices fiestas","¡Gracias por este año!"],it:["Buone feste","Grazie per quest'anno!"],pt:["Boas festas","Obrigado por este ano!"]},
+ newyear:{sv:["Gott Nytt År","Nytt år, nya behov?"],en:["Happy New Year","New year, new plans?"],de:["Ein gutes neues Jahr","Neues Jahr, neue Pläne?"],fr:["Bonne année","Nouvelle année, nouveaux projets ?"],es:["Feliz Año Nuevo","Año nuevo, nuevos proyectos"],it:["Felice Anno Nuovo","Anno nuovo, nuovi progetti?"],pt:["Feliz Ano Novo","Ano novo, novos projetos?"]},
+ spring:{sv:["Glad vår","Dags för vårens projekt?"],en:["Hello Spring","Time for spring projects?"],de:["Frohen Frühling","Zeit für Frühlingsprojekte?"],fr:["Joyeux printemps","L'heure des projets de printemps ?"],es:["Feliz primavera","¿Proyectos para la primavera?"],it:["Buona primavera","È tempo di progetti di primavera?"],pt:["Feliz primavera","Hora dos projetos de primavera?"]},
+ midsummer:{sv:["Glad midsommar","Skön sommar!"],en:["Happy Midsummer","Have a great summer!"],de:["Frohes Mittsommerfest","Einen schönen Sommer!"],fr:["Joyeuse Saint-Jean","Bel été !"],es:["Feliz noche de San Juan","¡Feliz verano!"],it:["Buon solstizio d'estate","Buona estate!"],pt:["Feliz São João","Bom verão!"]},
+ summer:{sv:["Skön sommar","Inför semestern…"],en:["Happy Summer","Before the holidays…"],de:["Einen schönen Sommer","Vor dem Urlaub …"],fr:["Bel été","Avant les vacances…"],es:["Feliz verano","Antes de las vacaciones…"],it:["Buona estate","Prima delle vacanze…"],pt:["Bom verão","Antes das férias…"]},
+ autumn:{sv:["Välkommen hösten","Nystart efter sommaren?"],en:["Hello Autumn","A fresh start after summer?"],de:["Hallo Herbst","Neustart nach dem Sommer?"],fr:["Bonjour l'automne","Une rentrée pleine de projets ?"],es:["Hola otoño","¿Nuevo comienzo tras el verano?"],it:["Ciao autunno","Si riparte dopo l'estate?"],pt:["Olá outono","Recomeço depois do verão?"]},
+ thanks:{sv:["Tack för förtroendet","Jag finns här när du behöver någon"],en:["Thank you for your trust","I'm here whenever you need someone"],de:["Danke für Ihr Vertrauen","Ich bin für Sie da"],fr:["Merci de votre confiance","Je suis là quand vous en avez besoin"],es:["Gracias por su confianza","Aquí estoy cuando me necesite"],it:["Grazie per la fiducia","Sono qui quando serve"],pt:["Obrigado pela confiança","Estou aqui quando precisar"]},
+ thanksgiving:{sv:["Glad Thanksgiving","Tacksam för dig"],en:["Happy Thanksgiving","Grateful for you"],de:["Happy Thanksgiving","Dankbar für Sie"],fr:["Joyeux Thanksgiving","Merci d'être là"],es:["Feliz Día de Acción de Gracias","Agradecido por usted"],it:["Buon Ringraziamento","Grato per te"],pt:["Feliz Dia de Ação de Graças","Grato por você"]}
+};
+// Occasion names in the picker
+const ED_NAME = {
+ sv:{xmas:"Jul & nyår",season:"Vinterhälsning (neutral)",newyear:"Nyår",spring:"Vår",midsummer:"Midsommar",summer:"Sommar",autumn:"Höst",thanks:"Tack (året runt)",thanksgiving:"Thanksgiving"},
+ en:{xmas:"Christmas & New Year",season:"Season's greetings (neutral)",newyear:"New Year",spring:"Spring",midsummer:"Midsummer",summer:"Summer",autumn:"Autumn",thanks:"Thank you (all year)",thanksgiving:"Thanksgiving"},
+ de:{xmas:"Weihnachten & Neujahr",season:"Festtagsgruß (neutral)",newyear:"Neujahr",spring:"Frühling",midsummer:"Mittsommer",summer:"Sommer",autumn:"Herbst",thanks:"Danke (ganzjährig)",thanksgiving:"Thanksgiving"},
+ fr:{xmas:"Noël & Nouvel An",season:"Vœux de saison (neutre)",newyear:"Nouvel An",spring:"Printemps",midsummer:"Saint-Jean",summer:"Été",autumn:"Automne",thanks:"Merci (toute l'année)",thanksgiving:"Thanksgiving"},
+ es:{xmas:"Navidad y Año Nuevo",season:"Felicitación de temporada (neutra)",newyear:"Año Nuevo",spring:"Primavera",midsummer:"San Juan",summer:"Verano",autumn:"Otoño",thanks:"Gracias (todo el año)",thanksgiving:"Acción de Gracias"},
+ it:{xmas:"Natale e Capodanno",season:"Auguri di stagione (neutri)",newyear:"Capodanno",spring:"Primavera",midsummer:"Solstizio d'estate",summer:"Estate",autumn:"Autunno",thanks:"Grazie (tutto l'anno)",thanksgiving:"Ringraziamento"},
+ pt:{xmas:"Natal e Ano Novo",season:"Boas festas (neutro)",newyear:"Ano Novo",spring:"Primavera",midsummer:"São João",summer:"Verão",autumn:"Outono",thanks:"Obrigado (o ano todo)",thanksgiving:"Ação de Graças"}
+};
+// ---------- Trade library: [id, group b|p|bp, "sv|en|de|fr|es|it|pt", onlyRegions?] ----------
+const LANG_ORDER = ["sv","en","de","fr","es","it","pt"];
+const TRADE_ROWS = [
+["accounting","b","Redovisning|Accounting|Buchhaltung|Comptabilité|Contabilidad|Contabilità|Contabilidade"],
+["law","bp","Juridik|Legal services|Rechtsberatung|Services juridiques|Abogados|Servizi legali|Advocacia"],
+["realestate","p","Fastighetsmäklare|Estate agent|Immobilienmakler|Agent immobilier|Inmobiliaria|Agente immobiliare|Imobiliária"],
+["electrician","p","Elektriker|Electrician|Elektriker|Électricien|Electricista|Elettricista|Eletricista"],
+["plumber","p","Rörmokare|Plumber|Installateur|Plombier|Fontanero|Idraulico|Encanador"],
+["builder","p","Bygg & renovering|Building & renovation|Bau & Renovierung|Rénovation|Reformas|Ristrutturazioni|Reformas"],
+["cleaning","p","Hemstäd|Home cleaning|Haushaltsreinigung|Ménage à domicile|Limpieza del hogar|Pulizie domestiche|Diarista"],
+["taxadv","bp","Skatterådgivning|Tax advice|Steuerberatung|Conseil fiscal|Asesoría fiscal|Commercialista|Consultoria fiscal"],
+["notary","bp","Notarie|Notary|Notar|Notaire|Notaría|Notaio|Cartório","DE,AT,CH,FR,BE,ES,IT,PT,BR,NL"],
+["bizins","b","Företagsförsäkring|Business insurance|Betriebsversicherung|Assurance professionnelle|Seguros para empresas|Assicurazioni aziendali|Seguro empresarial"],
+["homeins","p","Hemförsäkring|Home insurance|Hausratversicherung|Assurance habitation|Seguro de hogar|Assicurazione casa|Seguro residencial"],
+["mortgage","p","Bolån|Mortgage advice|Baufinanzierung|Courtier en crédit|Hipotecas|Mutui|Crédito imobiliário"],
+["finplan","bp","Finansiell rådgivning|Financial planning|Finanzberatung|Conseil financier|Asesoría financiera|Consulenza finanziaria|Planejamento financeiro"],
+["pension","bp","Pensionsrådgivning|Pension advice|Altersvorsorge|Conseil retraite|Planes de pensiones|Previdenza|Previdência"],
+["banking","bp","Bank|Banking|Bank|Banque|Banca|Banca|Banco"],
+["payroll","b","Löneadministration|Payroll|Lohnabrechnung|Gestion de la paie|Nóminas|Gestione paghe|Folha de pagamento"],
+["staffing","b","Bemanning|Staffing|Personalvermittlung|Intérim|Trabajo temporal|Somministrazione lavoro|Trabalho temporário"],
+["recruit","b","Rekrytering|Recruitment|Personalberatung|Recrutement|Selección de personal|Selezione del personale|Recrutamento"],
+["bizconsult","b","Företagsrådgivning|Business consulting|Unternehmensberatung|Conseil en entreprise|Consultoría empresarial|Consulenza aziendale|Consultoria empresarial"],
+["quality","b","Kvalitetsledning|Quality management|Qualitätsmanagement|Management de la qualité|Gestión de calidad|Gestione qualità|Gestão da qualidade"],
+["leadcoach","b","Ledarskapscoach|Leadership coaching|Führungscoaching|Coaching de dirigeants|Coaching de liderazgo|Coaching di leadership|Coaching de liderança"],
+["coaching","bp","Coachning|Coaching|Coaching|Coaching|Coaching|Coaching|Coaching"],
+["training","b","Utbildning|Training|Weiterbildung|Formation|Formación|Formazione|Treinamento"],
+["marketing","b","Marknadsföring|Marketing|Marketing|Marketing|Marketing|Marketing|Marketing"],
+["graphic","b","Grafisk design|Graphic design|Grafikdesign|Graphisme|Diseño gráfico|Grafica|Design gráfico"],
+["web","b","Webbutveckling|Web development|Webentwicklung|Création de sites web|Desarrollo web|Sviluppo web|Criação de sites"],
+["seo","b","Sökmotoroptimering|SEO|Suchmaschinenoptimierung|Référencement|Posicionamiento SEO|Posizionamento SEO|SEO"],
+["social","b","Sociala medier|Social media|Social Media|Réseaux sociaux|Redes sociales|Social media|Redes sociais"],
+["video","b","Filmproduktion|Video production|Videoproduktion|Production vidéo|Producción de vídeo|Produzione video|Produção de vídeo"],
+["photo","bp","Fotograf|Photographer|Fotograf|Photographe|Fotógrafo|Fotografo|Fotógrafo"],
+["print","b","Tryckeri|Printing|Druckerei|Imprimerie|Imprenta|Tipografia|Gráfica"],
+["promo","b","Profilreklam|Promotional products|Werbeartikel|Objets publicitaires|Artículos promocionales|Gadget promozionali|Brindes personalizados"],
+["signage","b","Skyltar|Signage|Werbetechnik|Enseignes|Rótulos|Insegne|Comunicação visual"],
+["itsupport","bp","IT-support|IT support|IT-Service|Support informatique|Soporte informático|Assistenza informatica|Suporte de TI"],
+["cloud","b","Molntjänster|Cloud services|Cloud-Dienste|Services cloud|Servicios en la nube|Servizi cloud|Serviços em nuvem"],
+["cyber","b","IT-säkerhet|Cybersecurity|IT-Sicherheit|Cybersécurité|Ciberseguridad|Sicurezza informatica|Cibersegurança"],
+["telecom","b","Telefoni|Business telephony|Telefonanlagen|Téléphonie|Telefonía|Telefonia|Telefonia"],
+["office","b","Kontorsmaterial|Office supplies|Bürobedarf|Fournitures de bureau|Material de oficina|Forniture per ufficio|Material de escritório"],
+["officesvc","b","Kontorstjänster|Office services|Büroservice|Services de bureau|Servicios de oficina|Servizi d'ufficio|Serviços de escritório"],
+["events","bp","Event|Events|Eventplanung|Événementiel|Eventos|Eventi|Eventos"],
+["catering","bp","Catering|Catering|Catering|Traiteur|Catering|Catering|Bufê"],
+["conf","b","Konferenslokaler|Conference venues|Tagungsräume|Salles de séminaire|Salas de reuniones|Sale conferenze|Salas de reunião"],
+["translation","bp","Översättning|Translation|Übersetzung|Traduction|Traducción|Traduzioni|Tradução"],
+["waste","b","Avfallshantering|Waste management|Entsorgung|Gestion des déchets|Gestión de residuos|Smaltimento rifiuti|Gestão de resíduos"],
+["officeclean","b","Kontorsstäd|Office cleaning|Büroreinigung|Nettoyage de bureaux|Limpieza de oficinas|Pulizia uffici|Limpeza de escritórios"],
+["property","bp","Fastighetsservice|Property maintenance|Hausmeisterservice|Entretien immobilier|Mantenimiento de edificios|Manutenzione immobili|Manutenção predial"],
+["commercialre","b","Lokaler|Commercial property|Gewerbeimmobilien|Immobilier d'entreprise|Locales comerciales|Immobili commerciali|Imóveis comerciais"],
+["fleet","b","Företagsbilar|Company cars & leasing|Firmenwagen-Leasing|Location longue durée|Renting de vehículos|Noleggio a lungo termine|Locação de frota"],
+["logistics","b","Transport & logistik|Transport & logistics|Transport & Logistik|Transport & logistique|Transporte y logística|Trasporti e logistica|Transporte e logística"],
+["workwear","b","Arbetskläder|Workwear|Arbeitskleidung|Vêtements de travail|Ropa laboral|Abbigliamento da lavoro|Uniformes"],
+["gifts","b","Företagsgåvor|Corporate gifts|Firmengeschenke|Cadeaux d'affaires|Regalos de empresa|Regali aziendali|Brindes corporativos"],
+["hvac","p","Värme & ventilation|Heating & ventilation|Heizung & Lüftung|Chauffage & ventilation|Climatización|Climatizzazione|Climatização"],
+["heatpump","p","Värmepumpar|Heat pumps|Wärmepumpen|Pompes à chaleur|Aerotermia|Pompe di calore|Bombas de calor"],
+["solar","bp","Solenergi|Solar energy|Solaranlagen|Énergie solaire|Energía solar|Fotovoltaico|Energia solar"],
+["roofing","p","Tak|Roofing|Dachdecker|Couverture|Tejados|Coperture|Telhados"],
+["sheetmetal","p","Plåtslageri|Sheet metal work|Spenglerei|Zinguerie|Hojalatería|Lattoneria|Calhas e rufos"],
+["carpentry","p","Snickeri|Carpentry & joinery|Tischlerei|Menuiserie|Carpintería|Falegnameria|Marcenaria"],
+["tiling","p","Kakel & klinker|Tiling|Fliesenleger|Carrelage|Alicatados|Piastrellista|Revestimentos"],
+["painter","p","Målare|Painter & decorator|Maler|Peintre|Pintor|Imbianchino|Pintor"],
+["locksmith","p","Låssmed|Locksmith|Schlüsseldienst|Serrurier|Cerrajero|Fabbro|Chaveiro"],
+["security","bp","Larm & säkerhet|Alarms & security|Alarmanlagen|Alarmes & sécurité|Alarmas y seguridad|Allarmi e sicurezza|Alarmes e segurança"],
+["windows","p","Fönsterputs|Window cleaning|Fensterreinigung|Lavage de vitres|Limpieza de cristales|Pulizia vetri|Limpeza de vidros"],
+["garden","p","Trädgårdsskötsel|Gardening|Gartenpflege|Jardinage|Jardinería|Giardinaggio|Jardinagem"],
+["landscape","p","Trädgårdsarkitekt|Landscape design|Landschaftsarchitektur|Paysagiste|Paisajismo|Progettazione giardini|Paisagismo"],
+["chimney","p","Sotare|Chimney sweep|Schornsteinfeger|Ramoneur|Deshollinador|Spazzacamino|Limpeza de chaminés","SE,NO,DK,FI,DE,AT,CH,GB,IE,NL"],
+["moving","p","Flytt|Removals|Umzüge|Déménagement|Mudanzas|Traslochi|Mudanças"],
+["interior","p","Inredning|Interior design|Innenarchitektur|Décoration intérieure|Interiorismo|Interior design|Design de interiores"],
+["furniture","p","Möbler|Furniture|Möbel|Meubles|Muebles|Arredamento|Móveis"],
+["florist","bp","Florist|Florist|Florist|Fleuriste|Floristería|Fiorista|Floricultura"],
+["carcare","p","Bilverkstad|Car repair|Autowerkstatt|Garage automobile|Taller mecánico|Autofficina|Oficina mecânica"],
+["dentist","p","Tandvård|Dentist|Zahnarzt|Dentiste|Dentista|Dentista|Dentista"],
+["chiro","p","Kiropraktor|Chiropractor|Chiropraktiker|Chiropracteur|Quiropráctico|Chiropratico|Quiropraxista"],
+["physio","p","Fysioterapi|Physiotherapy|Physiotherapie|Kinésithérapie|Fisioterapia|Fisioterapia|Fisioterapia"],
+["massage","p","Massage|Massage|Massage|Massage|Masajes|Massaggi|Massagem"],
+["psych","p","Psykoterapi|Psychotherapy|Psychotherapie|Psychothérapie|Psicoterapia|Psicoterapia|Psicoterapia"],
+["pt","p","Personlig träning|Personal training|Personal Training|Coach sportif|Entrenador personal|Personal trainer|Personal trainer"],
+["nutrition","p","Kostrådgivning|Nutrition advice|Ernährungsberatung|Nutritionniste|Nutricionista|Nutrizionista|Nutricionista"],
+["beauty","p","Skönhet & hudvård|Beauty & skincare|Kosmetik|Esthétique|Estética|Estetica|Estética"],
+["hair","p","Frisör|Hairdresser|Friseur|Coiffeur|Peluquería|Parrucchiere|Cabeleireiro"],
+["optician","p","Optiker|Optician|Optiker|Opticien|Óptica|Ottico|Ótica"],
+["vet","p","Veterinär|Vet|Tierarzt|Vétérinaire|Veterinario|Veterinario|Veterinário"],
+["travel","bp","Resebyrå|Travel agency|Reisebüro|Agence de voyages|Agencia de viajes|Agenzia viaggi|Agência de viagens"],
+["wedding","p","Bröllop|Weddings|Hochzeitsplanung|Mariages|Bodas|Matrimoni|Casamentos"],
+["estate","p","Arv & testamente|Wills & estates|Erbrecht|Successions|Herencias|Successioni|Heranças"],
+["familylaw","p","Familjerätt|Family law|Familienrecht|Droit de la famille|Derecho de familia|Diritto di famiglia|Direito de família"],
+["tutoring","p","Läxhjälp|Tutoring|Nachhilfe|Soutien scolaire|Clases particulares|Ripetizioni|Aulas particulares"],
+["eldercare","p","Äldreomsorg|Senior care|Seniorenbetreuung|Aide aux seniors|Cuidado de mayores|Assistenza anziani|Cuidador de idosos"],
+["pets","p","Djurpassning|Pet care|Tierbetreuung|Garde d'animaux|Cuidado de mascotas|Pet sitter|Pet sitter"],
+["wine","bp","Vin & dryck|Wine & beverages|Wein & Getränke|Vins & spiritueux|Vinos y bebidas|Vini e bevande|Vinhos e bebidas"],
+["restaurant","bp","Restaurang|Restaurant|Restaurant|Restaurant|Restaurante|Ristorante|Restaurante"],
+["jewellery","p","Smycken|Jewellery|Schmuck|Bijouterie|Joyería|Gioielleria|Joalheria"]
+];
+const TRADES = {};
+TRADE_ROWS.forEach((r, i) => {
+  const names = r[2].split("|"); const t = {};
+  LANG_ORDER.forEach((l, j) => t[l] = names[j] || names[1]);
+  TRADES[r[0]] = { id:r[0], g:r[1], t, rank:i, only: r[3] ? r[3].split(",") : null };
+});
+// Region-specific demand: these move to the top, in this order.
+const NORDIC_TOP = ["cleaning","electrician","plumber","carpentry","builder","realestate","accounting","law","heatpump","garden","windows","solar","painter","chimney","moving","estate"];
+const DACH_TOP = ["taxadv","law","electrician","plumber","builder","realestate","bizins","painter","chimney","hvac","roofing","accounting"];
+const FR_TOP = ["notary","accounting","realestate","plumber","electrician","builder","homeins","law","painter","garden"];
+const IBERIA_TOP = ["law","taxadv","realestate","builder","homeins","plumber","electrician","accounting","dentist"];
+const PT_TOP = ["law","accounting","realestate","builder","homeins","dentist","electrician","plumber"];
+const REGION_TOP = {
+  SE:NORDIC_TOP, NO:NORDIC_TOP, DK:NORDIC_TOP, FI:NORDIC_TOP,
+  DE:DACH_TOP, AT:DACH_TOP, CH:DACH_TOP, NL:["accounting","law","realestate","builder","plumber","electrician","mortgage","painter"],
+  FR:FR_TOP, BE:FR_TOP, ES:IBERIA_TOP, IT:["taxadv","notary","law","builder","realestate","plumber","electrician","homeins","dentist"],
+  PT:PT_TOP, BR:PT_TOP,
+  US:["realestate","mortgage","taxadv","homeins","hvac","plumber","electrician","roofing","chiro","dentist","finplan","law","cleaning","carcare","pt"],
+  CA:["realestate","mortgage","taxadv","homeins","plumber","electrician","hvac","roofing","dentist","finplan","law","chiro"],
+  GB:["plumber","electrician","builder","accounting","law","realestate","roofing","painter","cleaning","carcare","mortgage","windows"],
+  IE:["plumber","electrician","builder","accounting","law","realestate","roofing","painter","mortgage"],
+  AU:["realestate","mortgage","accounting","plumber","electrician","builder","law","roofing","cleaning","pt"],
+  NZ:["realestate","mortgage","accounting","plumber","electrician","builder","law","roofing"],
+  IN:["accounting","taxadv","law","realestate","itsupport","web","marketing","interior","events","travel"],
+  ZA:["accounting","law","realestate","security","electrician","plumber","builder","solar","homeins"],
+  AE:["accounting","law","realestate","bizconsult","itsupport","interior","events","translation","cleaning"]
+};
+const REGIONS = ["SE","NO","DK","FI","DE","AT","CH","NL","BE","FR","ES","IT","PT","GB","IE","US","CA","AU","NZ","BR","IN","ZA","AE"];
+const REGION_LANG = { SE:"sv", DE:"de", AT:"de", CH:"de", FR:"fr", BE:"fr", ES:"es", IT:"it", PT:"pt", BR:"pt" };
+const US_SIZE = ["US","CA"];
+const TZ_REGION = {"Europe/Stockholm":"SE","Europe/Oslo":"NO","Europe/Copenhagen":"DK","Europe/Helsinki":"FI","Europe/Berlin":"DE","Europe/Vienna":"AT","Europe/Zurich":"CH","Europe/Amsterdam":"NL","Europe/Brussels":"BE","Europe/Paris":"FR","Europe/Madrid":"ES","Europe/Rome":"IT","Europe/Lisbon":"PT","Europe/London":"GB","Europe/Dublin":"IE","America/Sao_Paulo":"BR","Asia/Kolkata":"IN","Asia/Calcutta":"IN","Asia/Dubai":"AE","Africa/Johannesburg":"ZA","Pacific/Auckland":"NZ","America/Toronto":"CA","America/Vancouver":"CA","America/Edmonton":"CA","America/Winnipeg":"CA","America/Halifax":"CA"};
+
+// ---------- Occasions ----------
+// shape: arrangement of the trade words; orn: ornament above them; pal: default colours
+const EDITIONS = {
+  xmas:{shape:"tree", orn:"star", pal:"spruce"},
+  season:{shape:"diamond", orn:"flake", pal:"night"},
+  newyear:{shape:"diamond", orn:"star", pal:"ink"},
+  spring:{shape:"circle", orn:"leaf", pal:"meadow"},
+  midsummer:{shape:"circle", orn:"sun", pal:"sun", only:["SE","NO","DK","FI"]},
+  summer:{shape:"circle", orn:"sun", pal:"sun"},
+  autumn:{shape:"diamond", orn:"leaf", pal:"autumn"},
+  thanksgiving:{shape:"diamond", orn:"leaf", pal:"autumn", only:["US","CA"]},
+  thanks:{shape:"block", orn:"rule", pal:"linen"}
+};
+const ED_ORDER = ["xmas","season","newyear","spring","midsummer","summer","autumn","thanksgiving","thanks"];
+
+// ---------- Colour sets: bg, text, accent, deep (headings on the light back) ----------
+const PALETTES = {
+  spruce:{bg:"#1E3B30", fg:"#F3EDE0", acc:"#C9A45C", deep:"#1E3B30"},
+  berry:{bg:"#5C1F24", fg:"#F6EDE4", acc:"#D9B26A", deep:"#5C1F24"},
+  night:{bg:"#1D2B44", fg:"#EEF1F5", acc:"#B9C6D6", deep:"#1D2B44"},
+  ink:{bg:"#16171B", fg:"#F2EEE6", acc:"#CDA349", deep:"#2C2F38"},
+  meadow:{bg:"#E6EEDD", fg:"#1F3326", acc:"#4E7D3B", deep:"#2F5A2A"},
+  sun:{bg:"#F4E2A8", fg:"#2D2A1F", acc:"#B4501A", deep:"#7C3812"},
+  autumn:{bg:"#3A2418", fg:"#F4E6D3", acc:"#E0A04A", deep:"#5B3420"},
+  linen:{bg:"#EFE9DF", fg:"#2A2520", acc:"#3E6E8E", deep:"#2F4D63"}
+};
+const PAL_ORDER = ["spruce","berry","night","ink","meadow","sun","autumn","linen"];
+
+// ---------- Preset chapter: BNI Elit Västerås (categories from BNI Connect, Oct 2026) ----------
+const PRESET_CHAPTERS = [
+  { id:"elit-vasteras", name:"BNI Elit Västerås", city:"Västerås", region:"SE", preset:true,
+    items:["law","office","video","bizins","landscape","psych","coaching","accounting","photo","florist","staffing","web","electrician","hvac","sheetmetal","cloud","graphic","solar","property","leadcoach","events","officesvc","pension","carpentry","telecom","chiro","tiling","quality","payroll","waste","promo","massage","bizconsult"].map(id => "lib:" + id) }
+];
+const NEARBY = { "västerås":[
+  { name:"BNI Mälardalen", url:"https://www.facebook.com/bnimalardalen/" },
+  { name:"BNI Västra Mälardalen", url:"https://bni.nu/vastmanland-bni-vAstra-mAlardalen/sv/memberlist" }
+]};
+
+// ---------- Print & mail providers (checked 2026-10) ----------
+const PROVIDERS = [
+  { name:"PostNord – Skapa utskick", regions:["SE"], kind:"pm", url:"https://skapautskick.postnord.se/", input:"PDF + Excel", lead:8, min:100, price:"in_tool", coverage:"SE" },
+  { name:"Infoservice AB – BrevDirekt", regions:["SE"], kind:"pm", url:"https://infoserviceab.se/brevdirekt/", input:"PDF + address file", price:"quote", coverage:"SE" },
+  { name:"Graf & Bild", regions:["SE"], kind:"pm", url:"https://grafobild.se/direktreklam-kampanjer/", input:"PDF + Excel/VDP", price:"quote", coverage:"Västerås · Mälardalen" },
+  { name:"JustNu Västerås", regions:["SE"], kind:"pm", url:"https://www.justnu.se/vasteras/", input:"PDF", price:"quote", coverage:"Västerås" },
+  { name:"Västeråskopia", regions:["SE"], kind:"p", url:"https://vasteraskopia.se/produkt/vykort/", input:"PDF + CSV (VDP)", price:"in_tool", coverage:"Västerås" },
+  { name:"BizWell", regions:["SE"], kind:"pm", url:"https://bizwell.se/skicka-vykort-flyer-eller-brevutskick-billigt-och-snabbt/", input:"PDF", min:1000, lead:3, price:"12 kr/st + 999 kr (ex moms) · A5", coverage:"SE" },
+  { name:"Onlineprinters", regions:["SE"], kind:"p", url:"https://www.onlineprinters.se/p/vykort-a6", input:"PDF", min:10, lead:3, price:"250 × A6: 679 kr", bleedReq:2, coverage:"SE" },
+  { name:"KPH Print", regions:["SE"], kind:"pm", url:"https://kph.se/inspirationsbanken/adresserade-utskick/", input:"PDF", price:"quote", coverage:"Uppsala · Mälardalen" },
+  { name:"Stannp", regions:["GB","US","CA","*"], kind:"pm", url:"https://www.stannp.com/uk/direct-mail-postcards", input:"PDF + CSV", price:"A6 from £0.36 incl. postage", coverage:"GB · US · CA" },
+  { name:"PostGrid", regions:["US","CA","GB","AU","*"], kind:"pm", url:"https://www.postgrid.com/send-postcards-online/", input:"PDF / HTML + list", price:"in_tool", coverage:"245+" },
+  { name:"Deutsche Post – Mailingfactory", regions:["DE","AT"], kind:"pm", url:"https://www.mailingfactory.de/werbepostkarten.html", price:"in_tool", coverage:"DE", unverified:true }
+];
+"use strict";
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt = (s, o) => String(s).replace(/\{(\w+)\}/g, (m, k) => (o && o[k] != null) ? o[k] : m);
+function t(k, o) { const v = (UI[S.ui] && UI[S.ui][k] != null) ? UI[S.ui][k] : (UI.en[k] != null ? UI.en[k] : k); return o ? fmt(v, o) : v; }
+function regionName(code, lang) { try { return new Intl.DisplayNames([lang || S.ui], { type: "region" }).of(code) || code; } catch (e) { return code; } }
+function langName(code, inLang) { try { const n = new Intl.DisplayNames([inLang || code], { type: "language" }).of(code) || code; return n.charAt(0).toUpperCase() + n.slice(1); } catch (e) { return code; } }
+
+// ---------- State ----------
+function detectRegion() {
+  let tz = ""; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+  if (TZ_REGION[tz]) return TZ_REGION[tz];
+  if (tz.startsWith("America/")) return "US";
+  if (tz.startsWith("Australia/")) return "AU";
+  const loc = ((navigator.language || "").split("-")[1] || "").toUpperCase();
+  return REGIONS.includes(loc) ? loc : "SE";
+}
+function defaultEdition(region) {
+  const m = new Date().getMonth();
+  let e = "autumn";
+  if (m >= 9) e = "xmas"; else if (m === 0) e = "newyear"; else if (m <= 4) e = "spring";
+  else if (m === 5) e = "midsummer"; else if (m <= 7) e = "summer";
+  return editionAllowed(e, region) ? e : "summer";
+}
+function editionAllowed(e, region) { const ed = EDITIONS[e]; return !!ed && (!ed.only || ed.only.includes(region)); }
+const R0 = detectRegion();
+const navLang = (navigator.language || "").slice(0, 2);
+const ED0 = defaultEdition(R0);
+const S = {
+  v: 1, ui: UI[navLang] ? navLang : (REGION_LANG[R0] || "en"), region: R0, city: R0 === "SE" ? "Västerås" : "",
+  chapters: PRESET_CHAPTERS.map(c => ({ ...c, include: true, items: [...c.items] })),
+  selected: [...PRESET_CHAPTERS[0].items], order: "auto", own: [], ai: [], showAll: false,
+  edition: ED0, cardLang: REGION_LANG[R0] || "en", layout: "words", palette: EDITIONS[ED0].pal, style: "photo",
+  text: { head: null, sub: null, backHead: null, body: null },
+  sender: { name: "Kaj Nybom", company: "Mediahive AB", phone: "072-982 04 84", web: "mediahiveab.se", email: "", address: "Genuagatan 5, 723 56 Västerås" },
+  showCh: true, stamp: true, showShare: true, shareUrl: "", donateUrl: "", size: US_SIZE.includes(R0) ? "us" : "a6", bleed: 3, step: 1, trim: true
+};
+const STORE = "refcard.v1";
+try { const saved = JSON.parse(localStorage.getItem(STORE) || "null"); if (saved && saved.v === 1) Object.assign(S, saved); } catch (e) {}
+if (typeof S.showShare !== "boolean") S.showShare = true;
+if (typeof S.shareUrl !== "string") S.shareUrl = "";
+if (typeof S.donateUrl !== "string") S.donateUrl = "";
+if (!S.sender || typeof S.sender !== "object") S.sender = { name: "Kaj Nybom", company: "Mediahive AB", phone: "072-982 04 84", web: "mediahiveab.se", email: "", address: "Genuagatan 5, 723 56 Västerås" };
+if (!UI[S.ui]) S.ui = "en";
+if (!CARD[S.cardLang]) S.cardLang = "en";
+if (!editionAllowed(S.edition, S.region)) S.edition = defaultEdition(S.region);
+if (!PALETTES[S.palette]) S.palette = EDITIONS[S.edition].pal;
+let saveTimer = 0;
+function save() { clearTimeout(saveTimer); saveTimer = setTimeout(() => { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {} }, 300); }
+
+let IMG = null, IMG_NAME = "";
+let RECIPIENTS = [];
+let SAMPLE = null;
+
+// ---------- Trades ----------
+function label(key, lang) {
+  lang = lang || S.cardLang;
+  if (key.startsWith("lib:")) { const tr = TRADES[key.slice(4)]; return tr ? (tr.t[lang] || tr.t.en) : key.slice(4); }
+  return key.slice(4);
+}
+function cardWords() {
+  const seen = new Set(), out = [];
+  S.selected.forEach(k => { const l = label(k).trim(); const n = l.toLowerCase(); if (l && !seen.has(n)) { seen.add(n); out.push(l); } });
+  return out;
+}
+function libList() {
+  const top = REGION_TOP[S.region] || [];
+  return Object.values(TRADES).filter(tr => !tr.only || tr.only.includes(S.region))
+    .map(tr => ({ tr, score: top.includes(tr.id) ? top.indexOf(tr.id) - 1000 : tr.rank }))
+    .sort((a, b) => a.score - b.score).map(x => x.tr);
+}
+function findLib(text) {
+  const n = text.trim().toLowerCase();
+  for (const tr of Object.values(TRADES)) for (const l of LANG_ORDER) if ((tr.t[l] || "").toLowerCase() === n) return "lib:" + tr.id;
+  return null;
+}
+const NAME_RE = /^[A-ZÅÄÖÆØÉÜ][a-zåäöæøéüèàíóú'-]+(\s[A-ZÅÄÖÆØÉÜ][a-zåäöæøéüèàíóú'-]+){1,2}$/;
+const CO_RE = /\b(AB|HB|KB|Ab|Ltd|GmbH|Inc|LLC|AS|Oy|SA|SL|SRL|Srl|BV|NV)\.?(\s*\(.*\))?$/;
+const SKIP_RE = /^(namn|name|team|företag|stad|seat|connect|sök resultat|search results|company|city|\+)$/i;
+function parseCats(txt) {
+  const out = [];
+  txt.split(/\r?\n|\||,|\t/).forEach(raw => {
+    let s = raw.replace(/^[\s•·*\-–]+/, "").trim();
+    if (s.includes(">")) s = s.split(">").pop().trim();
+    if (s.includes("›")) s = s.split("›").pop().trim();
+    if (!s || s.length > 48 || /^bni\b/i.test(s) || SKIP_RE.test(s) || NAME_RE.test(s) || CO_RE.test(s) || /\d{3}/.test(s)) return;
+    const key = findLib(s) || ("txt:" + s);
+    if (!out.some(k => label(k, "en").toLowerCase() === label(key, "en").toLowerCase() && k === key)) out.push(key);
+  });
+  return out;
+}
+function toggleSel(key) {
+  const i = S.selected.indexOf(key);
+  if (i >= 0) S.selected.splice(i, 1); else S.selected.push(key);
+  save(); renderTrades(); schedule();
+}
+function chip(key, opts) {
+  opts = opts || {};
+  const on = S.selected.includes(key);
+  return `<button type="button" class="chip" aria-pressed="${on}" data-key="${esc(key)}">${esc(opts.text || label(key, S.ui === S.cardLang ? S.cardLang : S.cardLang))}${opts.x ? '<span class="x" aria-hidden="true">×</span>' : ""}</button>`;
+}
+
+// ---------- Static text + selects ----------
+function applyText() {
+  document.documentElement.lang = S.ui;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+  $("uiLang").innerHTML = LANG_ORDER.map(l => `<option value="${l}"${l === S.ui ? " selected" : ""}>${esc(langName(l))}</option>`).join("");
+  const regs = REGIONS.map(r => [r, regionName(r)]).sort((a, b) => a[1].localeCompare(b[1], S.ui));
+  $("region").innerHTML = regs.map(([r, n]) => `<option value="${r}"${r === S.region ? " selected" : ""}>${esc(n)}</option>`).join("");
+  $("cardLang").innerHTML = LANG_ORDER.map(l => `<option value="${l}"${l === S.cardLang ? " selected" : ""}>${esc(langName(l))}</option>`).join("");
+  $("edition").innerHTML = ED_ORDER.filter(e => editionAllowed(e, S.region)).map(e => `<option value="${e}"${e === S.edition ? " selected" : ""}>${esc((ED_NAME[S.ui] || ED_NAME.en)[e])}</option>`).join("");
+  $("style").innerHTML = ["photo","water","paper","flat"].map(s => `<option value="${s}"${s === S.style ? " selected" : ""}>${esc(t("st_" + s))}</option>`).join("");
+  $("order").value = S.order;
+  document.title = t("name");
+}
+
+// ---------- Step 1: chapters ----------
+function renderChapters() {
+  $("chapterList").innerHTML = S.chapters.map((c, i) => `
+    <div class="card chapter">
+      <div class="meta"><div class="nm">${esc(c.name)}${c.preset ? `<span class="badge">${esc(t("preset"))}</span>` : ""}</div>
+      <div class="sub">${esc([c.city, t("cats_n", { n: c.items.length })].filter(Boolean).join(" · "))}</div></div>
+      <div class="row" style="flex:0 0 auto;align-items:center;gap:14px">
+        <label class="check"><input type="checkbox" data-ch-inc="${i}"${c.include ? " checked" : ""}><span>${esc(t("include"))}</span></label>
+        <button type="button" class="linkish" data-ch-del="${i}">${esc(t("remove"))}</button>
+      </div>
+    </div>`).join("");
+  $("findCity").value = S.city || "";
+  const q = encodeURIComponent("BNI " + (S.city || regionName(S.region)));
+  $("findLinks").innerHTML = `
+    <a class="btn small" style="flex:0 0 auto" href="https://www.google.com/search?q=${q}" target="_blank" rel="noopener">${esc(t("find_google"))}</a>
+    <a class="btn small" style="flex:0 0 auto" href="https://www.bni.com/find-a-chapter/" target="_blank" rel="noopener">${esc(t("find_bni"))}</a>
+    <a class="btn small" style="flex:0 0 auto" href="https://www.bni.com/chapter-map/" target="_blank" rel="noopener">${esc(t("find_map"))}</a>`;
+  const near = (NEARBY[(S.city || "").trim().toLowerCase()] || []).filter(n => !S.chapters.some(c => c.name.toLowerCase() === n.name.toLowerCase()));
+  $("nearby").innerHTML = near.length ? `<h3>${esc(t("nearby_h"))}</h3><p class="note">${esc(t("nearby_note"))}</p>` + near.map((n, i) => `
+    <div class="card chapter"><div class="meta"><div class="nm">${esc(n.name)}</div><div class="sub"><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(new URL(n.url).hostname)}</a></div></div>
+    <div style="flex:0 0 auto"><button type="button" class="btn small" data-near="${i}">${esc(t("add_this"))}</button></div></div>`).join("") : "";
+  $("nearby").querySelectorAll("[data-near]").forEach(b => b.onclick = () => {
+    const n = near[+b.dataset.near]; $("addChapter").open = true; $("chName").value = n.name; $("chCity").value = S.city; $("chPaste").focus();
+  });
+}
+function chapterKeys() {
+  const out = [];
+  S.chapters.filter(c => c.include).forEach(c => c.items.forEach(k => { if (!out.includes(k)) out.push(k); }));
+  return out;
+}
+
+// ---------- Step 2: trades ----------
+function renderTrades() {
+  const n = S.selected.length;
+  $("selCount").textContent = t("sel", { n });
+  $("tooMany").hidden = cardWords().length <= 34;
+  $("chChips").innerHTML = chapterKeys().map(k => chip(k)).join("") || `<span class="note">–</span>`;
+  $("commonH").textContent = t("common", { r: regionName(S.region) });
+  const lib = libList(); const lim = S.showAll ? 999 : 18;
+  const biz = lib.filter(x => x.g !== "p").slice(0, lim), priv = lib.filter(x => x.g !== "b").slice(0, lim);
+  $("libBiz").innerHTML = biz.map(x => chip("lib:" + x.id)).join("");
+  $("libPriv").innerHTML = priv.map(x => chip("lib:" + x.id)).join("");
+  $("showAll").textContent = S.showAll ? t("show_less") : t("show_all");
+  $("ownChips").innerHTML = S.own.map(s => chip("txt:" + s, { x: false })).join("");
+  renderAiBox();
+}
+function renderAiBox() {
+  $("aiBox").hidden = !SAMPLE;
+  if (!SAMPLE) return;
+  $("aiChips").innerHTML = S.ai.map(a => chip("txt:" + a.name)).join("");
+}
+async function aiSuggest() {
+  if (!SAMPLE) return;
+  const btn = $("aiBtn"), st = $("aiStatus");
+  btn.disabled = true; st.textContent = t("ai_think");
+  const lang = langName(S.cardLang, "en"), reg = regionName(S.region, "en");
+  const have = cardWords().join(", ");
+  const prompt = `You help a BNI member choose trades to print on a referral postcard that says "whatever you need, I know someone you can trust".
+Region: ${reg} (${S.region}). City: ${S.city || "not given"}.
+List the 24 local services people in this region and culture most often ask friends to recommend, mixing business needs and private/home needs, most common first.
+Write each as a short category name (1-3 words) in ${lang}, worded the way a customer there would say it.
+Leave out anything equivalent to these, which are already on the card: ${have || "none"}.
+Reply with only a JSON array of objects: {"name": string, "group": "business" | "private"}.`;
+  try {
+    const res = await SAMPLE.json(prompt, { modelTier: "default" });
+    const list = Array.isArray(res) ? res : [];
+    const clean = list.filter(x => x && typeof x.name === "string" && x.name.trim() && x.name.length <= 40)
+      .map(x => ({ name: x.name.trim(), group: x.group === "private" ? "private" : "business" }));
+    const existing = new Set(cardWords().map(s => s.toLowerCase()));
+    S.ai = clean.filter(x => !existing.has(x.name.toLowerCase())).slice(0, 30);
+    st.textContent = "";
+    save(); renderTrades();
+  } catch (e) {
+    if (e && (e.code === "not_granted" || e.code === "sampling_disabled" || e.code === "capability_disabled" || e.code === "not_declared")) { SAMPLE = null; renderAiBox(); }
+    else st.textContent = t("ai_err");
+  } finally { btn.disabled = false; }
+}
+
+// ---------- Step 3: card ----------
+function publicShareUrl() {
+  const u = (S.shareUrl || "").trim();
+  if (u) return u;
+  try {
+    if (typeof location !== "undefined" && location.protocol && location.protocol !== "file:" && location.origin && location.origin !== "null")
+      return location.origin + (location.pathname || "/");
+  } catch (e) {}
+  return "referenskortet.se";
+}
+function chapterShort() { const c = S.chapters.find(c => c.include); return c ? c.name.replace(/^BNI\s+/i, "") : ""; }
+function defText(k) {
+  const L = S.cardLang, E = (ED_TEXT[S.edition] && (ED_TEXT[S.edition][L] || ED_TEXT[S.edition].en)) || ["", ""], C = CARD[L] || CARD.en;
+  if (k === "head") return E[0];
+  if (k === "backHead") return E[1];
+  if (k === "sub") return C.sub;
+  const ch = chapterShort();
+  return ch && S.showCh ? fmt(C.body, { chapter: ch }) : C.body_nc;
+}
+function txt(k) { return S.text[k] != null ? S.text[k] : defText(k); }
+const TEXT_INPUTS = { head: "tHead", sub: "tSub", backHead: "tBackHead", body: "tBody" };
+const SENDER_INPUTS = { name: "sName", company: "sCompany", phone: "sPhone", web: "sWeb", email: "sEmail", address: "sAddress" };
+function renderCardForm() {
+  const lays = [["words", "lay_words"], ["image", "lay_image"], ["mixed", "lay_mixed"]];
+  $("layoutSeg").innerHTML = lays.map(([v, k]) => `<button type="button" data-layout="${v}" aria-pressed="${S.layout === v}">${esc(t(k))}</button>`).join("");
+  $("paletteSeg").innerHTML = PAL_ORDER.map(p => { const P = PALETTES[p]; return `<button type="button" class="swatch" data-pal="${p}" aria-pressed="${S.palette === p}" aria-label="${p}" style="background:${P.bg}"><i style="background:${P.acc}"></i></button>`; }).join("");
+  Object.entries(TEXT_INPUTS).forEach(([k, id]) => { if (document.activeElement !== $(id)) $(id).value = txt(k); });
+  Object.entries(SENDER_INPUTS).forEach(([k, id]) => { if (document.activeElement !== $(id)) $(id).value = S.sender[k] || ""; });
+  $("showCh").checked = S.showCh; $("stamp").checked = S.stamp;
+  $("showShare").checked = !!S.showShare;
+  if (document.activeElement !== $("shareUrl")) $("shareUrl").value = S.shareUrl || "";
+  $("size").value = S.size; $("bleed").value = String(S.bleed);
+  $("imgBox").hidden = S.layout === "words";
+  $("imgStatus").textContent = IMG ? IMG_NAME : t("img_none");
+  renderDpi();
+  $("imgPrompt").value = imgPrompt();
+}
+function imageArea() { const d = dims(); return S.layout === "mixed" ? { w: d.W * 0.48 + d.b, h: d.H + 2 * d.b } : { w: d.W + 2 * d.b, h: d.H + 2 * d.b }; }
+function renderDpi() {
+  const box = $("imgDpi");
+  if (!IMG || S.layout === "words") { box.hidden = true; return; }
+  const a = imageArea(); const s = Math.max(a.w / IMG.naturalWidth, a.h / IMG.naturalHeight); const dpi = Math.round(25.4 / s);
+  box.hidden = false;
+  box.className = "msg " + (dpi >= 250 ? "ok" : dpi >= 180 ? "warn" : "bad");
+  box.textContent = t(dpi >= 250 ? "img_ok" : dpi >= 180 ? "img_warn" : "img_low", { dpi });
+}
+const SCENES = {
+  xmas: "a quiet snowy winter evening with spruce trees and warm glowing windows, gentle snowfall",
+  season: "a serene winter landscape with frost-covered branches and soft blue twilight",
+  newyear: "a calm New Year's night with subtle golden sparkles over a sleeping town",
+  spring: "fresh spring blossoms and bright green buds in soft morning light",
+  midsummer: "a Nordic midsummer meadow full of wildflowers under a light evening sky",
+  summer: "a sunny summer shoreline with calm water and warm late-afternoon light",
+  autumn: "golden autumn leaves along a misty forest path",
+  thanksgiving: "a warm harvest table with pumpkins, apples and soft candlelight",
+  thanks: "a simple still life of a warm cup of coffee and a handwritten note on a wooden table"
+};
+const STYLES = {
+  photo: "Photorealistic photograph, natural light, gentle depth of field",
+  water: "Loose watercolour illustration on textured paper",
+  paper: "Layered paper-cut illustration with soft shadows",
+  flat: "Minimal flat vector illustration with a limited palette"
+};
+function imgPrompt() {
+  const P = PALETTES[S.palette]; const a = imageArea();
+  const place = [S.city, regionName(S.region, "en")].filter(Boolean).join(", ");
+  const px = v => Math.ceil(v / 25.4 * 300);
+  const mixed = S.layout === "mixed";
+  return `${SCENES[S.edition] || SCENES.thanks}, with a local feel of ${place}. ${STYLES[S.style]}. `
+    + `${mixed ? "Portrait format (about 2:3)" : "Landscape format (about 7:5)"}, at least ${px(a.w)} × ${px(a.h)} px for 300 dpi print. `
+    + `${mixed ? "Keep the main subject centred; the image will be cropped to a tall panel." : "Keep the lower third calm and uncluttered; a text banner will sit there."} `
+    + `Colours that harmonise with ${P.bg} and ${P.acc}. No text, no letters, no logos, no watermarks, no recognisable faces.`;
+}
+
+// ---------- Rendering ----------
+const FD = '"Cormorant Garamond", Georgia, "Times New Roman", serif';
+const FB = '"Work Sans", "Helvetica Neue", Arial, sans-serif';
+function dims() { const s = S.size === "us" ? { w: 152.4, h: 101.6 } : { w: 148, h: 105 }; let b = +S.bleed; if (S.size === "us" && b === 3) b = 3.175; return { W: s.w, H: s.h, b }; }
+function setup(cv, k) {
+  const d = dims();
+  cv.width = Math.max(1, Math.round((d.W + 2 * d.b) * k)); cv.height = Math.max(1, Math.round((d.H + 2 * d.b) * k));
+  const ctx = cv.getContext("2d");
+  ctx.setTransform(k, 0, 0, k, d.b * k, d.b * k);
+  ctx.imageSmoothingQuality = "high";
+  return { ctx, k, ...d };
+}
+// Text is drawn at 10× and scaled down, so tiny mm font sizes never hit browser minimums.
+function setFont(ctx, w, mm, fam) { ctx.font = `${w} ${mm * 10}px ${fam}`; }
+function mw(ctx, s) { return ctx.measureText(s).width / 10; }
+function ft(ctx, s, x, y) { ctx.save(); ctx.translate(x, y); ctx.scale(0.1, 0.1); ctx.fillText(s, 0, 0); ctx.restore(); }
+function wrap(ctx, text, maxW) {
+  const out = []; String(text || "").split(/\n/).forEach(par => {
+    const words = par.split(/\s+/).filter(Boolean); let line = "";
+    words.forEach(w => { const test = line ? line + " " + w : w; if (mw(ctx, test) > maxW && line) { out.push(line); line = w; } else line = test; });
+    if (line) out.push(line);
+  });
+  return out;
+}
+function rowCounts(n, shape) {
+  if (n <= 0) return [];
+  if (shape === "tree") {
+    let r = 1; while (r * (r + 1) / 2 < n) r++;
+    const c = []; for (let i = 1; i <= r; i++) c.push(i);
+    let d = r * (r + 1) / 2 - n, i = 1, guard = 0;
+    while (d > 0 && guard++ < 500) { if (c[i] > 1 && (i === 0 || c[i] - 1 >= c[i - 1])) { c[i]--; d--; } i++; if (i >= c.length) i = 1; }
+    while (d > 0 && c[0] > 0) { c[0]--; d--; }
+    return c.filter(x => x > 0);
+  }
+  if (shape === "diamond") {
+    let p = 1; while (p * p < n) p++;
+    const c = []; for (let i = 1; i <= p; i++) c.push(i); for (let i = p - 1; i >= 1; i--) c.push(i);
+    let d = p * p - n, i = 0, j = c.length - 1, guard = 0;
+    while (d > 0 && guard++ < 500) { if (c[i] > 0) { c[i]--; d--; } if (d > 0 && c[j] > 0) { c[j]--; d--; } i++; j--; if (i > j) { i = 0; j = c.length - 1; } }
+    return c.filter(x => x > 0);
+  }
+  if (shape === "circle") {
+    const rows = Math.max(3, Math.round(Math.sqrt(n * 0.9)) + 1); const prof = [];
+    for (let i = 0; i < rows; i++) { const v = (i + 0.5) / rows * 2 - 1; prof.push(Math.sqrt(1 - v * v)); }
+    const sum = prof.reduce((a, b) => a + b, 0);
+    const c = prof.map(p => Math.max(1, Math.round(p / sum * n)));
+    let diff = n - c.reduce((a, b) => a + b, 0), k = 0; const mid = Math.floor(rows / 2);
+    while (diff !== 0 && k < 400) { const off = Math.ceil(k / 2) * (k % 2 ? 1 : -1); const ii = Math.min(rows - 1, Math.max(0, mid + off)); if (diff > 0) { c[ii]++; diff--; } else if (c[ii] > 1) { c[ii]--; diff++; } k++; }
+    return c;
+  }
+  const rows = Math.ceil(n / 5), base = Math.floor(n / rows), extra = n % rows;
+  return Array.from({ length: rows }, (_, i) => base + (i < extra ? 1 : 0));
+}
+// Width profile of each shape, t = 0 (top row) … 1 (bottom row)
+function profile(shape, t) {
+  if (shape === "tree") return 0.16 + 0.84 * t;
+  if (shape === "diamond") return 0.2 + 0.8 * (1 - Math.abs(2 * t - 1));
+  if (shape === "circle") { const v = 2 * t - 1; return 0.35 + 0.65 * Math.sqrt(Math.max(0, 1 - v * v)); }
+  return 1;
+}
+function orderWords(ctx, words, shape) {
+  if (S.order !== "auto") return words;
+  setFont(ctx, 400, 1, FB);
+  const sorted = [...words].sort((a, b) => mw(ctx, a) - mw(ctx, b));
+  if (shape === "tree") return sorted;
+  if (shape === "block") return words;
+  const front = [], back = []; sorted.forEach((w, i) => (i % 2 ? back : front).push(w));
+  return front.concat(back.reverse()); // short words at both ends, long ones in the middle
+}
+// Find the largest type size at which the words fill the shape inside maxW × maxH.
+function layoutWords(ctx, words, shape, maxW, maxH) {
+  const list = orderWords(ctx, words, shape);
+  setFont(ctx, 400, 1, FB);
+  const w1 = list.map(w => mw(ctx, w)); const gap1 = 1.25, lh = 1.6;
+  const pack = (s, n) => {
+    const rows = []; let i = 0;
+    for (let r = 0; r < n && i < list.length; r++) {
+      const cap = maxW * profile(shape, n === 1 ? 1 : r / (n - 1)); const row = []; let width = 0;
+      while (i < list.length) { const add = w1[i] * s + (row.length ? gap1 * s : 0); if (row.length && width + add > cap) break; row.push(list[i]); width += add; i++; }
+      rows.push(row);
+    }
+    return i >= list.length ? rows : null;
+  };
+  for (let s = 4.6; s >= 2.0; s -= 0.1) {
+    const maxRows = Math.floor(maxH / (s * lh));
+    for (let n = Math.min(3, list.length); n <= Math.min(maxRows, list.length); n++) {
+      const rows = pack(s, n);
+      if (rows && rows.every(r => r.length) && rows.every((r, i) => r.reduce((a, w) => a + w1[list.indexOf(w)] * s, 0) + gap1 * s * (r.length - 1) <= maxW)) return { rows, size: s };
+    }
+  }
+  const counts = rowCounts(list.length, "block"); const rows = []; let k = 0;
+  counts.forEach(c => { rows.push(list.slice(k, k + c)); k += c; });
+  return { rows, size: 2.0 };
+}
+function drawOrn(ctx, type, cx, cy, col) {
+  ctx.save(); ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = 0.35; ctx.lineJoin = "round"; ctx.lineCap = "round";
+  if (type === "star") {
+    ctx.beginPath(); for (let i = 0; i < 10; i++) { const r = i % 2 ? 1.1 : 2.6, a = -Math.PI / 2 + i * Math.PI / 5; ctx.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a)); } ctx.closePath(); ctx.stroke();
+  } else if (type === "flake") {
+    for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3, ex = cx + 2.6 * Math.cos(a), ey = cy + 2.6 * Math.sin(a); ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(ex, ey); ctx.stroke();
+      const bx = cx + 1.6 * Math.cos(a), by = cy + 1.6 * Math.sin(a); [0.6, -0.6].forEach(o => { ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx + 0.8 * Math.cos(a + o), by + 0.8 * Math.sin(a + o)); ctx.stroke(); }); }
+  } else if (type === "sun") {
+    ctx.beginPath(); ctx.arc(cx, cy, 1.2, 0, Math.PI * 2); ctx.stroke();
+    for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; ctx.beginPath(); ctx.moveTo(cx + 1.8 * Math.cos(a), cy + 1.8 * Math.sin(a)); ctx.lineTo(cx + 2.7 * Math.cos(a), cy + 2.7 * Math.sin(a)); ctx.stroke(); }
+  } else if (type === "leaf") {
+    ctx.beginPath(); ctx.moveTo(cx - 2.4, cy + 1.2); ctx.quadraticCurveTo(cx - 1.6, cy - 2.2, cx + 2.4, cy - 1.2); ctx.quadraticCurveTo(cx + 1.4, cy + 2.2, cx - 2.4, cy + 1.2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx - 2.4, cy + 1.2); ctx.lineTo(cx + 1.2, cy - 0.6); ctx.stroke();
+  } else { ctx.beginPath(); ctx.moveTo(cx - 7, cy); ctx.lineTo(cx + 7, cy); ctx.stroke(); }
+  ctx.restore();
+}
+function measureTextBlock(ctx, w) {
+  const head = txt("head"), sub = txt("sub");
+  let hs = Math.min(10, w / 12); setFont(ctx, 600, hs, FD);
+  let headLines = [head]; const hw = mw(ctx, head);
+  if (hw > w) { const f = w / hw; if (hs * f >= 6.2) hs = hs * f; else { hs = Math.max(6, hs * 0.75); setFont(ctx, 600, hs, FD); headLines = wrap(ctx, head, w).slice(0, 3); } }
+  const ss = w < 80 ? 3.0 : 3.5; setFont(ctx, 400, ss, FB);
+  const subLines = sub ? wrap(ctx, sub, Math.min(w, 112)).slice(0, 4) : [];
+  const h = headLines.length * hs * 1.05 + (subLines.length ? 2.6 + subLines.length * ss * 1.42 : 0);
+  return { headLines, hs, subLines, ss, h };
+}
+function column(g, box, P, withWords) {
+  const { ctx } = g; const ed = EDITIONS[S.edition];
+  const T = measureTextBlock(ctx, box.w);
+  let rows = [], ws = 0, orn = 0, trunk = 0, gapW = 5.5;
+  const words = withWords ? cardWords() : [];
+  if (words.length) {
+    orn = ed.orn === "rule" ? 3 : 6.4; trunk = ed.shape === "tree" ? 4.4 : 0;
+    const avail = Math.max(10, box.h - T.h - gapW - orn - trunk);
+    const L = layoutWords(ctx, words, ed.shape, box.w * 0.97, avail); rows = L.rows; ws = L.size;
+  }
+  const wordsH = rows.length * ws * 1.6;
+  const total = (rows.length ? orn + wordsH + trunk + gapW : 0) + T.h;
+  let y = box.y + Math.max(0, (box.h - total) / 2); const cx = box.x + box.w / 2;
+  if (rows.length) {
+    drawOrn(ctx, ed.orn, cx, y + orn / 2 - 0.4, P.acc); y += orn;
+    ctx.textBaseline = "middle"; ctx.textAlign = "left"; setFont(ctx, 400, ws, FB);
+    const gap = ws * 1.25;
+    rows.forEach(r => {
+      const widths = r.map(w => mw(ctx, w)); const rw = widths.reduce((a, c) => a + c, 0) + gap * (r.length - 1);
+      let x = cx - rw / 2; const yy = y + ws * 0.8;
+      r.forEach((w, i) => {
+        if (i > 0) { ctx.fillStyle = P.acc; ctx.beginPath(); ctx.arc(x - gap / 2, yy, ws * 0.11, 0, Math.PI * 2); ctx.fill(); }
+        ctx.fillStyle = P.fg; ft(ctx, w, x, yy); x += widths[i] + gap;
+      });
+      y += ws * 1.6;
+    });
+    if (trunk) { ctx.fillStyle = P.acc; ctx.fillRect(cx - 2.2, y + 0.6, 4.4, trunk - 1.6); y += trunk; }
+    y += gapW;
+  }
+  ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillStyle = P.fg;
+  setFont(ctx, 600, T.hs, FD);
+  T.headLines.forEach(l => { y += T.hs * 0.82; ft(ctx, l, cx, y); y += T.hs * 0.23; });
+  if (T.subLines.length) { y += 2.6; setFont(ctx, 400, T.ss, FB); ctx.globalAlpha = 0.93; T.subLines.forEach(l => { y += T.ss * 1.1; ft(ctx, l, cx, y); y += T.ss * 0.32; }); ctx.globalAlpha = 1; }
+}
+function drawImg(g, x, y, w, h, P) {
+  const { ctx } = g;
+  ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+  if (IMG) {
+    const s = Math.max(w / IMG.naturalWidth, h / IMG.naturalHeight); const dw = IMG.naturalWidth * s, dh = IMG.naturalHeight * s;
+    ctx.drawImage(IMG, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+  } else {
+    ctx.fillStyle = P.bg; ctx.fillRect(x, y, w, h);
+    ctx.strokeStyle = P.acc; ctx.globalAlpha = 0.28; ctx.lineWidth = 0.3;
+    for (let i = -h; i < w + h; i += 4) { ctx.beginPath(); ctx.moveTo(x + i, y); ctx.lineTo(x + i - h, y + h); ctx.stroke(); }
+    ctx.globalAlpha = 1; ctx.fillStyle = P.fg; ctx.textAlign = "center"; setFont(ctx, 500, 3.2, FB); ft(ctx, t("img_none"), x + w / 2, y + Math.min(h / 2, 30));
+  }
+  ctx.restore();
+}
+function drawFront(g) {
+  const { ctx, W, H, b } = g; const P = PALETTES[S.palette]; const m = 7;
+  ctx.fillStyle = P.bg; ctx.fillRect(-b, -b, W + 2 * b, H + 2 * b);
+  if (S.layout === "words") column(g, { x: m, y: m, w: W - 2 * m, h: H - 2 * m }, P, true);
+  else if (S.layout === "image") {
+    drawImg(g, -b, -b, W + 2 * b, H + 2 * b, P);
+    const T = measureTextBlock(ctx, W - 2 * m); const bandH = T.h + 13;
+    ctx.globalAlpha = 0.92; ctx.fillStyle = P.bg; ctx.fillRect(-b, H - bandH, W + 2 * b, bandH + b); ctx.globalAlpha = 1;
+    column(g, { x: m, y: H - bandH + 3, w: W - 2 * m, h: bandH - 3 - m * 0.75 }, P, false);
+  } else {
+    const split = W * 0.48;
+    drawImg(g, -b, -b, split + b, H + 2 * b, P);
+    column(g, { x: split + 5, y: m, w: W - split - 5 - m, h: H - 2 * m }, P, true);
+  }
+}
+function fitFont(ctx, text, w, mm, minMm, weight, fam) { let s = mm; setFont(ctx, weight, s, fam); while (mw(ctx, text) > w && s > minMm) { s -= 0.1; setFont(ctx, weight, s, fam); } return s; }
+function drawBack(g, rec) {
+  const { ctx, W, H, b } = g; const P = PALETTES[S.palette]; const C = CARD[S.cardLang] || CARD.en;
+  const paper = "#FBF8F1", ink = "#1F2A24", muted = "#5E5A4F", rule = "#8C877A";
+  ctx.fillStyle = paper; ctx.fillRect(-b, -b, W + 2 * b, H + 2 * b);
+  const m = 7, colW = W * 0.55 - m, divX = W * 0.585, x1 = W * 0.62, rW = W - m - x1;
+  ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+  const sd = S.sender;
+  const contact = [sd.phone, sd.web].filter(Boolean).join("  ·  ");
+  const bottom = [{ t: C.regards, w: 400, s: 2.9, f: FB, c: muted, gap: 0.6 },
+    { t: sd.name || t("your_name"), w: 600, s: 5.4, f: FD, c: sd.name ? ink : "#A39E92", gap: 0.4 }];
+  if (sd.company) bottom.push({ t: sd.company, w: 600, s: 3.2, f: FB, c: P.deep, gap: 0.8 });
+  [contact, sd.email, sd.address].filter(Boolean).forEach(v => bottom.push({ t: v, w: 400, s: 2.85, f: FB, c: ink, gap: 0.3 }));
+  if (S.showShare) {
+    const rawUrl = publicShareUrl();
+    let url = rawUrl;
+    const tpl = (UI[S.cardLang] && UI[S.cardLang].share_on_card) || UI.en.share_on_card;
+    let line = fmt(tpl, { url });
+    setFont(ctx, 400, 2.5, FB);
+    while (mw(ctx, line) > colW && url.length > 12) { url = url.slice(0, Math.max(8, url.length - 4)) + "…"; line = fmt(tpl, { url }); }
+    bottom.push({ t: line, w: 400, s: 2.5, f: FB, c: muted, gap: 0 });
+  }
+  bottom.forEach(l => { l.s = fitFont(ctx, l.t, colW, l.s, 2.3, l.w, l.f); });
+  const bottomH = bottom.reduce((a, l) => a + l.s * 1.2 + l.gap, 0);
+  const label = S.showCh ? (S.chapters.find(c => c.include) || {}).name || "" : "";
+  let bodyS = 3.05, headS = 5.0, headLines, bodyLines, topH;
+  const measureTop = () => {
+    setFont(ctx, 600, headS, FD); headLines = wrap(ctx, txt("backHead"), colW).slice(0, 2);
+    setFont(ctx, 400, bodyS, FB); bodyLines = wrap(ctx, txt("body"), colW);
+    topH = (label ? 2.4 * 1.2 + 2.2 : 0) + headLines.length * headS * 1.1 + 2 + bodyLines.length * bodyS * 1.48;
+  };
+  measureTop();
+  while (topH + 4 + bottomH > H - 2 * m && bodyS > 2.45) { bodyS -= 0.1; if (headS > 4.2) headS -= 0.1; measureTop(); }
+  let y = m;
+  if (label) { setFont(ctx, 600, 2.4, FB); ctx.fillStyle = P.deep; try { ctx.letterSpacing = "3px"; } catch (e) {} y += 2.4; ft(ctx, label.toUpperCase(), m, y); try { ctx.letterSpacing = "0px"; } catch (e) {} y += 2.2 + 0.5; }
+  setFont(ctx, 600, headS, FD); ctx.fillStyle = ink; headLines.forEach(l => { y += headS * 0.9; ft(ctx, l, m, y); y += headS * 0.2; });
+  y += 2; setFont(ctx, 400, bodyS, FB); ctx.fillStyle = ink; bodyLines.forEach(l => { y += bodyS * 1.08; ft(ctx, l, m, y); y += bodyS * 0.4; });
+  let yb = H - m - bottomH;
+  bottom.forEach(l => { setFont(ctx, l.w, l.s, l.f); ctx.fillStyle = l.c; yb += l.s * 0.95; ft(ctx, l.t, m, yb); yb += l.s * 0.25 + l.gap; });
+  ctx.strokeStyle = P.acc; ctx.lineWidth = 0.3; ctx.beginPath(); ctx.moveTo(divX, m); ctx.lineTo(divX, H - m); ctx.stroke();
+  if (S.stamp) {
+    const sw = 19, sh = 23, sx = W - m - sw, sy = m;
+    ctx.setLineDash([1, 0.8]); ctx.strokeStyle = rule; ctx.lineWidth = 0.25; ctx.strokeRect(sx, sy, sw, sh); ctx.setLineDash([]);
+    setFont(ctx, 400, 2.3, FB); ctx.fillStyle = muted; ctx.textAlign = "center"; ft(ctx, C.stamp, sx + sw / 2, sy + sh / 2 + 0.8); ctx.textAlign = "left";
+  }
+  if (rec && rec.lines.length) {
+    const lines = rec.lines.slice(0, 6); let fs = 3.5; setFont(ctx, 400, fs, FB);
+    while (Math.max(...lines.map(l => mw(ctx, l))) > rW && fs > 2.5) { fs -= 0.1; setFont(ctx, 400, fs, FB); }
+    ctx.fillStyle = ink; let ya = H - m - 4 - (lines.length - 1) * fs * 1.4;
+    lines.forEach(l => { let s = l; while (mw(ctx, s) > rW && s.length > 3) s = s.slice(0, -2) + "…"; ft(ctx, s, x1, ya); ya += fs * 1.4; });
+  } else {
+    ctx.strokeStyle = rule; ctx.lineWidth = 0.25;
+    [0, 1, 2].forEach(i => { const yy = H - m - 4 - i * 8.5; ctx.beginPath(); ctx.moveTo(x1, yy); ctx.lineTo(W - m, yy); ctx.stroke(); });
+  }
+}
+function drawTrim(g) {
+  const { ctx, W, H, b } = g; if (!b) return;
+  ctx.save(); ctx.strokeStyle = "rgba(214,40,90,.85)"; ctx.lineWidth = Math.max(0.15, 1.2 / g.k); ctx.setLineDash([1.4, 1]); ctx.strokeRect(0, 0, W, H); ctx.restore();
+}
+let rq = 0;
+function schedule() { if (rq) return; rq = requestAnimationFrame(() => { rq = 0; renderPreview(); }); }
+function renderPreview() {
+  const d = dims(); const cvF = $("cvFront"), cvB = $("cvBack");
+  const cssW = cvF.clientWidth || 520; const wpx = Math.round(cssW * Math.min(2, window.devicePixelRatio || 1));
+  const k = wpx / (d.W + 2 * d.b);
+  const gF = setup(cvF, k); drawFront(gF); if (S.trim) drawTrim(gF);
+  const gB = setup(cvB, k); drawBack(gB, RECIPIENTS[0] || null); if (S.trim) drawTrim(gB);
+  $("dimFront").textContent = `${d.W} × ${d.H} mm + ${Math.round(d.b * 10) / 10} mm`;
+  $("sampleRec").textContent = RECIPIENTS.length ? t("sample_rec", { n: RECIPIENTS.length }) : "";
+}
+
+// ---------- Step 4: recipients + export ----------
+const HDR = {
+  first: ["fornamn","firstname","first","givenname","vorname","prenom","nome"],
+  last: ["efternamn","lastname","last","surname","familyname","nachname","apellido","apellidos","cognome","sobrenome","nomdefamille"],
+  name: ["namn","name","fullname","navn","nimi","nombre","nom","nomecompleto","contact","kontakt","kontaktperson","mottagare","recipient","contactname"],
+  company: ["foretag","company","firma","empresa","societe","entreprise","azienda","ditta","organisation","organization","bolag","companyname"],
+  street: ["adress","address","gatuadress","street","address1","addressline1","strasse","adresse","direccion","indirizzo","endereco","utdelningsadress","gata","streetaddress"],
+  street2: ["address2","addressline2","co","adress2","careof"],
+  zip: ["postnummer","postnr","zip","zipcode","postcode","postalcode","plz","codepostal","cp","codigopostal","cap","cep"],
+  city: ["ort","postort","stad","city","town","stadt","ville","ciudad","citta","cidade","localidad","localita"],
+  country: ["land","country","pays","pais","paese"]
+};
+const norm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+function detectHeader(row) {
+  const map = {};
+  row.forEach((cell, i) => { const n = norm(cell); for (const [f, list] of Object.entries(HDR)) if (list.includes(n) && map[f] == null) { map[f] = i; break; } });
+  return map;
+}
+function fromRows(rows) {
+  rows = rows.map(r => (r || []).map(c => String(c ?? "").trim())).filter(r => r.some(Boolean));
+  if (!rows.length) return [];
+  const map = detectHeader(rows[0]);
+  if (Object.keys(map).length >= 2) {
+    return rows.slice(1).map(r => {
+      const g = f => map[f] != null ? (r[map[f]] || "") : "";
+      const name = g("name") || [g("first"), g("last")].filter(Boolean).join(" ");
+      const f = { name, company: g("company"), street: g("street"), street2: g("street2"), zip: g("zip"), city: g("city"), country: g("country") };
+      const lines = [f.name, f.company, f.street, f.street2, [f.zip, f.city].filter(Boolean).join(" "), f.country].filter(Boolean);
+      return { lines, f };
+    }).filter(x => x.lines.length);
+  }
+  return rows.map(r => ({ lines: r.filter(Boolean).slice(0, 6) }));
+}
+function splitCsv(text) {
+  const first = text.split(/\r?\n/).find(l => l.trim()) || "";
+  const delim = [";", "\t", ","].map(d => [d, first.split(d).length]).sort((a, b) => b[1] - a[1])[0][0];
+  const rows = []; let row = [], cell = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c; }
+    else if (c === '"') q = true;
+    else if (c === delim) { row.push(cell); cell = ""; }
+    else if (c === "\n" || c === "\r") { if (c === "\r" && text[i + 1] === "\n") i++; row.push(cell); rows.push(row); row = []; cell = ""; }
+    else cell += c;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows;
+}
+function parseText(txt) {
+  const blocks = txt.split(/\n\s*\n/).map(b => b.split(/\r?\n/).map(s => s.trim()).filter(Boolean)).filter(b => b.length);
+  if (blocks.length === 1 && blocks[0].length > 1 && blocks[0].every(l => (l.match(/[;,\t]/g) || []).length >= 2)) return fromRows(splitCsv(blocks[0].join("\n")));
+  return blocks.map(b => ({ lines: b.slice(0, 6) }));
+}
+function setRecipients(list) {
+  RECIPIENTS = list;
+  $("recCount").textContent = list.length ? t("rec_n", { n: list.length }) : "";
+  $("recClear").hidden = !list.length;
+  schedule();
+}
+async function readRecFile(file) {
+  const name = file.name.toLowerCase();
+  if (/\.(xlsx|xls)$/.test(name)) {
+    if (!window.XLSX) throw new Error("xlsx");
+    const wb = XLSX.read(await file.arrayBuffer(), { type: "array" });
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    return fromRows(XLSX.utils.sheet_to_json(ws, { header: 1, defval: "" }));
+  }
+  const text = await file.text();
+  const lines = text.split(/\r?\n/).filter(l => l.trim());
+  const looksCsv = lines.length > 1 && lines.slice(0, 5).every(l => (l.match(/[;,\t]/g) || []).length >= 1) && /\.(csv|tsv)$/.test(name);
+  return looksCsv ? fromRows(splitCsv(text)) : parseText(text);
+}
+function status(kind, msg) { const el = $("dlStatus"); el.hidden = !msg; el.className = "msg " + kind; el.textContent = msg || ""; }
+async function saveFile(name, blob) {
+  try {
+    if (window.claude && window.claude.use) {
+      const d = await window.claude.use("downloads");
+      if (d) { await d.save({ filename: name, data: blob }); return "saved"; }
+    }
+  } catch (e) { if (e && e.code === "declined") return "declined"; if (e && e.code && e.code !== "unavailable" && e.code !== "not_granted") throw e; }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 5000);
+  return "saved";
+}
+async function buildPdf(recips) {
+  if (!window.jspdf) throw new Error("jspdf");
+  const { jsPDF } = window.jspdf; const d = dims(); const pw = d.W + 2 * d.b, ph = d.H + 2 * d.b;
+  const k = 300 / 25.4; const cv = document.createElement("canvas");
+  const pdf = new jsPDF({ orientation: "l", unit: "mm", format: [pw, ph], compress: true });
+  const g = setup(cv, k); drawFront(g); const front = cv.toDataURL("image/jpeg", 0.93);
+  let blankBack = null;
+  const list = recips && recips.length ? recips : [null];
+  for (let i = 0; i < list.length; i++) {
+    if (i > 0) pdf.addPage([pw, ph], "l");
+    pdf.addImage(front, "JPEG", 0, 0, pw, ph, "front", "NONE");
+    pdf.addPage([pw, ph], "l");
+    if (list[i]) { const gb = setup(cv, k); drawBack(gb, list[i]); pdf.addImage(cv.toDataURL("image/jpeg", 0.93), "JPEG", 0, 0, pw, ph, "back" + i, "NONE"); }
+    else { if (!blankBack) { const gb = setup(cv, k); drawBack(gb, null); blankBack = cv.toDataURL("image/jpeg", 0.93); } pdf.addImage(blankBack, "JPEG", 0, 0, pw, ph, "backblank", "NONE"); }
+    if (i % 8 === 7) { status("ok", t("dl_busy") + ` ${i + 1}/${list.length}`); await new Promise(r => setTimeout(r, 0)); }
+  }
+  pdf.setProperties({ title: t("name"), creator: t("name") });
+  return pdf.output("blob");
+}
+function fileBase() { return `${norm(t("name")) || "card"}-${S.edition}-${S.size}`; }
+async function doDownload(kind) {
+  if (kind !== "print" && !RECIPIENTS.length) { status("warn", t("need_rec")); return; }
+  const btns = ["dlPrint", "dlAddr", "dlCsv"].map($); btns.forEach(b => b.disabled = true);
+  status("ok", t("dl_busy"));
+  try {
+    await document.fonts.ready;
+    let name, blob;
+    if (kind === "csv") {
+      const sep = S.ui === "en" ? "," : ";";
+      const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+      const hasF = RECIPIENTS.some(r => r.f);
+      const head = hasF ? ["name","company","street","street2","zip","city","country"] : ["line1","line2","line3","line4","line5","line6"];
+      const rows = RECIPIENTS.map(r => hasF ? head.map(h => (r.f || {})[h] || "") : head.map((h, i) => r.lines[i] || ""));
+      blob = new Blob(["﻿" + [head, ...rows].map(r => r.map(q).join(sep)).join("\r\n")], { type: "text/csv" });
+      name = fileBase() + "-addresses.csv";
+    } else {
+      blob = await buildPdf(kind === "addr" ? RECIPIENTS : null);
+      name = fileBase() + (kind === "addr" ? `-addressed-${RECIPIENTS.length}.pdf` : ".pdf");
+    }
+    const r = await saveFile(name, blob);
+    status(r === "saved" ? "ok" : "warn", r === "saved" ? t("dl_ok", { f: name }) : t("dl_no"));
+  } catch (e) { console.error(e); status("bad", t("dl_err")); }
+  finally { btns.forEach(b => b.disabled = false); }
+}
+
+// ---------- Step 5: guide ----------
+function renderGuide() {
+  const d = dims();
+  const sizeLabel = S.size === "us" ? "6 × 4 in (152.4 × 101.6 mm)" : "A6 148 × 105 mm";
+  const local = PROVIDERS.filter(p => p.regions.includes(S.region));
+  const intl = PROVIDERS.filter(p => p.regions.includes("*") && !local.includes(p));
+  const prov = p => {
+    const rows = [];
+    if (p.coverage) rows.push([t("coverage"), p.coverage]);
+    if (p.input) rows.push([t("input"), p.input]);
+    if (p.min) rows.push([t("min"), p.min.toLocaleString(S.ui)]);
+    if (p.lead) rows.push([t("lead"), t("days", { n: p.lead })]);
+    if (p.price) rows.push([t("price"), p.price === "quote" ? t("quote") : p.price === "in_tool" ? t("in_tool") : p.price]);
+    return `<div class="card provider"><div class="hd"><span class="nm">${esc(p.name)}</span><span class="kind ${p.kind}">${esc(t(p.kind === "pm" ? "k_pm" : "k_p"))}</span></div>
+      <dl class="facts">${rows.map(([a, b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("")}</dl>
+      ${p.bleedReq && p.bleedReq !== +S.bleed ? `<p class="msg warn">${esc(t("need_bleed", { n: p.bleedReq }))}</p>` : ""}
+      ${p.unverified ? `<p class="note">${esc(t("unverified"))}</p>` : ""}
+      <p class="note">${esc(t("src"))}: <a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(new URL(p.url).hostname)}</a></p></div>`;
+  };
+  $("guide").innerHTML = `
+    <div class="card"><h3 style="margin:0 0 6px">${esc(t("spec_h"))}</h3><p>${esc(t("spec", { size: sizeLabel, bleed: Math.round(d.b * 10) / 10 }))}</p></div>
+    <div class="card"><h3 style="margin:0 0 6px">${esc(t("bni_h"))}</h3><p>${esc(t("bni_tip"))}</p></div>
+    ${local.length ? `<h3>${esc(t("local_h", { r: regionName(S.region) }))}</h3>${local.map(prov).join("")}` : ""}
+    <h3>${esc(t("intl_h"))}</h3>${intl.map(prov).join("")}
+    ${S.region === "SE" ? `<div class="card"><h3 style="margin:0 0 6px">${esc(t("postage_h"))}</h3><p>${esc(t("postage_se"))}</p><p class="note">${esc(t("src"))}: <a href="https://dr.se/frimarke-pris/" target="_blank" rel="noopener">dr.se</a></p></div>` : ""}
+    <div class="card"><h3 style="margin:0 0 6px">${esc(t("timeline_h"))}</h3><p>${esc(t("timeline"))}</p></div>`;
+}
+
+// ---------- Steps ----------
+function showStep(n) {
+  S.step = Math.min(5, Math.max(1, n)); save();
+  for (let i = 1; i <= 5; i++) $("p" + i).hidden = i !== S.step;
+  document.querySelectorAll(".steps button").forEach(b => b.setAttribute("aria-current", +b.dataset.step === S.step ? "step" : "false"));
+  $("prevBtn").disabled = S.step === 1; $("nextBtn").disabled = S.step === 5;
+  if (S.step === 5) renderGuide();
+}
+function renderSupport() {
+  if (document.activeElement !== $("donateUrl")) $("donateUrl").value = S.donateUrl || "";
+  const url = (S.donateUrl || "").trim();
+  const btn = $("donateBtn");
+  const hint = $("donateHint");
+  if (url) {
+    btn.href = url; btn.removeAttribute("aria-disabled"); btn.style.opacity = "";
+    btn.onclick = null;
+    hint.textContent = ""; hint.hidden = true;
+  } else {
+    btn.href = "#"; btn.setAttribute("aria-disabled", "true"); btn.style.opacity = "0.55";
+    btn.onclick = e => { e.preventDefault(); };
+    hint.textContent = t("donate_missing"); hint.hidden = false;
+  }
+}
+function renderAll() { applyText(); renderChapters(); renderTrades(); renderCardForm(); renderSupport(); renderGuide(); showStep(S.step); setRecipients(RECIPIENTS); schedule(); }
+
+// ---------- Events ----------
+$("uiLang").onchange = e => { S.ui = e.target.value; save(); renderAll(); };
+$("region").onchange = e => {
+  S.region = e.target.value;
+  if (!editionAllowed(S.edition, S.region)) { S.edition = defaultEdition(S.region); S.palette = EDITIONS[S.edition].pal; S.text = { head: null, sub: null, backHead: null, body: null }; }
+  S.size = US_SIZE.includes(S.region) ? "us" : "a6";
+  save(); renderAll();
+};
+document.querySelectorAll(".steps button").forEach(b => b.onclick = () => showStep(+b.dataset.step));
+$("prevBtn").onclick = () => { showStep(S.step - 1); $("p" + S.step).scrollIntoView({ block: "start", behavior: "smooth" }); };
+$("nextBtn").onclick = () => { showStep(S.step + 1); $("p" + S.step).scrollIntoView({ block: "start", behavior: "smooth" }); };
+$("chapterList").addEventListener("change", e => { const i = e.target.dataset.chInc; if (i != null) { S.chapters[+i].include = e.target.checked; save(); renderTrades(); renderCardForm(); schedule(); } });
+$("chapterList").addEventListener("click", e => {
+  const i = e.target.dataset.chDel; if (i == null) return;
+  const c = S.chapters.splice(+i, 1)[0];
+  const still = new Set(chapterKeys()); const keep = new Set([...S.own.map(s => "txt:" + s), ...S.ai.map(a => "txt:" + a.name)]);
+  S.selected = S.selected.filter(k => still.has(k) || keep.has(k) || k.startsWith("lib:") && !c.items.includes(k));
+  save(); renderChapters(); renderTrades(); renderCardForm(); schedule();
+});
+$("chForm").onsubmit = e => {
+  e.preventDefault();
+  const name = $("chName").value.trim(); if (!name) return;
+  const items = parseCats($("chPaste").value);
+  S.chapters.push({ id: "c" + Date.now(), name, city: $("chCity").value.trim(), include: true, items });
+  items.forEach(k => { if (!S.selected.includes(k)) S.selected.push(k); });
+  $("chName").value = ""; $("chCity").value = ""; $("chPaste").value = ""; $("addChapter").open = false;
+  save(); renderChapters(); renderTrades(); schedule();
+};
+let cityTimer = 0;
+$("findCity").oninput = e => { S.city = e.target.value; save(); clearTimeout(cityTimer); cityTimer = setTimeout(() => { renderChapters(); $("findCity").focus(); $("imgPrompt").value = imgPrompt(); }, 500); };
+["chChips", "libBiz", "libPriv", "ownChips", "aiChips"].forEach(id => $(id).addEventListener("click", e => { const b = e.target.closest("[data-key]"); if (b) toggleSel(b.dataset.key); }));
+$("showAll").onclick = () => { S.showAll = !S.showAll; save(); renderTrades(); };
+$("clearSel").onclick = () => { S.selected = []; save(); renderTrades(); schedule(); };
+$("order").onchange = e => { S.order = e.target.value; save(); schedule(); };
+$("ownInput").onkeydown = e => {
+  if (e.key !== "Enter") return; e.preventDefault();
+  const v = e.target.value.trim(); if (!v) return;
+  const key = findLib(v) || "txt:" + v;
+  if (key.startsWith("txt:") && !S.own.includes(v)) S.own.push(v);
+  if (!S.selected.includes(key)) S.selected.push(key);
+  e.target.value = ""; save(); renderTrades(); schedule();
+};
+$("aiBtn").onclick = aiSuggest;
+$("edition").onchange = e => { S.edition = e.target.value; S.palette = EDITIONS[S.edition].pal; S.text = { head: null, sub: null, backHead: null, body: null }; save(); renderCardForm(); schedule(); };
+$("cardLang").onchange = e => { S.cardLang = e.target.value; S.text = { head: null, sub: null, backHead: null, body: null }; save(); renderCardForm(); renderTrades(); schedule(); };
+$("layoutSeg").onclick = e => { const b = e.target.closest("[data-layout]"); if (!b) return; S.layout = b.dataset.layout; save(); renderCardForm(); schedule(); };
+$("paletteSeg").onclick = e => { const b = e.target.closest("[data-pal]"); if (!b) return; S.palette = b.dataset.pal; save(); renderCardForm(); schedule(); };
+$("style").onchange = e => { S.style = e.target.value; save(); $("imgPrompt").value = imgPrompt(); };
+$("imgFile").onchange = e => {
+  const f = e.target.files && e.target.files[0]; if (!f) return;
+  const img = new Image(); img.onload = () => { IMG = img; IMG_NAME = f.name; renderCardForm(); schedule(); };
+  img.src = URL.createObjectURL(f);
+};
+$("copyPrompt").onclick = async () => {
+  const ta = $("imgPrompt");
+  try { await navigator.clipboard.writeText(ta.value); $("copyPrompt").textContent = t("copied"); setTimeout(() => $("copyPrompt").textContent = t("copy"), 1600); }
+  catch (e) { ta.focus(); ta.select(); }
+};
+Object.entries(TEXT_INPUTS).forEach(([k, id]) => $(id).addEventListener("input", e => { const v = e.target.value; S.text[k] = v === defText(k) ? null : v; save(); schedule(); }));
+$("resetText").onclick = () => { S.text = { head: null, sub: null, backHead: null, body: null }; save(); renderCardForm(); schedule(); };
+Object.entries(SENDER_INPUTS).forEach(([k, id]) => $(id).addEventListener("input", e => { S.sender[k] = e.target.value; save(); schedule(); }));
+$("showCh").onchange = e => { S.showCh = e.target.checked; save(); renderCardForm(); schedule(); };
+$("stamp").onchange = e => { S.stamp = e.target.checked; save(); schedule(); };
+$("showShare").onchange = e => { S.showShare = e.target.checked; save(); schedule(); };
+$("shareUrl").addEventListener("input", e => { S.shareUrl = e.target.value; save(); schedule(); });
+$("donateUrl").addEventListener("input", e => { S.donateUrl = e.target.value; save(); renderSupport(); });
+$("copyShare").onclick = async () => {
+  const url = publicShareUrl();
+  try { await navigator.clipboard.writeText(url); $("copyShare").textContent = t("link_copied"); setTimeout(() => $("copyShare").textContent = t("copy_link"), 1600); }
+  catch (e) {
+    const ta = document.createElement("textarea"); ta.value = url; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); $("copyShare").textContent = t("link_copied"); setTimeout(() => $("copyShare").textContent = t("copy_link"), 1600); } catch (err) {}
+    document.body.removeChild(ta);
+  }
+};
+$("size").onchange = e => { S.size = e.target.value; save(); renderCardForm(); schedule(); };
+$("bleed").onchange = e => { S.bleed = +e.target.value; save(); renderCardForm(); schedule(); };
+$("trim").checked = S.trim;
+$("trim").onchange = e => { S.trim = e.target.checked; save(); schedule(); };
+let recTimer = 0;
+$("recText").addEventListener("input", e => { clearTimeout(recTimer); recTimer = setTimeout(() => setRecipients(parseText(e.target.value)), 250); });
+$("recFile").onchange = async e => {
+  const f = e.target.files && e.target.files[0]; if (!f) return;
+  try { const list = await readRecFile(f); $("recText").value = list.map(r => r.lines.join("\n")).join("\n\n"); setRecipients(list); status("ok", t("rec_n", { n: list.length })); }
+  catch (err) { status("bad", t("dl_err")); }
+  e.target.value = "";
+};
+$("recClear").onclick = () => { $("recText").value = ""; setRecipients([]); status("", ""); };
+$("dlPrint").onclick = () => doDownload("print");
+$("dlAddr").onclick = () => doDownload("addr");
+$("dlCsv").onclick = () => doDownload("csv");
+window.addEventListener("resize", schedule);
+
+// ---------- Boot ----------
+renderAll();
+if (document.fonts) {
+  Promise.all(["600 40px \"Cormorant Garamond\"", "400 20px \"Work Sans\"", "600 20px \"Work Sans\""].map(f => document.fonts.load(f).catch(() => {})))
+    .then(() => schedule());
+  document.fonts.ready.then(() => schedule());
+}
+(async () => {
+  try {
+    if (window.claude && window.claude.use) { const s = await window.claude.use("sample"); if (s) { SAMPLE = s; renderAiBox(); } }
+  } catch (e) {}
+})();
+</script>
+</body></html>
