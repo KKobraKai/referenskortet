@@ -9,11 +9,11 @@
 - Share / make-your-own default URL: referralcard.ai
 
 ## Done
-- Share / make-your-own on card back + Support (donate + copy link)
+- Share / make-your-own on card back + quiet Mediahive credit + copy link
 - Local SE printers in guide (Graf & Bild, JustNu, Västeråskopia, KPH, …)
 - Custom domains referralcard.ai + myreferralcard.com
 - Sample defaults use referralcard.ai + mediahiveab.com (not pages.dev / .se placeholders)
 
 ## Next
 1. Draft printer outreach (include live URL referralcard.ai)
-2. Optional: Swish donate URL, AI trade in Elit roster
+2. Optional: AI trade in Elit roster

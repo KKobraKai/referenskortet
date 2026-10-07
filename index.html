@@ -321,14 +321,11 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
         </div>
         <div id="dlStatus" class="msg" role="status" hidden></div>
         <div class="card stack" id="supportBox" style="margin-top:16px">
-          <h3 style="margin:0" data-i18n="support_h"></h3>
-          <p class="note" data-i18n="support_note"></p>
-          <label class="f" for="donateUrl"><span data-i18n="donate"></span><input type="url" id="donateUrl" placeholder="https://…" autocomplete="url"></label>
-          <div class="row" style="align-items:center;gap:12px">
-            <a class="btn" id="donateBtn" href="#" target="_blank" rel="noopener" data-i18n="donate"></a>
-            <span id="donateHint" class="note"></span>
-          </div>
-          <div class="row" style="align-items:center;gap:12px">
+          <p class="note" style="margin:0">
+            <span data-i18n="credit_note"></span>
+            <a class="linkish" href="https://mediahiveab.com" target="_blank" rel="noopener" data-i18n="credit_by" style="display:inline;padding:0;margin-left:0.35em"></a>
+          </p>
+          <div class="row" style="align-items:center;gap:12px;margin-top:10px">
             <button class="btn" type="button" id="copyShare" data-i18n="copy_link"></button>
           </div>
         </div>
@@ -413,8 +410,7 @@ sv:{
  preview:"Förhandsvisning", front:"Framsida", back:"Baksida", trim:"Visa skärlinje", saved_local:"Dina val sparas i den här webbläsaren. Bild och adresser sparas inte.",
  share_h:"Dela / skapa eget", share_show:"Visa länk för att skapa eget kort på baksidan", share_url:"Publik webbadress",
  share_on_card:"Skapa ditt eget kort: {url}",
- support_h:"Stöd", support_note:"Gratis för BNI-medlemmar. En valfri liten donation håller tjänsten igång.",
- donate:"Donera", donate_missing:"Lägg till Swish/PayPal/Ko-fi-länk i inställningarna",
+ credit_note:"Gratis verktyg för BNI-medlemmar.", credit_by:"Byggd av Mediahive AB",
  copy_link:"Kopiera länk till appen", link_copied:"Länk kopierad",
  land_kicker:"BNI-referenskort",
  land_hero:"Fler exempel — tryck för att använda temat",
@@ -477,8 +473,7 @@ en:{
  preview:"Preview", front:"Front", back:"Back", trim:"Show trim line", saved_local:"Your choices are saved in this browser. Images and addresses are not.",
  share_h:"Share / make your own", share_show:"Show make-your-own link on back", share_url:"Public URL",
  share_on_card:"Make your own card: {url}",
- support_h:"Support", support_note:"Free for BNI members. An optional small donation keeps it online.",
- donate:"Donate", donate_missing:"Add Swish/PayPal/Ko-fi link in settings",
+ credit_note:"Free tool for BNI members.", credit_by:"Built by Mediahive AB",
  copy_link:"Copy link to the app", link_copied:"Link copied",
  land_kicker:"BNI referral postcard",
  land_hero:"More examples — tap one to use that theme",
@@ -541,8 +536,7 @@ de:{
  preview:"Vorschau", front:"Vorderseite", back:"Rückseite", trim:"Schnittlinie zeigen", saved_local:"Ihre Auswahl wird in diesem Browser gespeichert. Bilder und Adressen nicht.",
  share_h:"Teilen / eigene Karte", share_show:"Link „eigene Karte erstellen“ auf der Rückseite zeigen", share_url:"Öffentliche URL",
  share_on_card:"Erstellen Sie Ihre eigene Karte: {url}",
- support_h:"Unterstützung", support_note:"Kostenlos für BNI-Mitglieder. Eine optionale kleine Spende hält den Dienst online.",
- donate:"Spenden", donate_missing:"Swish/PayPal/Ko-fi-Link in den Einstellungen hinterlegen",
+ credit_note:"Kostenloses Tool für BNI-Mitglieder.", credit_by:"Erstellt von Mediahive AB",
  copy_link:"App-Link kopieren", link_copied:"Link kopiert",
  land_kicker:"BNI-Empfehlungspostkarte",
  land_hero:"Weitere Beispiele — antippen, um das Motiv zu übernehmen",
@@ -605,8 +599,7 @@ fr:{
  preview:"Aperçu", front:"Recto", back:"Verso", trim:"Afficher la coupe", saved_local:"Vos choix sont enregistrés dans ce navigateur, sauf les images et les adresses.",
  share_h:"Partager / créer la vôtre", share_show:"Afficher le lien « créez la vôtre » au verso", share_url:"URL publique",
  share_on_card:"Créez votre propre carte : {url}",
- support_h:"Soutien", support_note:"Gratuit pour les membres BNI. Un petit don optionnel maintient le service en ligne.",
- donate:"Faire un don", donate_missing:"Ajoutez un lien Swish/PayPal/Ko-fi dans les paramètres",
+ credit_note:"Outil gratuit pour les membres BNI.", credit_by:"Créé par Mediahive AB",
  copy_link:"Copier le lien de l'appli", link_copied:"Lien copié",
  land_kicker:"Carte postale BNI",
  land_hero:"Plus d’exemples — touchez pour utiliser ce thème",
@@ -669,8 +662,7 @@ es:{
  preview:"Vista previa", front:"Anverso", back:"Reverso", trim:"Mostrar línea de corte", saved_local:"Sus elecciones se guardan en este navegador, salvo imágenes y direcciones.",
  share_h:"Compartir / cree la suya", share_show:"Mostrar enlace para crear su propia tarjeta en el reverso", share_url:"URL pública",
  share_on_card:"Cree su propia tarjeta: {url}",
- support_h:"Apoyo", support_note:"Gratis para miembros de BNI. Una pequeña donación opcional mantiene el servicio en línea.",
- donate:"Donar", donate_missing:"Añada un enlace Swish/PayPal/Ko-fi en la configuración",
+ credit_note:"Herramienta gratuita para miembros de BNI.", credit_by:"Creado por Mediahive AB",
  copy_link:"Copiar enlace de la app", link_copied:"Enlace copiado",
  land_kicker:"Postal de referencias BNI",
  land_hero:"Más ejemplos — toque uno para usar ese tema",
@@ -733,8 +725,7 @@ it:{
  preview:"Anteprima", front:"Fronte", back:"Retro", trim:"Mostra linea di taglio", saved_local:"Le tue scelte sono salvate in questo browser, tranne immagini e indirizzi.",
  share_h:"Condividi / crea la tua", share_show:"Mostra il link «crea la tua cartolina» sul retro", share_url:"URL pubblica",
  share_on_card:"Crea la tua cartolina: {url}",
- support_h:"Supporto", support_note:"Gratis per i membri BNI. Una piccola donazione facoltativa tiene il servizio online.",
- donate:"Dona", donate_missing:"Aggiungi un link Swish/PayPal/Ko-fi nelle impostazioni",
+ credit_note:"Strumento gratuito per i membri BNI.", credit_by:"Realizzato da Mediahive AB",
  copy_link:"Copia link all'app", link_copied:"Link copiato",
  land_kicker:"Cartolina referenze BNI",
  land_hero:"Altri esempi — tocca per usare il tema",
@@ -797,8 +788,7 @@ pt:{
  preview:"Pré-visualização", front:"Frente", back:"Verso", trim:"Mostrar linha de corte", saved_local:"Suas escolhas ficam salvas neste navegador, exceto imagens e endereços.",
  share_h:"Partilhar / crie o seu", share_show:"Mostrar link para criar o seu cartão no verso", share_url:"URL pública",
  share_on_card:"Crie o seu próprio cartão: {url}",
- support_h:"Apoio", support_note:"Grátis para membros do BNI. Uma pequena doação opcional mantém o serviço online.",
- donate:"Doar", donate_missing:"Adicione um link Swish/PayPal/Ko-fi nas definições",
+ credit_note:"Ferramenta gratuita para membros do BNI.", credit_by:"Criado pela Mediahive AB",
  copy_link:"Copiar link da app", link_copied:"Link copiado",
  land_kicker:"Postal de indicações BNI",
  land_hero:"Mais exemplos — toque para usar o tema",
@@ -1088,7 +1078,7 @@ const S = {
   edition: ED0, cardLang: REGION_LANG[R0] || "en", layout: "words", palette: EDITIONS[ED0].pal, style: "photo",
   text: { head: null, sub: null, backHead: null, body: null },
   sender: { name: "Kaj Nybom", company: "Mediahive AB", phone: "072-982 04 84", web: "mediahiveab.com", email: "", address: "Genuagatan 5, 723 56 Västerås" },
-  showCh: true, stamp: true, showShare: true, shareUrl: "referralcard.ai", donateUrl: "", size: US_SIZE.includes(R0) ? "us" : "a6", bleed: 3, step: 1, trim: true
+  showCh: true, stamp: true, showShare: true, shareUrl: "referralcard.ai", size: US_SIZE.includes(R0) ? "us" : "a6", bleed: 3, step: 1, trim: true
 };
 const STORE = "refcard.v1";
 let HAD_SAVED = false;
@@ -1099,7 +1089,6 @@ if (typeof S.showShare !== "boolean") S.showShare = true;
 if (typeof S.shareUrl !== "string") S.shareUrl = "";
 if (S.shareUrl === "referenskortet.se" || /referenskortet\.pages\.dev/i.test(S.shareUrl || "")) S.shareUrl = "referralcard.ai";
 if (S.sender && S.sender.web === "mediahiveab.se") S.sender.web = "mediahiveab.com";
-if (typeof S.donateUrl !== "string") S.donateUrl = "";
 if (!S.sender || typeof S.sender !== "object") S.sender = { name: "Kaj Nybom", company: "Mediahive AB", phone: "072-982 04 84", web: "mediahiveab.com", email: "", address: "Genuagatan 5, 723 56 Västerås" };
 if (!UI[S.ui]) S.ui = "en";
 if (!CARD[S.cardLang]) S.cardLang = "en";
@@ -1855,22 +1844,7 @@ function showStep(n) {
   $("prevBtn").disabled = S.step === 1; $("nextBtn").disabled = S.step === 5;
   if (S.step === 5) renderGuide();
 }
-function renderSupport() {
-  if (document.activeElement !== $("donateUrl")) $("donateUrl").value = S.donateUrl || "";
-  const url = (S.donateUrl || "").trim();
-  const btn = $("donateBtn");
-  const hint = $("donateHint");
-  if (url) {
-    btn.href = url; btn.removeAttribute("aria-disabled"); btn.style.opacity = "";
-    btn.onclick = null;
-    hint.textContent = ""; hint.hidden = true;
-  } else {
-    btn.href = "#"; btn.setAttribute("aria-disabled", "true"); btn.style.opacity = "0.55";
-    btn.onclick = e => { e.preventDefault(); };
-    hint.textContent = t("donate_missing"); hint.hidden = false;
-  }
-}
-function renderAll() { applyText(); renderChapters(); renderTrades(); renderCardForm(); renderSupport(); renderGuide(); showStep(S.step); setRecipients(RECIPIENTS); renderHero(); schedule(); }
+function renderAll() { applyText(); renderChapters(); renderTrades(); renderCardForm(); renderGuide(); showStep(S.step); setRecipients(RECIPIENTS); renderHero(); schedule(); }
 
 // ---------- Events ----------
 $("uiLang").onchange = e => { S.ui = e.target.value; save(); renderAll(); };
@@ -1937,7 +1911,6 @@ $("showCh").onchange = e => { S.showCh = e.target.checked; save(); renderCardFor
 $("stamp").onchange = e => { S.stamp = e.target.checked; save(); schedule(); };
 $("showShare").onchange = e => { S.showShare = e.target.checked; save(); schedule(); };
 $("shareUrl").addEventListener("input", e => { S.shareUrl = e.target.value; save(); schedule(); });
-$("donateUrl").addEventListener("input", e => { S.donateUrl = e.target.value; save(); renderSupport(); });
 $("copyShare").onclick = async () => {
   const url = publicShareUrl();
   try { await navigator.clipboard.writeText(url); $("copyShare").textContent = t("link_copied"); setTimeout(() => $("copyShare").textContent = t("copy_link"), 1600); }
