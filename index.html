@@ -133,8 +133,6 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
 .hero-card .hero-cap{display:block;margin-top:8px;font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--muted)}
 .hero-card[aria-pressed="true"] .hero-cap{color:var(--accent)}
 .hero-card[aria-pressed="true"] canvas{box-shadow:0 0 0 2px var(--accent),0 10px 28px rgba(0,0,0,.12)}
-.hero-more{display:flex;align-items:center;justify-content:center;min-width:120px;width:120px}
-.hero-more-pill{display:inline-block;padding:10px 14px;border-radius:999px;border:1px dashed var(--line);background:var(--surface);font-size:12px;font-weight:600;color:var(--muted);text-align:center}
 /* Intro stays on-page; scroll into the workbench (no separate landing mode) */
 #landing{margin:8px 0 28px;padding-bottom:8px;border-bottom:1px solid var(--line)}
 #workbench{scroll-margin-top:16px}
@@ -259,7 +257,6 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
         </div>
         <fieldset><legend data-i18n="layout"></legend><div class="seg" id="layoutSeg"></div></fieldset>
         <fieldset><legend data-i18n="palette"></legend><div class="seg" id="paletteSeg"></div></fieldset>
-        <fieldset id="shapeBox"><legend data-i18n="shape"></legend><div class="seg" id="shapeSeg"></div></fieldset>
         <div id="imgBox" class="card stack" hidden>
           <h3 style="margin:0" data-i18n="img_h"></h3>
           <div class="row" style="align-items:center">
@@ -389,7 +386,6 @@ sv:{
  clear_sel:"Avmarkera alla", order:"Ordning", order_auto:"Automatisk", order_manual:"Som jag valt",
  s3_lead:"Välj tillfälle, språk och utseende. Allt syns direkt i förhandsvisningen.",
  edition:"Tillfälle", card_lang:"Kortets språk", layout:"Framsida", lay_words:"Branschträd", lay_image:"Bild", lay_mixed:"Bild + branscher", palette:"Färger",
- shape:"Symbolform", shape_auto:"Auto", shape_tree:"Gran", shape_heart:"Hjärta", shape_fist:"Knytnäve", shape_brain:"Hjärna", shape_diamond:"Romb", shape_circle:"Cirkel", shape_block:"Block",
  img_h:"Bild till framsidan", img_upload:"Välj bild", img_none:"Ingen bild vald",
  img_ok:"Bra upplösning, {dpi} dpi.", img_warn:"Godkänd men mjuk, {dpi} dpi. 300 dpi är bäst.", img_low:"För låg upplösning, {dpi} dpi. Bilden blir suddig i tryck.",
  prompt_h:"Prompt till bild-AI", prompt_note:"Klistra in i valfri bildgenerator och ladda sedan upp bilden här.", style:"Stil",
@@ -422,8 +418,6 @@ sv:{
  copy_link:"Kopiera länk till appen", link_copied:"Länk kopierad",
  land_kicker:"BNI-referenskort",
  land_hero:"Fler exempel — tryck för att använda temat",
- hero_more:"Fler teman",
- hero_less:"Färre",
  land_h:"Ett vykort som öppnar dörrar året runt",
  land_pitch:"Designa en gång. Skriv ut och skicka när som helst — <strong>inte bara till jul</strong>.",
  land_year:"Julkortet i förhandsvisningen är Kajs exempel från BNI Elit Västerås — samma verktyg funkar året runt. Byt till ditt namn när du är redo.",
@@ -456,7 +450,6 @@ en:{
  clear_sel:"Clear all", order:"Order", order_auto:"Automatic", order_manual:"As I picked them",
  s3_lead:"Choose the occasion, language and look. Every change shows in the preview.",
  edition:"Occasion", card_lang:"Card language", layout:"Front", lay_words:"Trade tree", lay_image:"Image", lay_mixed:"Image + trades", palette:"Colours",
- shape:"Symbol shape", shape_auto:"Auto", shape_tree:"Tree", shape_heart:"Heart", shape_fist:"Fist", shape_brain:"Brain", shape_diamond:"Diamond", shape_circle:"Circle", shape_block:"Block",
  img_h:"Front image", img_upload:"Choose image", img_none:"No image chosen",
  img_ok:"Good resolution, {dpi} dpi.", img_warn:"Usable but soft, {dpi} dpi. 300 dpi is best.", img_low:"Resolution too low, {dpi} dpi. It will print blurry.",
  prompt_h:"Prompt for an image AI", prompt_note:"Paste it into any image generator, then upload the result here.", style:"Style",
@@ -489,8 +482,6 @@ en:{
  copy_link:"Copy link to the app", link_copied:"Link copied",
  land_kicker:"BNI referral postcard",
  land_hero:"More examples — tap one to use that theme",
- hero_more:"More themes",
- hero_less:"Fewer",
  land_h:"A postcard that opens doors all year",
  land_pitch:"Design once. Print and mail anytime — <strong>not just Christmas</strong>.",
  land_year:"The Christmas card in the preview is Kaj’s sample from BNI Elit Västerås — same tool works all year. Swap in your details when you’re ready.",
@@ -523,7 +514,6 @@ de:{
  clear_sel:"Alle abwählen", order:"Reihenfolge", order_auto:"Automatisch", order_manual:"Wie ausgewählt",
  s3_lead:"Wählen Sie Anlass, Sprache und Gestaltung. Jede Änderung erscheint sofort in der Vorschau.",
  edition:"Anlass", card_lang:"Sprache der Karte", layout:"Vorderseite", lay_words:"Branchenbaum", lay_image:"Bild", lay_mixed:"Bild + Branchen", palette:"Farben",
- shape:"Symbolform", shape_auto:"Auto", shape_tree:"Baum", shape_heart:"Herz", shape_fist:"Faust", shape_brain:"Hirn", shape_diamond:"Raute", shape_circle:"Kreis", shape_block:"Block",
  img_h:"Bild für die Vorderseite", img_upload:"Bild wählen", img_none:"Kein Bild gewählt",
  img_ok:"Gute Auflösung, {dpi} dpi.", img_warn:"Brauchbar, aber weich, {dpi} dpi. 300 dpi sind ideal.", img_low:"Auflösung zu gering, {dpi} dpi. Der Druck wird unscharf.",
  prompt_h:"Prompt für eine Bild-KI", prompt_note:"In einen beliebigen Bildgenerator einfügen und das Ergebnis hier hochladen.", style:"Stil",
@@ -556,8 +546,6 @@ de:{
  copy_link:"App-Link kopieren", link_copied:"Link kopiert",
  land_kicker:"BNI-Empfehlungspostkarte",
  land_hero:"Weitere Beispiele — antippen, um das Motiv zu übernehmen",
- hero_more:"Mehr Motive",
- hero_less:"Weniger",
  land_h:"Eine Postkarte, die ganzjährig Türen öffnet",
  land_pitch:"Einmal gestalten. Jederzeit drucken und versenden — <strong>nicht nur zu Weihnachten</strong>.",
  land_year:"Die Weihnachtskarte oben ist Kajs Beispiel von BNI Elit Västerås — dasselbe Tool ganzjährig. Tauschen Sie Ihre Daten ein, wenn Sie bereit sind.",
@@ -590,7 +578,6 @@ fr:{
  clear_sel:"Tout désélectionner", order:"Ordre", order_auto:"Automatique", order_manual:"Selon mon choix",
  s3_lead:"Choisissez l'occasion, la langue et le style. Chaque modification apparaît dans l'aperçu.",
  edition:"Occasion", card_lang:"Langue de la carte", layout:"Recto", lay_words:"Arbre des métiers", lay_image:"Image", lay_mixed:"Image + métiers", palette:"Couleurs",
- shape:"Forme symbole", shape_auto:"Auto", shape_tree:"Sapin", shape_heart:"Cœur", shape_fist:"Poing", shape_brain:"Cerveau", shape_diamond:"Losange", shape_circle:"Cercle", shape_block:"Bloc",
  img_h:"Image du recto", img_upload:"Choisir une image", img_none:"Aucune image",
  img_ok:"Bonne résolution, {dpi} dpi.", img_warn:"Utilisable mais un peu floue, {dpi} dpi. L'idéal est 300 dpi.", img_low:"Résolution trop faible, {dpi} dpi. L'impression sera floue.",
  prompt_h:"Prompt pour une IA d'images", prompt_note:"Collez-le dans le générateur d'images de votre choix, puis importez le résultat ici.", style:"Style",
@@ -623,8 +610,6 @@ fr:{
  copy_link:"Copier le lien de l'appli", link_copied:"Lien copié",
  land_kicker:"Carte postale BNI",
  land_hero:"Plus d’exemples — touchez pour utiliser ce thème",
- hero_more:"Plus de thèmes",
- hero_less:"Moins",
  land_h:"Une carte qui ouvre des portes toute l’année",
  land_pitch:"Concevez une fois. Imprimez et envoyez quand vous voulez — <strong>pas seulement à Noël</strong>.",
  land_year:"La carte de Noël ci-dessus est l’exemple de Kaj (BNI Elit Västerås) — le même outil toute l’année. Remplacez par vos coordonnées quand vous êtes prêt.",
@@ -657,7 +642,6 @@ es:{
  clear_sel:"Desmarcar todo", order:"Orden", order_auto:"Automático", order_manual:"Según mi selección",
  s3_lead:"Elija la ocasión, el idioma y el estilo. Cada cambio se ve en la vista previa.",
  edition:"Ocasión", card_lang:"Idioma de la tarjeta", layout:"Anverso", lay_words:"Árbol de sectores", lay_image:"Imagen", lay_mixed:"Imagen + sectores", palette:"Colores",
- shape:"Forma símbolo", shape_auto:"Auto", shape_tree:"Árbol", shape_heart:"Corazón", shape_fist:"Puño", shape_brain:"Cerebro", shape_diamond:"Rombo", shape_circle:"Círculo", shape_block:"Bloque",
  img_h:"Imagen del anverso", img_upload:"Elegir imagen", img_none:"Ninguna imagen",
  img_ok:"Buena resolución, {dpi} ppp.", img_warn:"Aceptable pero suave, {dpi} ppp. Lo ideal son 300 ppp.", img_low:"Resolución demasiado baja, {dpi} ppp. Saldrá borrosa.",
  prompt_h:"Prompt para una IA de imágenes", prompt_note:"Péguelo en cualquier generador de imágenes y suba aquí el resultado.", style:"Estilo",
@@ -690,8 +674,6 @@ es:{
  copy_link:"Copiar enlace de la app", link_copied:"Enlace copiado",
  land_kicker:"Postal de referencias BNI",
  land_hero:"Más ejemplos — toque uno para usar ese tema",
- hero_more:"Más temas",
- hero_less:"Menos",
  land_h:"Una postal que abre puertas todo el año",
  land_pitch:"Diseñe una vez. Imprima y envíe cuando quiera — <strong>no solo en Navidad</strong>.",
  land_year:"La tarjeta de Navidad de arriba es el ejemplo de Kaj (BNI Elit Västerås): la misma herramienta todo el año. Cambie sus datos cuando esté listo.",
@@ -724,7 +706,6 @@ it:{
  clear_sel:"Deseleziona tutto", order:"Ordine", order_auto:"Automatico", order_manual:"Come li ho scelti",
  s3_lead:"Scegli occasione, lingua e stile. Ogni modifica appare nell'anteprima.",
  edition:"Occasione", card_lang:"Lingua della cartolina", layout:"Fronte", lay_words:"Albero dei settori", lay_image:"Immagine", lay_mixed:"Immagine + settori", palette:"Colori",
- shape:"Forma simbolo", shape_auto:"Auto", shape_tree:"Albero", shape_heart:"Cuore", shape_fist:"Pugno", shape_brain:"Cervello", shape_diamond:"Rombo", shape_circle:"Cerchio", shape_block:"Blocco",
  img_h:"Immagine del fronte", img_upload:"Scegli immagine", img_none:"Nessuna immagine",
  img_ok:"Buona risoluzione, {dpi} dpi.", img_warn:"Utilizzabile ma morbida, {dpi} dpi. L'ideale è 300 dpi.", img_low:"Risoluzione troppo bassa, {dpi} dpi. In stampa risulterà sfocata.",
  prompt_h:"Prompt per un'IA di immagini", prompt_note:"Incollalo in un qualsiasi generatore di immagini e carica qui il risultato.", style:"Stile",
@@ -757,8 +738,6 @@ it:{
  copy_link:"Copia link all'app", link_copied:"Link copiato",
  land_kicker:"Cartolina referenze BNI",
  land_hero:"Altri esempi — tocca per usare il tema",
- hero_more:"Altri temi",
- hero_less:"Meno",
  land_h:"Una cartolina che apre porte tutto l’anno",
  land_pitch:"Progetta una volta. Stampa e spedisci quando vuoi — <strong>non solo a Natale</strong>.",
  land_year:"La cartolina di Natale sopra è l’esempio di Kaj (BNI Elit Västerås): lo stesso strumento tutto l’anno. Inserisci i tuoi dati quando sei pronto.",
@@ -791,7 +770,6 @@ pt:{
  clear_sel:"Desmarcar todos", order:"Ordem", order_auto:"Automática", order_manual:"Como escolhi",
  s3_lead:"Escolha a ocasião, o idioma e o visual. Cada mudança aparece na pré-visualização.",
  edition:"Ocasião", card_lang:"Idioma do cartão", layout:"Frente", lay_words:"Árvore de setores", lay_image:"Imagem", lay_mixed:"Imagem + setores", palette:"Cores",
- shape:"Forma símbolo", shape_auto:"Auto", shape_tree:"Árvore", shape_heart:"Coração", shape_fist:"Punho", shape_brain:"Cérebro", shape_diamond:"Losango", shape_circle:"Círculo", shape_block:"Bloco",
  img_h:"Imagem da frente", img_upload:"Escolher imagem", img_none:"Nenhuma imagem",
  img_ok:"Boa resolução, {dpi} dpi.", img_warn:"Aceitável, mas suave, {dpi} dpi. O ideal é 300 dpi.", img_low:"Resolução baixa demais, {dpi} dpi. A impressão ficará borrada.",
  prompt_h:"Prompt para uma IA de imagens", prompt_note:"Cole em qualquer gerador de imagens e depois envie o resultado aqui.", style:"Estilo",
@@ -824,8 +802,6 @@ pt:{
  copy_link:"Copiar link da app", link_copied:"Link copiado",
  land_kicker:"Postal de indicações BNI",
  land_hero:"Mais exemplos — toque para usar o tema",
- hero_more:"Mais temas",
- hero_less:"Menos",
  land_h:"Um postal que abre portas o ano todo",
  land_pitch:"Desenhe uma vez. Imprima e envie quando quiser — <strong>não só no Natal</strong>.",
  land_year:"O cartão de Natal acima é o exemplo do Kaj (BNI Elit Västerås) — a mesma ferramenta o ano todo. Troque pelos seus dados quando estiver pronto.",
@@ -1109,7 +1085,7 @@ const S = {
   v: 1, ui: UI[navLang] ? navLang : (REGION_LANG[R0] || "en"), region: R0, city: R0 === "SE" ? "Västerås" : "",
   chapters: PRESET_CHAPTERS.map(c => ({ ...c, include: true, items: [...c.items] })),
   selected: [...PRESET_CHAPTERS[0].items], order: "auto", own: [], ai: [], showAll: false,
-  edition: ED0, cardLang: REGION_LANG[R0] || "en", layout: "words", shape: null, palette: EDITIONS[ED0].pal, style: "photo",
+  edition: ED0, cardLang: REGION_LANG[R0] || "en", layout: "words", palette: EDITIONS[ED0].pal, style: "photo",
   text: { head: null, sub: null, backHead: null, body: null },
   sender: { name: "Kaj Nybom", company: "Mediahive AB", phone: "072-982 04 84", web: "mediahiveab.com", email: "", address: "Genuagatan 5, 723 56 Västerås" },
   showCh: true, stamp: true, showShare: true, shareUrl: "referralcard.ai", donateUrl: "", size: US_SIZE.includes(R0) ? "us" : "a6", bleed: 3, step: 1, trim: true
@@ -1129,8 +1105,6 @@ if (!UI[S.ui]) S.ui = "en";
 if (!CARD[S.cardLang]) S.cardLang = "en";
 if (!editionAllowed(S.edition, S.region)) S.edition = defaultEdition(S.region);
 if (!PALETTES[S.palette]) S.palette = EDITIONS[S.edition].pal;
-const SHAPE_OK = ["tree","heart","fist","brain","diamond","circle","block"];
-if (S.shape != null && !SHAPE_OK.includes(S.shape)) S.shape = null;
 let saveTimer = 0;
 function save() { clearTimeout(saveTimer); saveTimer = setTimeout(() => { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {} }, 300); }
 
@@ -1309,9 +1283,6 @@ function renderCardForm() {
   const lays = [["words", "lay_words"], ["image", "lay_image"], ["mixed", "lay_mixed"]];
   $("layoutSeg").innerHTML = lays.map(([v, k]) => `<button type="button" data-layout="${v}" aria-pressed="${S.layout === v}">${esc(t(k))}</button>`).join("");
   $("paletteSeg").innerHTML = PAL_ORDER.map(p => { const P = PALETTES[p]; return `<button type="button" class="swatch" data-pal="${p}" aria-pressed="${S.palette === p}" aria-label="${p}" style="background:${P.bg}"><i style="background:${P.acc}"></i></button>`; }).join("");
-  const shapes = [["", "shape_auto"], ["tree", "shape_tree"], ["heart", "shape_heart"], ["fist", "shape_fist"], ["brain", "shape_brain"], ["diamond", "shape_diamond"], ["circle", "shape_circle"], ["block", "shape_block"]];
-  $("shapeSeg").innerHTML = shapes.map(([v, k]) => `<button type="button" data-shape="${v}" aria-pressed="${(S.shape || "") === v}">${esc(t(k))}</button>`).join("");
-  $("shapeBox").hidden = S.layout === "image";
   Object.entries(TEXT_INPUTS).forEach(([k, id]) => { if (document.activeElement !== $(id)) $(id).value = txt(k); });
   Object.entries(SENDER_INPUTS).forEach(([k, id]) => { if (document.activeElement !== $(id)) $(id).value = S.sender[k] || ""; });
   $("showCh").checked = S.showCh; $("stamp").checked = S.stamp;
@@ -1410,24 +1381,6 @@ function rowCounts(n, shape) {
     while (diff !== 0 && k < 400) { const off = Math.ceil(k / 2) * (k % 2 ? 1 : -1); const ii = Math.min(rows - 1, Math.max(0, mid + off)); if (diff > 0) { c[ii]++; diff--; } else if (c[ii] > 1) { c[ii]--; diff++; } k++; }
     return c;
   }
-  // heart / fist / brain: profile-weighted rows (same approach as circle)
-  if (shape === "heart" || shape === "fist" || shape === "brain") {
-    const rows = Math.max(4, Math.round(Math.sqrt(n * 1.05)) + 2);
-    const prof = [];
-    for (let i = 0; i < rows; i++) prof.push(Math.max(0.12, profile(shape, (i + 0.5) / rows)));
-    const sum = prof.reduce((a, b) => a + b, 0);
-    const c = prof.map(p => Math.max(1, Math.round(p / sum * n)));
-    let diff = n - c.reduce((a, b) => a + b, 0), k = 0;
-    const mid = Math.floor(rows * (shape === "heart" ? 0.28 : shape === "brain" ? 0.35 : 0.4));
-    while (diff !== 0 && k < 400) {
-      const off = Math.ceil(k / 2) * (k % 2 ? 1 : -1);
-      const ii = Math.min(rows - 1, Math.max(0, mid + off));
-      if (diff > 0) { c[ii]++; diff--; }
-      else if (c[ii] > 1) { c[ii]--; diff++; }
-      k++;
-    }
-    return c;
-  }
   const rows = Math.ceil(n / 5), base = Math.floor(n / rows), extra = n % rows;
   return Array.from({ length: rows }, (_, i) => base + (i < extra ? 1 : 0));
 }
@@ -1436,23 +1389,6 @@ function profile(shape, t) {
   if (shape === "tree") return 0.16 + 0.84 * t;
   if (shape === "diamond") return 0.2 + 0.8 * (1 - Math.abs(2 * t - 1));
   if (shape === "circle") { const v = 2 * t - 1; return 0.35 + 0.65 * Math.sqrt(Math.max(0, 1 - v * v)); }
-  if (shape === "heart") {
-    // two lobes up top, taper to a point
-    if (t < 0.22) return 0.42 + 0.5 * (t / 0.22);
-    return Math.max(0.1, Math.pow(1 - (t - 0.22) / 0.78, 1.2));
-  }
-  if (shape === "fist") {
-    // knuckle bar, thick body, narrower wrist
-    if (t < 0.12) return 0.88;
-    if (t < 0.72) return 0.98;
-    return 0.42 + 0.4 * (1 - (t - 0.72) / 0.28);
-  }
-  if (shape === "brain") {
-    // wide twin lobes, softer underside
-    if (t < 0.55) return 0.62 + 0.36 * Math.sin((t / 0.55) * Math.PI);
-    const u = (t - 0.55) / 0.45;
-    return Math.max(0.28, 0.72 * Math.sqrt(Math.max(0, 1 - u * u)));
-  }
   return 1;
 }
 function orderWords(ctx, words, shape) {
@@ -1460,7 +1396,7 @@ function orderWords(ctx, words, shape) {
   setFont(ctx, 400, 1, FB);
   const sorted = [...words].sort((a, b) => mw(ctx, a) - mw(ctx, b));
   if (shape === "tree") return sorted;
-  if (shape === "block" || shape === "fist") return words;
+  if (shape === "block") return words;
   const front = [], back = []; sorted.forEach((w, i) => (i % 2 ? back : front).push(w));
   return front.concat(back.reverse()); // short words at both ends, long ones in the middle
 }
@@ -1502,22 +1438,6 @@ function drawOrn(ctx, type, cx, cy, col) {
   } else if (type === "leaf") {
     ctx.beginPath(); ctx.moveTo(cx - 2.4, cy + 1.2); ctx.quadraticCurveTo(cx - 1.6, cy - 2.2, cx + 2.4, cy - 1.2); ctx.quadraticCurveTo(cx + 1.4, cy + 2.2, cx - 2.4, cy + 1.2); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(cx - 2.4, cy + 1.2); ctx.lineTo(cx + 1.2, cy - 0.6); ctx.stroke();
-  } else if (type === "heart") {
-    ctx.beginPath();
-    ctx.moveTo(cx, cy + 2.4);
-    ctx.bezierCurveTo(cx + 4.2, cy + 0.2, cx + 3.6, cy - 2.6, cx, cy - 1.1);
-    ctx.bezierCurveTo(cx - 3.6, cy - 2.6, cx - 4.2, cy + 0.2, cx, cy + 2.4);
-    ctx.stroke();
-  } else if (type === "fist") {
-    ctx.strokeRect(cx - 2.8, cy - 1.8, 5.6, 3.2);
-    ctx.beginPath(); ctx.moveTo(cx - 2.8, cy - 0.6); ctx.lineTo(cx + 2.8, cy - 0.6); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx - 1.4, cy + 1.4); ctx.lineTo(cx - 1.4, cy + 2.6); ctx.lineTo(cx + 1.4, cy + 2.6); ctx.lineTo(cx + 1.4, cy + 1.4); ctx.stroke();
-  } else if (type === "brain") {
-    ctx.beginPath();
-    ctx.ellipse(cx - 1.5, cy, 2.2, 2.0, 0, 0, Math.PI * 2);
-    ctx.ellipse(cx + 1.5, cy, 2.2, 2.0, 0, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx, cy - 1.6); ctx.quadraticCurveTo(cx + 0.2, cy, cx, cy + 1.6); ctx.stroke();
   } else { ctx.beginPath(); ctx.moveTo(cx - 7, cy); ctx.lineTo(cx + 7, cy); ctx.stroke(); }
   ctx.restore();
 }
@@ -1531,31 +1451,21 @@ function measureTextBlock(ctx, w) {
   const h = headLines.length * hs * 1.05 + (subLines.length ? 2.6 + subLines.length * ss * 1.42 : 0);
   return { headLines, hs, subLines, ss, h };
 }
-function activeShape() { return S.shape || (EDITIONS[S.edition] && EDITIONS[S.edition].shape) || "block"; }
-function activeOrn() {
-  if (S.shape === "heart") return "heart";
-  if (S.shape === "fist") return "fist";
-  if (S.shape === "brain") return "brain";
-  if (S.shape === "tree") return "star";
-  const ed = EDITIONS[S.edition];
-  return (ed && ed.orn) || "rule";
-}
 function column(g, box, P, withWords) {
   const { ctx } = g; const ed = EDITIONS[S.edition];
-  const shape = activeShape(); const ornType = activeOrn();
   const T = measureTextBlock(ctx, box.w);
   let rows = [], ws = 0, orn = 0, trunk = 0, gapW = 5.5;
   const words = withWords ? cardWords() : [];
   if (words.length) {
-    orn = ornType === "rule" ? 3 : 6.4; trunk = shape === "tree" ? 4.4 : 0;
+    orn = ed.orn === "rule" ? 3 : 6.4; trunk = ed.shape === "tree" ? 4.4 : 0;
     const avail = Math.max(10, box.h - T.h - gapW - orn - trunk);
-    const L = layoutWords(ctx, words, shape, box.w * 0.97, avail); rows = L.rows; ws = L.size;
+    const L = layoutWords(ctx, words, ed.shape, box.w * 0.97, avail); rows = L.rows; ws = L.size;
   }
   const wordsH = rows.length * ws * 1.6;
   const total = (rows.length ? orn + wordsH + trunk + gapW : 0) + T.h;
   let y = box.y + Math.max(0, (box.h - total) / 2); const cx = box.x + box.w / 2;
   if (rows.length) {
-    drawOrn(ctx, ornType, cx, y + orn / 2 - 0.4, P.acc); y += orn;
+    drawOrn(ctx, ed.orn, cx, y + orn / 2 - 0.4, P.acc); y += orn;
     ctx.textBaseline = "middle"; ctx.textAlign = "left"; setFont(ctx, 400, ws, FB);
     const gap = ws * 1.25;
     rows.forEach(r => {
@@ -1835,62 +1745,49 @@ function renderGuide() {
 // ---------- Hero example cards ----------
 const HERO_WORD_KEYS = ["law","web","accounting","coaching","photo","electrician","hvac","cloud","graphic","events","telecom","chiro","waste","promo","massage","bizconsult"];
 const HERO_SAMPLES = [
-  { id: "xmas", edition: "xmas", palette: "spruce", layout: "words", shape: "tree",
+  { id: "xmas", edition: "xmas", palette: "spruce", layout: "words",
     head: { sv: "God Jul & Gott Nytt År", en: "Merry Christmas" },
     sub:  { sv: "Tack för året som gått", en: "Thank you for this year" },
     cap:  { sv: "Julgran", en: "Christmas tree" }, words: "trades" },
-  { id: "heart", edition: "thanks", palette: "berry", layout: "words", shape: "heart",
-    head: { sv: "Tack från hjärtat", en: "From the heart" },
-    sub:  { sv: "En varm referral", en: "A warm referral" },
-    cap:  { sv: "Hjärta", en: "Heart" }, words: "trades" },
-  { id: "fist", edition: "thanks", palette: "ink", layout: "words", shape: "fist",
-    head: { sv: "Vi kör", en: "We’ve got this" },
-    sub:  { sv: "Starkare tillsammans", en: "Stronger together" },
-    cap:  { sv: "Knytnäve", en: "Fist" }, words: "trades" },
-  { id: "brain", edition: "season", palette: "night", layout: "words", shape: "brain",
-    head: { sv: "Smart intro", en: "Smart intro" },
-    sub:  { sv: "Rätt person, rätt läge", en: "Right person, right moment" },
-    cap:  { sv: "Hjärna", en: "Brain" }, words: "trades" },
-  { id: "yes", edition: "thanks", palette: "ink", layout: "words", shape: null,
+  { id: "yes", edition: "thanks", palette: "ink", layout: "words",
     head: { sv: "Yes!", en: "Yes!" },
     sub:  { sv: "Vi tar det vidare", en: "We’ll take it from here" },
     cap:  { sv: "Yes!", en: "Yes!" }, words: "few" },
-  { id: "gotyou", edition: "thanks", palette: "meadow", layout: "words", shape: null,
+  { id: "gotyou", edition: "thanks", palette: "meadow", layout: "words",
     head: { sv: "We Got You", en: "We Got You" },
     sub:  { sv: "När du behöver någon", en: "When you need someone" },
-    cap:  { sv: "We Got You", en: "We Got You" }, words: "few" }
-];
-const HERO_MORE = [
-  { id: "thanks", edition: "thanks", palette: "linen", layout: "words", shape: null,
+    cap:  { sv: "We Got You", en: "We Got You" }, words: "few" },
+  { id: "thanks", edition: "thanks", palette: "linen", layout: "words",
     head: { sv: "Tack för förtroendet", en: "Thank you for your trust" },
     sub:  { sv: "Jag finns här", en: "I’m here for you" },
     cap:  { sv: "Tack", en: "Thank you" }, words: "few" },
-  { id: "doors", edition: "season", palette: "night", layout: "words", shape: "diamond",
+  { id: "season", edition: "season", palette: "night", layout: "words",
     head: { sv: "Öppna dörrar", en: "Open doors" },
     sub:  { sv: "Ett kort. En intro.", en: "One card. One intro." },
-    cap:  { sv: "Öppna dörrar", en: "Open doors" }, words: "trades" }
+    cap:  { sv: "Öppna dörrar", en: "Open doors" }, words: "trades" },
+  { id: "summer", edition: "summer", palette: "sun", layout: "words",
+    head: { sv: "Vi hörs snart", en: "Let’s connect" },
+    sub:  { sv: "Varm hälsning från nätverket", en: "A warm hello from the network" },
+    cap:  { sv: "Connect", en: "Let’s connect" }, words: "trades" }
 ];
-function allHeroSamples() { return HERO_MORE_OPEN ? HERO_SAMPLES.concat(HERO_MORE) : HERO_SAMPLES; }
-let HERO_MORE_OPEN = false;
 function heroLang() { return (S.ui === "sv" || S.cardLang === "sv") ? "sv" : "en"; }
 function heroText(map) { const L = heroLang(); return (map && (map[L] || map.en)) || ""; }
 function withCardState(patch, fn) {
   const snap = {
-    edition: S.edition, palette: S.palette, layout: S.layout, shape: S.shape, cardLang: S.cardLang,
+    edition: S.edition, palette: S.palette, layout: S.layout, cardLang: S.cardLang,
     text: { ...S.text }, selected: S.selected.slice(), showCh: S.showCh
   };
   try {
     if (patch.edition != null) S.edition = patch.edition;
     if (patch.palette != null) S.palette = patch.palette;
     if (patch.layout != null) S.layout = patch.layout;
-    if ("shape" in patch) S.shape = patch.shape;
     if (patch.cardLang != null) S.cardLang = patch.cardLang;
     if (patch.showCh != null) S.showCh = patch.showCh;
     if (patch.selected) S.selected = patch.selected.slice();
     if (patch.text) S.text = { head: null, sub: null, backHead: null, body: null, ...patch.text };
     fn();
   } finally {
-    S.edition = snap.edition; S.palette = snap.palette; S.layout = snap.layout; S.shape = snap.shape; S.cardLang = snap.cardLang;
+    S.edition = snap.edition; S.palette = snap.palette; S.layout = snap.layout; S.cardLang = snap.cardLang;
     S.text = snap.text; S.selected = snap.selected; S.showCh = snap.showCh;
   }
 }
@@ -1903,7 +1800,6 @@ function paintHeroCanvas(cv, sample) {
     edition: sample.edition,
     palette: sample.palette,
     layout: sample.layout || "words",
-    shape: sample.shape === undefined ? null : sample.shape,
     cardLang: heroLang(),
     showCh: false,
     selected: heroSelected(sample.words),
@@ -1921,7 +1817,6 @@ function applyHeroSample(sample) {
   S.edition = sample.edition;
   S.palette = sample.palette;
   S.layout = sample.layout || "words";
-  S.shape = sample.shape === undefined ? null : sample.shape;
   S.cardLang = heroLang();
   S.text = { head: heroText(sample.head), sub: heroText(sample.sub), backHead: null, body: null };
   if (!S.selected.length) S.selected = heroSelected("trades");
@@ -1932,19 +1827,17 @@ function applyHeroSample(sample) {
 function renderHero() {
   const strip = $("heroStrip");
   if (!strip) return;
-  const samples = allHeroSamples();
-  strip.innerHTML = samples.map(s => {
+  const L = heroLang();
+  strip.innerHTML = HERO_SAMPLES.map(s => {
     const cap = heroText(s.cap);
     return `<button type="button" class="hero-card" role="listitem" data-hero="${s.id}" aria-pressed="false" aria-label="${esc(cap)}"><canvas width="540" height="390"></canvas><span class="hero-cap">${esc(cap)}</span></button>`;
-  }).join("") + `<button type="button" class="hero-card hero-more" id="heroMoreBtn" aria-expanded="${HERO_MORE_OPEN}"><span class="hero-more-pill">${esc(t(HERO_MORE_OPEN ? "hero_less" : "hero_more"))}</span></button>`;
-  strip.querySelectorAll(".hero-card[data-hero]").forEach(btn => {
-    const sample = samples.find(s => s.id === btn.dataset.hero);
+  }).join("");
+  strip.querySelectorAll(".hero-card").forEach(btn => {
+    const sample = HERO_SAMPLES.find(s => s.id === btn.dataset.hero);
     const cv = btn.querySelector("canvas");
     paintHeroCanvas(cv, sample);
     btn.onclick = () => applyHeroSample(sample);
   });
-  const more = $("heroMoreBtn");
-  if (more) more.onclick = () => { HERO_MORE_OPEN = !HERO_MORE_OPEN; renderHero(); };
 }
 
 // ---------- Landing ----------
@@ -2022,11 +1915,10 @@ $("ownInput").onkeydown = e => {
   e.target.value = ""; save(); renderTrades(); schedule();
 };
 $("aiBtn").onclick = aiSuggest;
-$("edition").onchange = e => { S.edition = e.target.value; S.palette = EDITIONS[S.edition].pal; S.shape = null; S.text = { head: null, sub: null, backHead: null, body: null }; save(); renderCardForm(); schedule(); };
+$("edition").onchange = e => { S.edition = e.target.value; S.palette = EDITIONS[S.edition].pal; S.text = { head: null, sub: null, backHead: null, body: null }; save(); renderCardForm(); schedule(); };
 $("cardLang").onchange = e => { S.cardLang = e.target.value; S.text = { head: null, sub: null, backHead: null, body: null }; save(); renderCardForm(); renderTrades(); schedule(); };
 $("layoutSeg").onclick = e => { const b = e.target.closest("[data-layout]"); if (!b) return; S.layout = b.dataset.layout; save(); renderCardForm(); schedule(); };
 $("paletteSeg").onclick = e => { const b = e.target.closest("[data-pal]"); if (!b) return; S.palette = b.dataset.pal; save(); renderCardForm(); schedule(); };
-$("shapeSeg").onclick = e => { const b = e.target.closest("[data-shape]"); if (!b) return; S.shape = b.dataset.shape || null; save(); renderCardForm(); schedule(); };
 $("style").onchange = e => { S.style = e.target.value; save(); $("imgPrompt").value = imgPrompt(); };
 $("imgFile").onchange = e => {
   const f = e.target.files && e.target.files[0]; if (!f) return;
