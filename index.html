@@ -1,150 +1,554 @@
-<!doctype html><html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
-<title>Referenskortet</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Work+Sans:wght@400;500;600&display=swap">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Referral Card – design &amp; print BNI referral postcards</title>
+<meta name="description" content="Free referral postcards for BNI members. Design your card, import recipients, and export print-ready PDFs and address lists in seven languages.">
+<link rel="canonical" href="https://referralcard.ai/">
+<meta name="theme-color" content="#F1F3EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101512" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://referralcard.ai/">
+<meta property="og:title" content="The Referral Card – BNI referral postcards">
+<meta property="og:description" content="Year-round referral postcards for BNI members. Design once, print and mail whenever it fits.">
+<meta property="og:site_name" content="The Referral Card">
+<meta property="og:image" content="https://referralcard.ai/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Referral Card – design and print referral postcards for BNI members">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="sv_SE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Referral Card – BNI referral postcards">
+<meta name="twitter:description" content="Year-round referral postcards for BNI members. Design once, print and mail whenever it fits.">
+<meta name="twitter:image" content="https://referralcard.ai/og-image.png">
+<meta name="twitter:image:alt" content="The Referral Card – design and print referral postcards for BNI members">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/work-sans-latin.woff2">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "The Referral Card",
+  "alternateName": "Referenskortet",
+  "url": "https://referralcard.ai/",
+  "description": "Year-round referral postcards for BNI members. Design once, print and mail whenever it fits.",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Any / web browser",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "EUR"
+  },
+  "inLanguage": ["sv", "en", "de", "fr", "es", "it", "pt"],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Mediahive AB",
+    "url": "https://mediahiveab.com"
+  }
+}
+</script>
 <style>
 /* Layout: two-pane workbench — numbered steps on the left, a live print proof pinned on the right; stacks on phones. */
 :root{
+  color-scheme:light;
   --bg:#F1F3EE; --surface:#FFFFFF; --ink:#18211C; --muted:#56605A; --line:#D5DBD1;
-  --accent:#1E5A43; --accent-ink:#FFFFFF; --accent-soft:#DCEBE2; --gold:#8C6A22;
-  --warn:#8A5200; --warn-soft:#F7EBD6; --bad:#A12B2B; --bad-soft:#F6E0DE; --ok:#2B6A3C; --chip:#E9EDE5;
+  --accent:#1E5A43; --accent-ink:#FFFFFF; --accent-soft:#DCEBE2; --gold:#80601E;
+  --warn:#805000; --warn-soft:#F7EBD6; --bad:#A12B2B; --bad-soft:#F6E0DE; --ok:#285F37; --chip:#E9EDE5;
   --proof:#DCE1D8;
   --f-display:"Cormorant Garamond", Georgia, "Times New Roman", serif;
   --f-body:"Work Sans", "Helvetica Neue", Arial, sans-serif;
-  --r:6px;
+  --r:10px;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px;
+  --control-line:#829087;
+  --shadow:0 2px 4px rgba(24,33,28,.025),0 12px 32px rgba(24,33,28,.045);
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#101512; --surface:#18201B; --ink:#E6EBE4; --muted:#9BA69E; --line:#2B352F;
-  --accent:#73C29A; --accent-ink:#0D1510; --accent-soft:#1F3A2C; --gold:#D5B062;
-  --warn:#E3A54C; --warn-soft:#3A2C17; --bad:#F09090; --bad-soft:#3B1D1D; --ok:#7FCB98; --chip:#222B25;
-  --proof:#0B0F0D; color-scheme:dark }}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#101512; --surface:#18201B; --ink:#E6EBE4; --muted:#AAB5AD; --line:#354239;
+    --accent:#73C29A; --accent-ink:#0D1510; --accent-soft:#1F3A2C; --gold:#D5B062;
+    --warn:#E3B166; --warn-soft:#3A2C17; --bad:#F09090; --bad-soft:#3B1D1D; --ok:#8AD3A1; --chip:#222B25;
+    --proof:#0B0F0D; --control-line:#718278;
+    --shadow:0 2px 4px rgba(0,0,0,.08),0 12px 32px rgba(0,0,0,.14);
+  }
+}
 :root[data-theme="dark"]{
-  --bg:#101512; --surface:#18201B; --ink:#E6EBE4; --muted:#9BA69E; --line:#2B352F;
+  color-scheme:dark;
+  --bg:#101512; --surface:#18201B; --ink:#E6EBE4; --muted:#AAB5AD; --line:#354239;
   --accent:#73C29A; --accent-ink:#0D1510; --accent-soft:#1F3A2C; --gold:#D5B062;
-  --warn:#E3A54C; --warn-soft:#3A2C17; --bad:#F09090; --bad-soft:#3B1D1D; --ok:#7FCB98; --chip:#222B25;
-  --proof:#0B0F0D; color-scheme:dark }
+  --warn:#E3B166; --warn-soft:#3A2C17; --bad:#F09090; --bad-soft:#3B1D1D; --ok:#8AD3A1; --chip:#222B25;
+  --proof:#0B0F0D; --control-line:#718278;
+  --shadow:0 2px 4px rgba(0,0,0,.08),0 12px 32px rgba(0,0,0,.14);
+}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
-.wrap{max-width:1320px;margin:0 auto;padding-inline:clamp(16px,3vw,32px);padding-block:20px 48px}
-h1,h2,h3,h4{text-wrap:balance;margin:0}
-h1{font-family:var(--f-display);font-weight:600;font-size:clamp(30px,4vw,40px);line-height:1}
-h2{font-family:var(--f-display);font-weight:600;font-size:28px;line-height:1.1}
-h3{font-size:15px;font-weight:600;margin-top:22px}
-h4{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 8px}
-p{margin:0}
-.top{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:flex-end;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--line)}
-.brand p{color:var(--muted);margin-top:6px;max-width:60ch}
-.prefs{display:flex;flex-wrap:wrap;gap:12px}
-label.f{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:500;color:var(--muted);min-width:0}
-select,input[type=text],input[type=email],input[type=tel],input[type=url],textarea{
-  font:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:8px 10px;min-width:0;width:100%}
-textarea{resize:vertical;min-height:84px;line-height:1.45}
-select:focus-visible,input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.steps{margin:18px 0 22px;overflow-x:auto}
-.steps ol{list-style:none;margin:0;padding:0;display:flex;gap:6px;min-width:max-content}
-.steps button{font:inherit;font-size:14px;display:flex;gap:8px;align-items:center;background:transparent;color:var(--muted);border:1px solid transparent;border-radius:999px;padding:7px 14px 7px 8px;cursor:pointer}
-.steps .num{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;border:1px solid var(--line);font-size:12px;font-variant-numeric:tabular-nums}
-.steps button[aria-current="step"]{color:var(--ink);border-color:var(--line);background:var(--surface)}
-.steps button[aria-current="step"] .num{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
-@media (min-width:1000px){.grid{grid-template-columns:minmax(0,1fr) minmax(0,540px)}}
-.panel{display:flex;flex-direction:column;gap:12px}
-.lead{color:var(--muted);max-width:62ch}
-.note{color:var(--muted);font-size:13px;max-width:66ch}
-.row{display:flex;flex-wrap:wrap;gap:12px}
-.row>*{flex:1 1 200px}
-.cols2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
-.btn{font:inherit;font-size:14px;font-weight:500;border-radius:var(--r);padding:9px 14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px;justify-content:center}
-.btn:hover{border-color:var(--muted)}
-.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.btn.primary:hover{filter:brightness(1.08)}
-.btn:disabled{opacity:.55;cursor:not-allowed}
-.btn.small{padding:5px 10px;font-size:13px}
-.linkish{font:inherit;font-size:13px;background:none;border:none;color:var(--accent);cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px}
-a{color:var(--accent)}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
-.chapter{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
-.chapter .meta{min-width:0}
-.chapter .nm{font-weight:600}
-.chapter .sub{font-size:13px;color:var(--muted)}
-.badge{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin-left:8px}
-.check{display:inline-flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
-.check input{width:18px;height:18px;accent-color:var(--accent)}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{font:inherit;font-size:13px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink);padding:5px 11px;cursor:pointer;line-height:1.3}
-.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.chip .x{margin-left:6px;opacity:.7}
-.selbar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:8px;z-index:2;border-bottom:1px solid var(--line)}
-.count{font-weight:600;font-variant-numeric:tabular-nums}
-.msg{font-size:13px;border-radius:var(--r);padding:8px 10px}
-.msg.warn{background:var(--warn-soft);color:var(--warn)}
-.msg.bad{background:var(--bad-soft);color:var(--bad)}
-.msg.ok{background:var(--accent-soft);color:var(--ok)}
-.seg{display:flex;flex-wrap:wrap;gap:6px}
-.seg button{font:inherit;font-size:13px;padding:7px 12px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
-.seg button[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);font-weight:600}
-.swatch{width:40px;height:40px;border-radius:50%;border:2px solid var(--line);cursor:pointer;position:relative;padding:0}
-.swatch[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}
-.swatch i{position:absolute;right:4px;bottom:4px;width:12px;height:12px;border-radius:50%}
-fieldset{border:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;min-width:0}
-legend{font-size:12px;font-weight:500;color:var(--muted);padding:0;margin-bottom:4px}
-details summary{cursor:pointer;font-weight:600;font-size:14px}
-details[open] summary{margin-bottom:10px}
-.navbtns{display:flex;justify-content:space-between;gap:12px;margin-top:18px}
-.preview{align-self:start}
-@media (min-width:1000px){.preview{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}}
-.proof{background:var(--proof);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:14px}
-.proof canvas{width:100%;height:auto;display:block;box-shadow:0 1px 2px rgba(0,0,0,.18),0 8px 24px rgba(0,0,0,.12);border-radius:2px;background:#fff}
-.proof figure{margin:0;display:flex;flex-direction:column;gap:6px}
-.proof figcaption{font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
-.preview-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
-.provider{display:grid;gap:6px}
-.provider .hd{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 12px;align-items:baseline}
-.provider .nm{font-weight:600}
-.kind{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--muted)}
-.kind.pm{background:var(--accent-soft);color:var(--ok)}
-dl.facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:2px 14px;margin:0;font-size:13px}
-dl.facts dt{color:var(--muted)}
-dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
-.stack{display:flex;flex-direction:column;gap:10px}
-.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
-
-/* Landing: sample card first, then CTA into the workbench */
-.landing{display:flex;flex-direction:column;gap:18px;padding:8px 0 4px}
-.landing-kicker{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0}
-.landing h2{font-family:var(--f-display);font-weight:600;font-size:clamp(28px,3.6vw,36px);line-height:1.08;margin:0}
-.landing-pitch{font-size:16px;color:var(--ink);max-width:42ch;margin:0}
-.landing-pitch strong{font-weight:600;color:var(--accent)}
-.landing-uses{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.landing-uses li{font-size:13px;line-height:1.35;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);max-width:100%}
-.landing-cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:4px}
-.landing-cta .btn.primary{font-size:15px;padding:12px 20px}
-.landing-note{font-size:13px;color:var(--muted);max-width:48ch}
-/* Hero example cards — postcard strip at the top */
-.hero-strip{display:flex;gap:14px;overflow-x:auto;padding:6px 2px 18px;margin:4px 0 8px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:thin}
-.hero-strip::-webkit-scrollbar{height:6px}
-.hero-card{flex:0 0 auto;width:min(42vw,220px);scroll-snap-align:start;border:0;background:transparent;padding:0;cursor:pointer;text-align:left;font:inherit;color:inherit}
-.hero-card:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
-.hero-card canvas{width:100%;height:auto;display:block;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.16),0 10px 28px rgba(0,0,0,.12);background:#fff}
-.hero-card .hero-cap{display:block;margin-top:8px;font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--muted)}
-.hero-card[aria-pressed="true"] .hero-cap{color:var(--accent)}
-.hero-card[aria-pressed="true"] canvas{box-shadow:0 0 0 2px var(--accent),0 10px 28px rgba(0,0,0,.12)}
-/* Intro stays on-page; scroll into the workbench (no separate landing mode) */
-#landing{margin:8px 0 28px;padding-bottom:8px;border-bottom:1px solid var(--line)}
-#workbench{scroll-margin-top:16px}
-.steps{scroll-margin-top:12px}
-/* Mobile: Christmas preview meets you right under the intro, before the editor */
-@media (max-width:999px){
-  .grid{display:flex;flex-direction:column;gap:24px}
-  .preview{order:-1}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:15px;
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
 }
+button,input,select,textarea{font:inherit}
+button,a,input,select,textarea,label{-webkit-tap-highlight-color:transparent}
+button{touch-action:manipulation}
+a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:where(button,a,input,select,textarea,summary,[tabindex]):focus-visible{
+  outline:3px solid var(--accent);
+  outline-offset:3px;
+}
+.wrap{
+  max-width:1360px;
+  margin:0 auto;
+  padding:var(--s6) clamp(16px,3vw,40px) var(--s7);
+}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+h1,h2{font-family:var(--f-display);font-weight:600;letter-spacing:-.025em}
+h1{font-size:clamp(32px,4vw,44px);line-height:1.05}
+h2{font-size:32px;line-height:1.15}
+h3{font-size:15px;font-weight:600;line-height:1.4;margin-top:var(--s5)}
+h4{
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin:var(--s4) 0 var(--s1);
+}
+p{margin:0}
+.top{
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--s5) var(--s6);
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:var(--s5);
+  margin-bottom:var(--s5);
+  border-bottom:1px solid var(--line);
+}
+.brand{min-width:0}
+.brand p{color:var(--muted);margin-top:var(--s2);max-width:60ch;font-size:14px}
+.prefs{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:end}
+.prefs .f{flex:1 1 140px}
+label.f{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  font-size:13px;
+  font-weight:500;
+  color:var(--muted);
+  min-width:0;
+}
+select,input[type=text],input[type=email],input[type=tel],input[type=url],
+input[type=search],input[type=number],textarea{
+  width:100%;
+  min-width:0;
+  min-height:44px;
+  padding:10px 12px;
+  border:1px solid var(--control-line);
+  border-radius:var(--r);
+  background:var(--surface);
+  color:var(--ink);
+  font-size:14px;
+  line-height:1.5;
+  transition:border-color .15s ease,box-shadow .15s ease;
+}
+select{padding-right:30px}
+textarea{resize:vertical;min-height:88px}
+input::placeholder,textarea::placeholder{color:var(--muted);opacity:1}
+input:focus-visible,select:focus-visible,textarea:focus-visible{border-color:var(--accent)}
+input[aria-invalid="true"],select[aria-invalid="true"],textarea[aria-invalid="true"]{
+  border-color:var(--bad);
+  box-shadow:inset 3px 0 0 var(--bad);
+}
+@supports selector(input:user-invalid){
+  input:user-invalid,select:user-invalid,textarea:user-invalid{
+    border-color:var(--bad);
+    box-shadow:inset 3px 0 0 var(--bad);
+  }
+}
+input:disabled,select:disabled,textarea:disabled{opacity:.65;cursor:not-allowed}
+textarea[readonly]{background:var(--bg)}
+.steps{
+  margin:var(--s5) 0;
+  padding:6px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+  overflow-x:auto;
+  scroll-padding-inline:6px;
+  scroll-margin-top:var(--s4);
+  scrollbar-width:thin;
+}
+.steps ol{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  gap:var(--s1);
+  min-width:max-content;
+}
+.steps li{flex:1 0 auto}
+.steps button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:var(--s2);
+  width:100%;
+  min-height:46px;
+  padding:8px 14px;
+  border:1px solid transparent;
+  border-radius:9px;
+  background:transparent;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.4;
+  cursor:pointer;
+}
+.steps .num{
+  display:inline-grid;
+  place-items:center;
+  flex:none;
+  width:26px;
+  height:26px;
+  border:1px solid var(--control-line);
+  border-radius:50%;
+  font-size:12px;
+  font-variant-numeric:tabular-nums;
+}
+.steps button[aria-current="step"]{
+  background:var(--accent-soft);
+  border-color:var(--accent);
+  color:var(--ink);
+  font-weight:600;
+}
+.steps button[aria-current="step"] .num{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--accent-ink);
+}
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s6)}
+.grid>*{min-width:0}
+#workbench{scroll-margin-top:var(--s5)}
+.panel{
+  display:flex;
+  flex-direction:column;
+  gap:var(--s4);
+  min-width:0;
+  padding:clamp(18px,2.4vw,28px);
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+.panel>h2{margin-bottom:2px}
+.panel>h3{padding-top:var(--s4);border-top:1px solid var(--line);margin-top:var(--s2)}
+.lead{color:var(--muted);max-width:62ch}
+.note{color:var(--muted);font-size:13px;line-height:1.6;max-width:66ch;overflow-wrap:anywhere}
+.row{display:flex;flex-wrap:wrap;gap:var(--s3)}
+.row>*{flex:1 1 200px;min-width:0}
+.cols2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:var(--s4)}
+.stack{display:flex;flex-direction:column;gap:var(--s3);min-width:0}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:var(--s2);
+  min-height:44px;
+  max-width:100%;
+  padding:10px 16px;
+  border:1px solid var(--control-line);
+  border-radius:var(--r);
+  background:var(--surface);
+  color:var(--ink);
+  font-size:14px;
+  font-weight:600;
+  line-height:1.4;
+  text-align:center;
+  text-decoration:none;
+  cursor:pointer;
+  transition:background-color .15s ease,border-color .15s ease,box-shadow .15s ease,transform .15s ease;
+}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.small{min-height:36px;padding:7px 12px;font-size:13px}
+.btn:active:not(:disabled){transform:translateY(1px);box-shadow:none}
+.btn:disabled,.seg button:disabled,.chip:disabled,.steps button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+  box-shadow:none;
+}
+.linkish{
+  display:inline-flex;
+  align-items:center;
+  min-height:36px;
+  max-width:100%;
+  padding:6px 2px;
+  border:0;
+  border-radius:4px;
+  background:transparent;
+  color:var(--accent);
+  font-size:13px;
+  line-height:1.5;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  cursor:pointer;
+}
+.linkish:disabled{opacity:.55;cursor:not-allowed}
+.card{
+  min-width:0;
+  padding:var(--s4);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  background:var(--surface);
+}
+.chapter{display:flex;flex-wrap:wrap;gap:var(--s3) var(--s4);align-items:center;justify-content:space-between}
+.chapter .meta{min-width:0;overflow-wrap:anywhere}
+.chapter .nm,.provider .nm{font-weight:600}
+.chapter .sub{font-size:13px;color:var(--muted)}
+.badge{margin-left:var(--s2);color:var(--gold);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.check{display:inline-flex;align-items:center;gap:var(--s2);min-height:36px;font-size:14px;line-height:1.5;cursor:pointer}
+.check input{flex:none;width:18px;height:18px;margin:0;accent-color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.chip{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:36px;
+  max-width:100%;
+  padding:7px 12px;
+  border:1px solid var(--control-line);
+  border-radius:999px;
+  background:var(--chip);
+  color:var(--ink);
+  font-size:13px;
+  line-height:1.4;
+  text-align:left;
+  overflow-wrap:anywhere;
+  cursor:pointer;
+  transition:background-color .15s ease,border-color .15s ease;
+}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.chip[aria-pressed="true"]::before{
+  content:"";
+  flex:none;
+  width:9px;
+  height:5px;
+  margin-right:8px;
+  border-left:2px solid currentColor;
+  border-bottom:2px solid currentColor;
+  transform:translateY(-1px) rotate(-45deg);
+}
+.chip .x{margin-left:var(--s2);font-weight:600}
+.selbar{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:var(--s3) var(--s4);
+  position:sticky;
+  top:env(safe-area-inset-top,0px);
+  z-index:2;
+  padding:var(--s3) 0;
+  border-bottom:1px solid var(--line);
+  background:var(--surface);
+}
+.count{font-weight:600;font-variant-numeric:tabular-nums}
+.msg{padding:var(--s3) var(--s4);border-radius:var(--r);font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+.msg.warn{background:var(--warn-soft);color:var(--warn);border-inline-start:3px solid var(--warn)}
+.msg.bad{background:var(--bad-soft);color:var(--bad);border-inline-start:3px solid var(--bad)}
+.msg.ok{background:var(--accent-soft);color:var(--ok);border-inline-start:3px solid var(--ok)}
+.seg{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.seg button{
+  min-height:40px;
+  padding:8px 13px;
+  border:1px solid var(--control-line);
+  border-radius:var(--r);
+  background:var(--surface);
+  color:var(--ink);
+  font-size:13px;
+  line-height:1.4;
+  cursor:pointer;
+}
+.seg button[aria-pressed="true"]{
+  border-color:var(--accent);
+  background:var(--accent-soft);
+  box-shadow:inset 0 0 0 1px var(--accent);
+  font-weight:600;
+}
+.seg .swatch,.swatch{
+  position:relative;
+  flex:none;
+  width:44px;
+  height:44px;
+  min-height:44px;
+  padding:0;
+  border:2px solid var(--control-line);
+  border-radius:50%;
+  cursor:pointer;
+}
+.seg .swatch[aria-pressed="true"],.swatch[aria-pressed="true"]{
+  border-color:var(--ink);
+  box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--accent);
+}
+.swatch i{position:absolute;right:4px;bottom:4px;width:12px;height:12px;border-radius:50%}
+fieldset{display:flex;flex-direction:column;gap:var(--s2);min-width:0;margin:0;padding:0;border:0}
+legend{padding:0;margin-bottom:var(--s2);font-size:13px;font-weight:500;color:var(--muted)}
+details summary{cursor:pointer;font-weight:600;font-size:14px;line-height:1.5;border-radius:4px}
+details summary::marker{color:var(--accent)}
+details[open] summary{margin-bottom:var(--s4)}
+.navbtns{display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--s3);margin-top:var(--s5)}
+.navbtns .btn{min-width:110px}
+.preview{align-self:start;min-width:0}
+.preview-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s3);margin-bottom:var(--s3)}
+.preview-head h2{line-height:1.2}
+.preview-head .check{font-size:13px}
+.proof{
+  display:flex;
+  flex-direction:column;
+  gap:var(--s5);
+  padding:clamp(12px,2vw,22px);
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--proof);
+}
+.proof canvas{
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:2px;
+  background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.16),0 8px 20px rgba(0,0,0,.12);
+}
+.proof figure{display:flex;flex-direction:column;gap:var(--s2);min-width:0;margin:0}
+.proof figcaption{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:var(--s1) var(--s3);
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
+}
+.proof figcaption>span{min-width:0;overflow-wrap:anywhere}
+.proof figcaption>span:first-child{font-weight:600}
+.provider{display:grid;gap:var(--s2)}
+.provider .hd{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px var(--s3)}
+.kind{padding:3px 9px;border-radius:999px;background:var(--chip);color:var(--muted);font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.kind.pm{background:var(--accent-soft);color:var(--ok)}
+dl.facts{display:grid;grid-template-columns:fit-content(40%) minmax(0,1fr);gap:6px var(--s4);margin:0;font-size:13px}
+dl.facts dt{color:var(--muted);overflow-wrap:anywhere}
+dl.facts dd{min-width:0;margin:0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.row>div:has(>input[type="file"]:focus-visible)>label.btn{outline:3px solid var(--accent);outline-offset:3px}
 
+/* Landing: a restrained introduction with one clear next action. */
+.landing{display:flex;flex-direction:column;align-items:flex-start;gap:var(--s4);padding:var(--s4) 0 var(--s6)}
+.landing-kicker{margin:0;color:var(--gold);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.landing h2{max-width:26ch;font-size:clamp(32px,4vw,44px);line-height:1.08}
+.landing-pitch{max-width:54ch;margin:0;color:var(--ink);font-size:16px;line-height:1.65}
+.landing-pitch strong{color:var(--accent);font-weight:600}
+.landing-uses{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);list-style:none;margin:var(--s1) 0;padding:0;max-width:80ch}
+.landing-uses li{display:flex;align-items:baseline;gap:var(--s2);max-width:100%;color:var(--muted);font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.landing-uses li::before{content:"";flex:none;width:5px;height:5px;border-radius:50%;background:var(--accent);align-self:center}
+.landing-cta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3);margin-top:var(--s2)}
+.landing-cta .btn.primary{min-height:48px;padding:12px 24px;font-size:15px}
+.landing-note{max-width:60ch;color:var(--muted);font-size:13px;line-height:1.6}
+.hero-strip{
+  display:flex;
+  gap:var(--s4);
+  overflow-x:auto;
+  margin:var(--s2) 0 var(--s3);
+  padding:var(--s2) 6px var(--s4);
+  scroll-padding-inline:6px;
+  scroll-snap-type:x proximity;
+  scrollbar-width:thin;
+}
+.hero-strip::-webkit-scrollbar{height:6px}
+.hero-strip::-webkit-scrollbar-thumb{background:var(--control-line);border-radius:999px}
+.hero-card{
+  flex:0 0 auto;
+  width:min(60vw,220px);
+  padding:0;
+  border:0;
+  border-radius:4px;
+  background:transparent;
+  color:inherit;
+  text-align:left;
+  cursor:pointer;
+  scroll-snap-align:start;
+}
+.hero-card canvas{
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:3px;
+  background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.14),0 6px 16px rgba(0,0,0,.09);
+  transition:box-shadow .15s ease;
+}
+.hero-card .hero-cap{display:block;margin-top:var(--s3);color:var(--muted);font-size:12px;font-weight:500;line-height:1.5}
+.hero-card[aria-pressed="true"] .hero-cap{color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:4px}
+.hero-card[aria-pressed="true"] canvas{box-shadow:0 0 0 3px var(--accent),0 6px 16px rgba(0,0,0,.09)}
+#landing{margin:var(--s2) 0 var(--s5);border-bottom:1px solid var(--line)}
+
+@media (hover:hover){
+  .btn:hover:not(:disabled){background:var(--chip);border-color:var(--accent)}
+  .btn.primary:hover:not(:disabled){background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .chip:hover:not(:disabled){border-color:var(--accent)}
+  .seg button:hover:not(:disabled){border-color:var(--accent)}
+  .steps button:hover:not(:disabled){color:var(--ink);border-color:var(--control-line)}
+  .linkish:hover:not(:disabled){text-decoration-thickness:2px}
+  .hero-card:hover canvas{box-shadow:0 0 0 2px var(--accent),0 6px 16px rgba(0,0,0,.09)}
+}
+@media (min-width:1000px){
+  .grid{grid-template-columns:minmax(0,1fr) minmax(0,500px)}
+  .preview{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px)}
+}
+@media (min-width:1000px) and (max-height:800px){
+  .preview{position:static}
+}
+@media (max-width:999px){
+  .grid{display:flex;flex-direction:column;gap:var(--s5)}
+  .preview{order:-1;align-self:stretch}
+  .proof{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s4)}
+}
+@media (max-width:599px){
+  .wrap{padding-top:var(--s5)}
+  .top{align-items:stretch;gap:var(--s4)}
+  .prefs{width:100%}
+  .steps{margin-inline:-4px}
+  .steps button{padding:8px 10px}
+  .panel{gap:var(--s4)}
+  .proof{display:flex;gap:var(--s4)}
+  .preview-head{gap:var(--s2)}
+  .landing h2{max-width:22ch}
+  .navbtns .btn{flex:1 1 120px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+}
 </style>
+</head>
+<body>
 
+<noscript><p style="margin:16px;padding:12px 16px;border:1px solid #D5DBD1;border-radius:10px;background:#fff;color:#18211C">The Referral Card needs JavaScript to design and export postcards. / Referenskortet behöver JavaScript.</p></noscript>
 <div class="wrap">
   <header class="top">
     <div class="brand">
@@ -201,8 +605,8 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
           <summary data-i18n="add_ch"></summary>
           <form id="chForm" class="stack">
             <div class="row">
-              <label class="f" for="chName"><span data-i18n="ch_name"></span><input type="text" id="chName" required></label>
-              <label class="f" for="chCity"><span data-i18n="ch_city"></span><input type="text" id="chCity"></label>
+              <label class="f" for="chName"><span data-i18n="ch_name"></span><input type="text" id="chName" maxlength="80" required></label>
+              <label class="f" for="chCity"><span data-i18n="ch_city"></span><input type="text" id="chCity" maxlength="80"></label>
             </div>
             <label class="f" for="chPaste"><span data-i18n="ch_paste"></span><textarea id="chPaste" rows="5"></textarea></label>
             <p class="note" data-i18n="ch_paste_hint"></p>
@@ -243,7 +647,7 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
         <div class="chips" id="libPriv"></div>
         <div><button class="linkish" type="button" id="showAll"></button></div>
         <h3 data-i18n="own"></h3>
-        <label class="f" for="ownInput"><span class="sr" data-i18n="own"></span><input type="text" id="ownInput" data-i18n-ph="own_ph"></label>
+        <label class="f" for="ownInput"><span class="sr" data-i18n="own"></span><input type="text" id="ownInput" maxlength="48" data-i18n-ph="own_ph"></label>
         <div class="chips" id="ownChips"></div>
       </section>
 
@@ -279,12 +683,12 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
         <h3 data-i18n="sender_h"></h3>
         <p class="note" data-i18n="sender_note"></p>
         <div class="cols2">
-          <label class="f" for="sName"><span data-i18n="f_name"></span><input type="text" id="sName" autocomplete="name"></label>
-          <label class="f" for="sCompany"><span data-i18n="f_company"></span><input type="text" id="sCompany" autocomplete="organization"></label>
-          <label class="f" for="sPhone"><span data-i18n="f_phone"></span><input type="tel" id="sPhone" autocomplete="tel"></label>
-          <label class="f" for="sWeb"><span data-i18n="f_web"></span><input type="text" id="sWeb" autocomplete="url"></label>
-          <label class="f" for="sEmail"><span data-i18n="f_email"></span><input type="email" id="sEmail" autocomplete="email"></label>
-          <label class="f" for="sAddress"><span data-i18n="f_address"></span><input type="text" id="sAddress" autocomplete="street-address"></label>
+          <label class="f" for="sName"><span data-i18n="f_name"></span><input type="text" id="sName" autocomplete="name" data-i18n-ph="ph_name"></label>
+          <label class="f" for="sCompany"><span data-i18n="f_company"></span><input type="text" id="sCompany" autocomplete="organization" data-i18n-ph="ph_company"></label>
+          <label class="f" for="sPhone"><span data-i18n="f_phone"></span><input type="tel" id="sPhone" autocomplete="tel" data-i18n-ph="ph_phone"></label>
+          <label class="f" for="sWeb"><span data-i18n="f_web"></span><input type="text" id="sWeb" autocomplete="url" data-i18n-ph="ph_web"></label>
+          <label class="f" for="sEmail"><span data-i18n="f_email"></span><input type="email" id="sEmail" autocomplete="email" data-i18n-ph="ph_email"></label>
+          <label class="f" for="sAddress"><span data-i18n="f_address"></span><input type="text" id="sAddress" autocomplete="street-address" data-i18n-ph="ph_address"></label>
         </div>
         <div class="row">
           <label class="check"><input type="checkbox" id="showCh"><span data-i18n="show_ch"></span></label>
@@ -355,12 +759,13 @@ dl.facts dd{margin:0;font-variant-numeric:tabular-nums}
         <figure><canvas id="cvBack" width="1080" height="780" role="img" aria-label="Back"></canvas><figcaption><span data-i18n="back"></span><span id="sampleRec"></span></figcaption></figure>
       </div>
       <p class="note" style="margin-top:10px" data-i18n="saved_local"></p>
+      <p class="note" data-i18n="privacy_note"></p>
     </aside>
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="/vendor/jspdf-4.2.1.umd.min.js" integrity="sha384-qovJwSBbRDPP5cEjCp8S0UP66wrvnjaa60XMOGzTNanrThcrGfXfnZkvgY8N1KT3"></script>
+<script src="/vendor/xlsx-0.20.3.full.min.js" integrity="sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT"></script>
 <script>
 // ---------- UI strings (7 languages). Add a language by copying one block. ----------
 const UI = {
@@ -416,7 +821,7 @@ sv:{
  land_hero:"Fler exempel — tryck för att använda temat",
  land_h:"Ett vykort som öppnar dörrar året runt",
  land_pitch:"Designa en gång. Skriv ut och skicka när som helst — <strong>inte bara till jul</strong>.",
- land_year:"Julkortet i förhandsvisningen är Kajs exempel från BNI Elit Västerås — samma verktyg funkar året runt. Byt till ditt namn när du är redo.",
+ land_year:"Kortet i förhandsvisningen är ett exempel med branscherna i BNI Elit Västerås — samma verktyg funkar året runt. Fyll i dina egna uppgifter när du är redo.",
  land_u1:"Tack efter en referral",
  land_u2:"Varm intro när du träffar någon ny",
  land_u3:"Väck en tyst kontakt igen",
@@ -425,7 +830,10 @@ sv:{
  land_cta:"Skapa ditt",
  land_sample:"Visa exempelkort",
  land_sample_note:"Välj ett exempelkort ovan, eller scrolla ner och skapa ditt eget.",
- sample_rec:"Visar mottagare 1 av {n}", your_name:"Ditt namn"
+ sample_rec:"Visar mottagare 1 av {n}", your_name:"Ditt namn",
+ ph_name:"Alex Exempel", ph_company:"Exempelföretaget AB", ph_phone:"070-174 06 05", ph_web:"example.com", ph_email:"alex@example.com", ph_address:"Exempelgatan 1, 123 45 Exempelstad",
+ privacy_note:"Allt sker i din webbläsare. Inget du skriver eller laddar upp skickas till en server; mottagaradresser och bilder sparas aldrig. Anonym, kakfri besöksstatistik (Cloudflare Web Analytics).",
+ file_big:"Filen är för stor (max 10 MB).", img_bad:"Bilden kunde inte läsas. Prova en JPG eller PNG."
 },
 en:{
  name:"The Referral Card", tag:"Year-round referral postcards for BNI members. Design once, print and mail whenever it fits.",
@@ -479,7 +887,7 @@ en:{
  land_hero:"More examples — tap one to use that theme",
  land_h:"A postcard that opens doors all year",
  land_pitch:"Design once. Print and mail anytime — <strong>not just Christmas</strong>.",
- land_year:"The Christmas card in the preview is Kaj’s sample from BNI Elit Västerås — same tool works all year. Swap in your details when you’re ready.",
+ land_year:"The card in the preview is a sample using the trades of BNI Elit Västerås — the same tool works all year. Add your own details when you’re ready.",
  land_u1:"Thank-you after a referral",
  land_u2:"Warm intro when you meet someone new",
  land_u3:"Re-open a quiet contact",
@@ -488,7 +896,10 @@ en:{
  land_cta:"Make yours",
  land_sample:"Show sample card",
  land_sample_note:"Pick an example above, or scroll down and make yours.",
- sample_rec:"Showing recipient 1 of {n}", your_name:"Your name"
+ sample_rec:"Showing recipient 1 of {n}", your_name:"Your name",
+ ph_name:"Alex Example", ph_company:"Example Ltd", ph_phone:"+44 7700 900000", ph_web:"example.com", ph_email:"alex@example.com", ph_address:"1 Example Street, Example Town",
+ privacy_note:"Everything happens in your browser. Nothing you type or upload is sent to a server; recipient addresses and images are never stored. Anonymous, cookie-free visit statistics (Cloudflare Web Analytics).",
+ file_big:"The file is too large (max 10 MB).", img_bad:"The image could not be read. Try a JPG or PNG."
 },
 de:{
  name:"Die Empfehlungskarte", tag:"Ganzjährige Empfehlungspostkarten für BNI-Mitglieder. Einmal gestalten, jederzeit drucken und versenden.",
@@ -542,7 +953,7 @@ de:{
  land_hero:"Weitere Beispiele — antippen, um das Motiv zu übernehmen",
  land_h:"Eine Postkarte, die ganzjährig Türen öffnet",
  land_pitch:"Einmal gestalten. Jederzeit drucken und versenden — <strong>nicht nur zu Weihnachten</strong>.",
- land_year:"Die Weihnachtskarte oben ist Kajs Beispiel von BNI Elit Västerås — dasselbe Tool ganzjährig. Tauschen Sie Ihre Daten ein, wenn Sie bereit sind.",
+ land_year:"Die Karte in der Vorschau ist ein Beispiel mit den Branchen von BNI Elit Västerås — dasselbe Tool ganzjährig. Tragen Sie Ihre eigenen Daten ein, wenn Sie bereit sind.",
  land_u1:"Danke nach einer Empfehlung",
  land_u2:"Warme Vorstellung bei neuen Kontakten",
  land_u3:"Stillen Kontakt wieder öffnen",
@@ -551,7 +962,10 @@ de:{
  land_cta:"Eigene erstellen",
  land_sample:"Beispielkarte zeigen",
  land_sample_note:"Die Vorschau aktualisiert sich live beim Bearbeiten.",
- sample_rec:"Empfänger 1 von {n}", your_name:"Ihr Name"
+ sample_rec:"Empfänger 1 von {n}", your_name:"Ihr Name",
+ ph_name:"Alex Beispiel", ph_company:"Beispielfirma GmbH", ph_phone:"+49 000 0000000", ph_web:"example.com", ph_email:"alex@example.com", ph_address:"Beispielstraße 1, 12345 Beispielstadt",
+ privacy_note:"Alles geschieht in Ihrem Browser. Ihre Eingaben und Uploads werden an keinen Server gesendet; Empfängeradressen und Bilder werden niemals gespeichert. Anonyme Besuchsstatistik ohne Cookies (Cloudflare Web Analytics).",
+ file_big:"Die Datei ist zu groß (max. 10 MB).", img_bad:"Das Bild konnte nicht gelesen werden. Versuchen Sie JPG oder PNG."
 },
 fr:{
  name:"La carte de recommandation", tag:"Cartes postales de recommandation toute l’année pour les membres BNI. Concevez une fois, imprimez et envoyez quand vous voulez.",
@@ -605,7 +1019,7 @@ fr:{
  land_hero:"Plus d’exemples — touchez pour utiliser ce thème",
  land_h:"Une carte qui ouvre des portes toute l’année",
  land_pitch:"Concevez une fois. Imprimez et envoyez quand vous voulez — <strong>pas seulement à Noël</strong>.",
- land_year:"La carte de Noël ci-dessus est l’exemple de Kaj (BNI Elit Västerås) — le même outil toute l’année. Remplacez par vos coordonnées quand vous êtes prêt.",
+ land_year:"La carte de l’aperçu est un exemple avec les métiers de BNI Elit Västerås — le même outil toute l’année. Ajoutez vos coordonnées quand vous êtes prêt.",
  land_u1:"Remerciement après une recommandation",
  land_u2:"Intro chaleureuse quand vous rencontrez quelqu’un",
  land_u3:"Rallumer un contact silencieux",
@@ -614,7 +1028,10 @@ fr:{
  land_cta:"Créer la vôtre",
  land_sample:"Voir la carte exemple",
  land_sample_note:"L’aperçu se met à jour en direct pendant que vous modifiez.",
- sample_rec:"Destinataire 1 sur {n}", your_name:"Votre nom"
+ sample_rec:"Destinataire 1 sur {n}", your_name:"Votre nom",
+ ph_name:"Alex Exemple", ph_company:"Entreprise Exemple", ph_phone:"+33 1 99 00 00 00", ph_web:"example.com", ph_email:"alex@example.com", ph_address:"1 rue Exemple, 75000 Ville Exemple",
+ privacy_note:"Tout se passe dans votre navigateur. Rien de ce que vous saisissez ou importez n’est envoyé à un serveur ; les adresses des destinataires et les images ne sont jamais enregistrées. Statistiques de visite anonymes, sans cookies (Cloudflare Web Analytics).",
+ file_big:"Le fichier est trop volumineux (10 Mo max).", img_bad:"Impossible de lire l’image. Essayez un JPG ou un PNG."
 },
 es:{
  name:"La tarjeta de referencias", tag:"Postales de referencias todo el año para miembros de BNI. Diseñe una vez, imprima y envíe cuando quiera.",
@@ -668,7 +1085,7 @@ es:{
  land_hero:"Más ejemplos — toque uno para usar ese tema",
  land_h:"Una postal que abre puertas todo el año",
  land_pitch:"Diseñe una vez. Imprima y envíe cuando quiera — <strong>no solo en Navidad</strong>.",
- land_year:"La tarjeta de Navidad de arriba es el ejemplo de Kaj (BNI Elit Västerås): la misma herramienta todo el año. Cambie sus datos cuando esté listo.",
+ land_year:"La tarjeta de la vista previa es un ejemplo con los oficios de BNI Elit Västerås: la misma herramienta todo el año. Añada sus datos cuando esté listo.",
  land_u1:"Agradecimiento tras una referencia",
  land_u2:"Intro cálida al conocer a alguien nuevo",
  land_u3:"Reactivar un contacto silencioso",
@@ -677,7 +1094,10 @@ es:{
  land_cta:"Cree la suya",
  land_sample:"Ver tarjeta de ejemplo",
  land_sample_note:"La vista previa se actualiza en vivo mientras edita.",
- sample_rec:"Destinatario 1 de {n}", your_name:"Su nombre"
+ sample_rec:"Destinatario 1 de {n}", your_name:"Su nombre",
+ ph_name:"Álex Ejemplo", ph_company:"Empresa Ejemplo", ph_phone:"+34 000 000 000", ph_web:"example.com", ph_email:"alex@example.com", ph_address:"Calle Ejemplo 1, 28000 Ciudad Ejemplo",
+ privacy_note:"Todo ocurre en su navegador. Nada de lo que escribe o carga se envía a un servidor; las direcciones de los destinatarios y las imágenes nunca se guardan. Estadísticas de visitas anónimas y sin cookies (Cloudflare Web Analytics).",
+ file_big:"El archivo es demasiado grande (máx. 10 MB).", img_bad:"No se pudo leer la imagen. Pruebe con JPG o PNG."
 },
 it:{
  name:"La cartolina delle referenze", tag:"Cartoline di referenze tutto l’anno per i membri BNI. Progetta una volta, stampa e spedisci quando vuoi.",
@@ -731,7 +1151,7 @@ it:{
  land_hero:"Altri esempi — tocca per usare il tema",
  land_h:"Una cartolina che apre porte tutto l’anno",
  land_pitch:"Progetta una volta. Stampa e spedisci quando vuoi — <strong>non solo a Natale</strong>.",
- land_year:"La cartolina di Natale sopra è l’esempio di Kaj (BNI Elit Västerås): lo stesso strumento tutto l’anno. Inserisci i tuoi dati quando sei pronto.",
+ land_year:"La cartolina nell’anteprima è un esempio con le categorie di BNI Elit Västerås: lo stesso strumento tutto l’anno. Inserisci i tuoi dati quando sei pronto.",
  land_u1:"Ringraziamento dopo una referenza",
  land_u2:"Intro calda quando incontri qualcuno di nuovo",
  land_u3:"Riaprire un contatto silenzioso",
@@ -740,7 +1160,10 @@ it:{
  land_cta:"Crea la tua",
  land_sample:"Mostra cartolina esempio",
  land_sample_note:"L’anteprima si aggiorna in tempo reale mentre modifichi.",
- sample_rec:"Destinatario 1 di {n}", your_name:"Il tuo nome"
+ sample_rec:"Destinatario 1 di {n}", your_name:"Il tuo nome",
+ ph_name:"Alex Esempio", ph_company:"Azienda Esempio", ph_phone:"+39 000 000 0000", ph_web:"example.com", ph_email:"alex@example.com", ph_address:"Via Esempio 1, 00100 Città Esempio",
+ privacy_note:"Tutto avviene nel tuo browser. Nulla di ciò che scrivi o carichi viene inviato a un server; gli indirizzi dei destinatari e le immagini non vengono mai salvati. Statistiche di visita anonime e senza cookie (Cloudflare Web Analytics).",
+ file_big:"Il file è troppo grande (max 10 MB).", img_bad:"Impossibile leggere l’immagine. Prova con JPG o PNG."
 },
 pt:{
  name:"O cartão de indicações", tag:"Postais de indicações o ano todo para membros do BNI. Desenhe uma vez, imprima e envie quando quiser.",
@@ -794,7 +1217,7 @@ pt:{
  land_hero:"Mais exemplos — toque para usar o tema",
  land_h:"Um postal que abre portas o ano todo",
  land_pitch:"Desenhe uma vez. Imprima e envie quando quiser — <strong>não só no Natal</strong>.",
- land_year:"O cartão de Natal acima é o exemplo do Kaj (BNI Elit Västerås) — a mesma ferramenta o ano todo. Troque pelos seus dados quando estiver pronto.",
+ land_year:"O cartão na pré-visualização é um exemplo com as categorias do BNI Elit Västerås — a mesma ferramenta o ano todo. Adicione os seus dados quando estiver pronto.",
  land_u1:"Agradecimento após uma indicação",
  land_u2:"Intro calorosa ao conhecer alguém novo",
  land_u3:"Reabrir um contacto silencioso",
@@ -803,7 +1226,10 @@ pt:{
  land_cta:"Crie o seu",
  land_sample:"Ver cartão de exemplo",
  land_sample_note:"A pré-visualização atualiza em direto enquanto edita.",
- sample_rec:"Destinatário 1 de {n}", your_name:"Seu nome"
+ sample_rec:"Destinatário 1 de {n}", your_name:"Seu nome",
+ ph_name:"Alex Exemplo", ph_company:"Empresa Exemplo", ph_phone:"+351 000 000 000", ph_web:"example.com", ph_email:"alex@example.com", ph_address:"Rua Exemplo 1, Cidade Exemplo",
+ privacy_note:"Tudo acontece no seu navegador. Nada do que você digita ou carrega é enviado a um servidor; os endereços dos destinatários e as imagens nunca são salvos. Estatísticas de visitas anônimas e sem cookies (Cloudflare Web Analytics).",
+ file_big:"O arquivo é grande demais (máx. 10 MB).", img_bad:"Não foi possível ler a imagem. Tente JPG ou PNG."
 }
 };
 
@@ -1058,10 +1484,11 @@ function detectRegion() {
   return REGIONS.includes(loc) ? loc : "SE";
 }
 function defaultEdition(region) {
-  // Fresh visits / no saved edition: year-round thank-you sample (not Christmas-heavy).
-  // Seasonal editions remain selectable in the Card step; localStorage edition is respected.
-  if (editionAllowed("thanks", region)) return "thanks";
+  // Fresh visits: Christmas in October–December where allowed; otherwise thank-you.
+  // A valid saved edition takes precedence when state is loaded.
   const m = new Date().getMonth();
+  if (m >= 9 && editionAllowed("xmas", region)) return "xmas";
+  if (editionAllowed("thanks", region)) return "thanks";
   let e = "autumn";
   if (m >= 9) e = "xmas"; else if (m === 0) e = "newyear"; else if (m <= 4) e = "spring";
   else if (m === 5) e = "midsummer"; else if (m <= 7) e = "summer";
@@ -1077,26 +1504,126 @@ const S = {
   selected: [...PRESET_CHAPTERS[0].items], order: "auto", own: [], ai: [], showAll: false,
   edition: ED0, cardLang: REGION_LANG[R0] || "en", layout: "words", palette: EDITIONS[ED0].pal, style: "photo",
   text: { head: null, sub: null, backHead: null, body: null },
-  sender: { name: "Kaj Nybom", company: "Mediahive AB", phone: "072-982 04 84", web: "mediahiveab.com", email: "kai@mediahiveab.com", address: "Genuagatan 5, 723 56 Västerås" },
-  showCh: true, stamp: true, showShare: true, shareUrl: "referralcard.ai", size: US_SIZE.includes(R0) ? "us" : "a6", bleed: 3, step: 1, trim: true
+  sender: { name: "", company: "", phone: "", web: "", email: "", address: "" },
+  showCh: true, stamp: true, showShare: true, shareUrl: "referralcard.ai", size: US_SIZE.includes(R0) ? "us" : "a6", bleed: 3, step: 1, trim: true,
+  mig: 1 // one-time migrations below have been applied (fresh state needs none)
 };
 const STORE = "refcard.v1";
-let HAD_SAVED = false;
-try { const saved = JSON.parse(localStorage.getItem(STORE) || "null"); if (saved && saved.v === 1) { HAD_SAVED = true; Object.assign(S, saved); } } catch (e) {}
-// Fresh visit: Christmas sample for the aha moment (seasonal still available later).
-if (!HAD_SAVED && editionAllowed("xmas", S.region)) { S.edition = "xmas"; S.palette = EDITIONS.xmas.pal; }
+function sanitizeSaved(saved) {
+  const out = {};
+  try {
+    const obj = v => v !== null && typeof v === "object" && !Array.isArray(v);
+    const has = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
+    const str = (v, max) => typeof v === "string" && v.length <= max;
+    const item = v => str(v, 60) && /^(lib:|txt:)/.test(v);
+    // Arrays: keep only valid elements (one bad entry must not wipe the whole list), capped at max.
+    const arr = (v, max, valid) => Array.isArray(v) ? Array.from(v).filter(valid).slice(0, max) : null;
+    const member = values => v => values.includes(v);
+    const keyOf = o => v => typeof v === "string" && has(o, v);
+    if (!obj(saved) || saved.v !== 1) return out;
+    out.v = 1;
+    const rules = {
+      ui: member(LANG_ORDER), cardLang: member(LANG_ORDER),
+      region: member(REGIONS), city: v => str(v, 80),
+      selected: v => Array.isArray(v),
+      order: member(["auto", "manual"]),
+      own: v => Array.isArray(v),
+      showAll: v => typeof v === "boolean",
+      edition: keyOf(EDITIONS), palette: keyOf(PALETTES),
+      layout: member(["words", "image", "mixed"]),
+      style: member(["photo", "water", "paper", "flat"]),
+      shareUrl: v => str(v, 200),
+      size: member(["a6", "us"]), bleed: member([0, 2, 3]),
+      step: v => Number.isInteger(v) && v >= 1 && v <= 5,
+      mig: v => Number.isInteger(v) && v >= 0 && v <= 100
+    };
+    for (const k of ["showCh", "stamp", "showShare", "trim", "edPick"]) {
+      rules[k] = v => typeof v === "boolean";
+    }
+    for (const k of Object.keys(rules)) {
+      if (has(saved, k) && rules[k](saved[k])) out[k] = saved[k];
+    }
+    for (const [k, max, valid] of [["selected", 200, item], ["own", 100, x => str(x, 48)]]) {
+      const list = arr(saved[k], max, valid); if (list) out[k] = list; else delete out[k];
+    }
+    const chapterOk = c => obj(c) && str(c.id, 40) && typeof c.name === "string" && c.name.length <= 2000 &&
+      (c.city == null || str(c.city, 2000)) && (!has(c, "include") || typeof c.include === "boolean") && Array.isArray(c.items) &&
+      (!has(c, "preset") || typeof c.preset === "boolean") &&
+      (!has(c, "region") || typeof c.region === "string");
+    const chapters = arr(saved.chapters, 20, chapterOk);
+    if (chapters) {
+      out.chapters = chapters.map(c => {
+        const clean = { id: c.id, name: c.name.slice(0, 80), city: String(c.city || "").slice(0, 80), include: c.include !== false, items: arr(c.items, 200, item) };
+        if (has(c, "preset")) clean.preset = c.preset;
+        if (has(c, "region")) clean.region = c.region;
+        return clean;
+      });
+    }
+    const ai = arr(saved.ai, 40, a => obj(a) && str(a.name, 40) && ["business", "private"].includes(a.group));
+    if (ai) out.ai = ai.map(a => ({ name: a.name, group: a.group }));
+    if (obj(saved.text)) {
+      out.text = {};
+      for (const k of ["head", "sub", "backHead", "body"]) {
+        if (has(saved.text, k) && (saved.text[k] === null || str(saved.text[k], 400))) {
+          out.text[k] = saved.text[k];
+        }
+      }
+    }
+    if (obj(saved.sender)) {
+      out.sender = {};
+      for (const k of ["name", "company", "phone", "web", "email", "address"]) {
+        if (has(saved.sender, k) && str(saved.sender[k], 120)) out.sender[k] = saved.sender[k];
+      }
+    }
+    return out;
+  } catch (e) { return {}; }
+}
+let HAD_SAVED = false, NEED_MIG = false;
+try {
+  const saved = sanitizeSaved(JSON.parse(localStorage.getItem(STORE) || "null"));
+  if (saved.v === 1) {
+    HAD_SAVED = true;
+    NEED_MIG = !(saved.mig >= 1);
+    if (saved.text) saved.text = { ...S.text, ...saved.text };
+    if (saved.sender) saved.sender = { ...S.sender, ...saved.sender };
+    Object.assign(S, saved);
+    if (!Object.prototype.hasOwnProperty.call(saved, "edition")) S.edition = defaultEdition(S.region);
+    if (!Object.prototype.hasOwnProperty.call(saved, "palette")) S.palette = EDITIONS[S.edition].pal;
+  }
+} catch (e) {}
 if (typeof S.showShare !== "boolean") S.showShare = true;
 if (typeof S.shareUrl !== "string") S.shareUrl = "";
 if (S.shareUrl === "referenskortet.se" || /referenskortet\.pages\.dev/i.test(S.shareUrl || "")) S.shareUrl = "referralcard.ai";
-if (S.sender && S.sender.web === "mediahiveab.se") S.sender.web = "mediahiveab.com";
-if (S.sender && (!S.sender.email || S.sender.email === "") && S.sender.company === "Mediahive AB") S.sender.email = "kai@mediahiveab.com";
-if (!S.sender || typeof S.sender !== "object") S.sender = { name: "Kaj Nybom", company: "Mediahive AB", phone: "072-982 04 84", web: "mediahiveab.com", email: "kai@mediahiveab.com", address: "Genuagatan 5, 723 56 Västerås" };
+if (!S.sender || typeof S.sender !== "object") S.sender = { name: "", company: "", phone: "", web: "", email: "", address: "" };
+// One-time migrations for state saved by older versions (guarded by S.mig so they never repeat).
+// 1) Older versions pre-filled a real person's contact details as the sample sender. Clear values still equal to
+//    that sample, field by field, matched by fingerprint so the details are not republished here. Company/web are
+//    only cleared while the sample name is still there (or empty), so a genuine company entry survives.
+function fp32(s) { let h = 0x811c9dc5; for (const c of s) { h ^= c.codePointAt(0); h = Math.imul(h, 16777619) >>> 0; } return h.toString(16); }
+if (NEED_MIG) {
+  const LEGACY = { name: ["7a2bdef8"], company: ["5d9aa3a0"], phone: ["71010b26"], web: ["e9c0a4d9", "ea808e80"], email: ["e45d9b7e"], address: ["25882216"] };
+  const isLegacy = k => LEGACY[k].includes(fp32(String(S.sender[k] || "").trim()));
+  const sampleName = isLegacy("name") || !String(S.sender.name || "").trim();
+  for (const k of Object.keys(LEGACY)) {
+    if (isLegacy(k) && (sampleName || !["company", "web"].includes(k))) S.sender[k] = "";
+  }
+}
+S.mig = 1;
+// Seasonal default (checked on every load, independent of S.mig): Christmas is only the default in Oct-Dec, and older
+// versions forced and saved it on every visit. Outside Oct-Dec, a saved xmas edition is switched to the seasonal default
+// unless the visitor picked it (S.edPick, set by the edition menu and the example strip) or customised any card text
+// or the palette; customised wording is never cleared here.
+if (S.edition === "xmas" && !S.edPick && new Date().getMonth() < 9 &&
+    S.text && ["head", "sub", "backHead", "body"].every(k => S.text[k] == null) && S.palette === EDITIONS.xmas.pal) {
+  S.edition = defaultEdition(S.region); S.palette = EDITIONS[S.edition].pal;
+}
 if (!UI[S.ui]) S.ui = "en";
 if (!CARD[S.cardLang]) S.cardLang = "en";
 if (!editionAllowed(S.edition, S.region)) S.edition = defaultEdition(S.region);
 if (!PALETTES[S.palette]) S.palette = EDITIONS[S.edition].pal;
 let saveTimer = 0;
 function save() { clearTimeout(saveTimer); saveTimer = setTimeout(() => { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {} }, 300); }
+if (NEED_MIG) save();
 
 let IMG = null, IMG_NAME = "";
 let RECIPIENTS = [];
@@ -1167,6 +1694,7 @@ function applyText() {
   $("style").innerHTML = ["photo","water","paper","flat"].map(s => `<option value="${s}"${s === S.style ? " selected" : ""}>${esc(t("st_" + s))}</option>`).join("");
   $("order").value = S.order;
   document.title = t("name");
+  $("cvFront").setAttribute("aria-label", t("front")); $("cvBack").setAttribute("aria-label", t("back"));
 }
 
 // ---------- Step 1: chapters ----------
@@ -1649,12 +2177,6 @@ async function readRecFile(file) {
 }
 function status(kind, msg) { const el = $("dlStatus"); el.hidden = !msg; el.className = "msg " + kind; el.textContent = msg || ""; }
 async function saveFile(name, blob) {
-  try {
-    if (window.claude && window.claude.use) {
-      const d = await window.claude.use("downloads");
-      if (d) { await d.save({ filename: name, data: blob }); return "saved"; }
-    }
-  } catch (e) { if (e && e.code === "declined") return "declined"; if (e && e.code && e.code !== "unavailable" && e.code !== "not_granted") throw e; }
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name;
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 5000);
   return "saved";
@@ -1688,7 +2210,12 @@ async function doDownload(kind) {
     let name, blob;
     if (kind === "csv") {
       const sep = S.ui === "en" ? "," : ";";
-      const q = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
+      const q = v => {
+        let s = String(v ?? "");
+        // Neutralise spreadsheet formulas (CSV injection); plain phone-number-like values such as "+46 70 …" are left as-is.
+        if (/^[=+\-@\t\r\n]/.test(s) && !/^\+?[\d\s().-]+$/.test(s)) s = "'" + s;
+        return `"${s.replace(/"/g, '""')}"`;
+      };
       const hasF = RECIPIENTS.some(r => r.f);
       const head = hasF ? ["name","company","street","street2","zip","city","country"] : ["line1","line2","line3","line4","line5","line6"];
       const rows = RECIPIENTS.map(r => hasF ? head.map(h => (r.f || {})[h] || "") : head.map((h, i) => r.lines[i] || ""));
@@ -1804,7 +2331,7 @@ function paintHeroCanvas(cv, sample) {
   });
 }
 function applyHeroSample(sample) {
-  S.edition = sample.edition;
+  S.edition = sample.edition; S.edPick = true;
   S.palette = sample.palette;
   S.layout = sample.layout || "words";
   S.cardLang = heroLang();
@@ -1890,15 +2417,28 @@ $("ownInput").onkeydown = e => {
   e.target.value = ""; save(); renderTrades(); schedule();
 };
 $("aiBtn").onclick = aiSuggest;
-$("edition").onchange = e => { S.edition = e.target.value; S.palette = EDITIONS[S.edition].pal; S.text = { head: null, sub: null, backHead: null, body: null }; save(); renderCardForm(); schedule(); };
+$("edition").onchange = e => { S.edition = e.target.value; S.edPick = true; S.palette = EDITIONS[S.edition].pal; S.text = { head: null, sub: null, backHead: null, body: null }; save(); renderCardForm(); schedule(); };
 $("cardLang").onchange = e => { S.cardLang = e.target.value; S.text = { head: null, sub: null, backHead: null, body: null }; save(); renderCardForm(); renderTrades(); schedule(); };
 $("layoutSeg").onclick = e => { const b = e.target.closest("[data-layout]"); if (!b) return; S.layout = b.dataset.layout; save(); renderCardForm(); schedule(); };
 $("paletteSeg").onclick = e => { const b = e.target.closest("[data-pal]"); if (!b) return; S.palette = b.dataset.pal; save(); renderCardForm(); schedule(); };
 $("style").onchange = e => { S.style = e.target.value; save(); $("imgPrompt").value = imgPrompt(); };
+let imageObjectUrl = "";
 $("imgFile").onchange = e => {
   const f = e.target.files && e.target.files[0]; if (!f) return;
-  const img = new Image(); img.onload = () => { IMG = img; IMG_NAME = f.name; renderCardForm(); schedule(); };
-  img.src = URL.createObjectURL(f);
+  if (imageObjectUrl) URL.revokeObjectURL(imageObjectUrl);
+  const url = imageObjectUrl = URL.createObjectURL(f);
+  const img = new Image();
+  img.onload = () => {
+    if (imageObjectUrl !== url) return;
+    IMG = img; IMG_NAME = f.name; renderCardForm(); schedule();
+  };
+  img.onerror = () => {
+    if (imageObjectUrl !== url) return;
+    URL.revokeObjectURL(url); imageObjectUrl = "";
+    $("imgStatus").textContent = t("img_bad");
+  };
+  img.src = url;
+  e.target.value = "";
 };
 $("copyPrompt").onclick = async () => {
   const ta = $("imgPrompt");
@@ -1929,6 +2469,9 @@ let recTimer = 0;
 $("recText").addEventListener("input", e => { clearTimeout(recTimer); recTimer = setTimeout(() => setRecipients(parseText(e.target.value)), 250); });
 $("recFile").onchange = async e => {
   const f = e.target.files && e.target.files[0]; if (!f) return;
+  if (f.size > 10 * 1024 * 1024) {
+    status("bad", t("file_big")); e.target.value = ""; return;
+  }
   try { const list = await readRecFile(f); $("recText").value = list.map(r => r.lines.join("\n")).join("\n\n"); setRecipients(list); status("ok", t("rec_n", { n: list.length })); }
   catch (err) { status("bad", t("dl_err")); }
   e.target.value = "";
