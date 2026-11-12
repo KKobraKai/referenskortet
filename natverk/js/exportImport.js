@@ -195,8 +195,16 @@ export function importJsonString(text){
     let originalPrimary = null;
     let originalRecovery = null;
     let originalPrev = null;
-    try { originalPrimary = localStorage.getItem(CONFIG.storageKeys.data); } catch {}
-    try { originalPrev = localStorage.getItem(CONFIG.storageKeys.recoveryPrev); } catch {}
+    {
+      const r = safeReadSlot(CONFIG.storageKeys.data);
+      if (!r.ok) return { ok:false, code:'archive_failed' };
+      originalPrimary = r.value;
+    }
+    {
+      const r = safeReadSlot(CONFIG.storageKeys.recoveryPrev);
+      if (!r.ok) return { ok:false, code:'archive_failed' };
+      originalPrev = r.value;
+    }
     // If a recovery is present, stage archive FIRST to a temp key with byte verification.
     let hadRecovery = false;
     let recoveryValue = null;
