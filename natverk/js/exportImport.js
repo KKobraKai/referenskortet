@@ -76,33 +76,41 @@ export function importJsonString(text){
       if(v.error === 'Unsupported schemaVersion') return { ok:false, code:'import_unsupported_schema' };
       return { ok:false, code:'import_invalid_structure' };
     }
-    // If a recovery is present, archive it on successful import
+    // If a recovery is present, archive it FIRST with byte verification.
     let hadRecovery = false;
     let recoveryValue = null;
     try{
       recoveryValue = localStorage.getItem(CONFIG.storageKeys.recovery);
       hadRecovery = !!recoveryValue;
     }catch{}
-    // Temporarily clear recovery to allow save; restore on failure; archive on success
-    let tempCleared = false;
-    if (hadRecovery) {
-      try { localStorage.removeItem(CONFIG.storageKeys.recovery); tempCleared = true; } catch {}
-    }
-    const res = saveData(parsed);
-    if(!res.ok){
-      // restore recovery if we had cleared it
-      if (hadRecovery && tempCleared) {
-        try{ localStorage.setItem(CONFIG.storageKeys.recovery, recoveryValue); }catch{}
-      }
-      return { ok:false, code:'import_storage_failed' };
-    }
-    // Success: if there was a recovery, move it to archive slot then clear current
+    // Archive and verify before removing recovery and saving
     let movedPrev = false;
     if (hadRecovery) {
       try{
         localStorage.setItem(CONFIG.storageKeys.recoveryPrev, recoveryValue);
-        localStorage.removeItem(CONFIG.storageKeys.recovery);
+        const roundtrip = localStorage.getItem(CONFIG.storageKeys.recoveryPrev);
+        if (roundtrip !== recoveryValue) {
+          return { ok:false, code:'archive_failed' };
+        }
         movedPrev = true;
+      }catch{
+        return { ok:false, code:'archive_failed' };
+      }
+    }
+    // Remove recovery only after successful archive
+    if (hadRecovery) {
+      try { localStorage.removeItem(CONFIG.storageKeys.recovery); } catch {}
+    }
+    // Now save the new data; on failure, try to restore recovery
+    const res = saveData(parsed);
+    if(!res.ok){
+      if (hadRecovery) {
+        try{ localStorage.setItem(CONFIG.storageKeys.recovery, recoveryValue); }catch{}
+      }
+      return { ok:false, code:'import_storage_failed' };
+    }
+    if (movedPrev) {
+      try{
         if (typeof window !== 'undefined' && window && window.dispatchEvent) {
           window.dispatchEvent(new CustomEvent('natverk:import-archived-prev'));
         }

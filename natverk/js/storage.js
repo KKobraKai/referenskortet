@@ -64,6 +64,25 @@ export function loadData(){
 export function saveData(data){
   const copy = structuredClone(data);
   try{
+    // If corrupt raw exists in primary and no confirmed recovery, block saving
+    try{
+      const raw = localStorage.getItem(CONFIG.storageKeys.data);
+      if (typeof raw === 'string') {
+        let parsedOk = true;
+        try{ JSON.parse(raw); }catch{ parsedOk = false; }
+        if (!parsedOk) {
+          const rec = localStorage.getItem(CONFIG.storageKeys.recovery);
+          if (!rec || rec !== raw) {
+            try{
+              if (typeof window !== 'undefined' && window && window.dispatchEvent) {
+                window.dispatchEvent(new CustomEvent('natverk:data-invalid', { detail: { error: 'recovery_unconfirmed' } }));
+              }
+            }catch{}
+            return { ok:false, code:'recovery_unconfirmed' };
+          }
+        }
+      }
+    }catch{}
     // If recovery exists, refuse to overwrite primary until user resolves
     try{
       const rec = localStorage.getItem(CONFIG.storageKeys.recovery);

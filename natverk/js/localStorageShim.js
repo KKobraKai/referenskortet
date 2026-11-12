@@ -7,7 +7,9 @@
   } catch (e) {
     existing = undefined;
   }
-  if (typeof existing === 'undefined') {
+  // Only install a stub in Node test environments, never in browsers.
+  const isNode = typeof process !== 'undefined' && process && process.versions && !!process.versions.node;
+  if (typeof existing === 'undefined' && isNode) {
     const store = new Map();
     const stub = {
       getItem(key){ return store.has(key) ? store.get(key) : null; },

@@ -206,7 +206,17 @@ function renderOneList(){
     const del = ce('button','btn danger'); del.textContent = t('delete');
     del.addEventListener('click', ()=>{
       const idx = state.data.oneToOnes.findIndex(x=>x.id===item.id);
-      if(idx>=0){ state.data.oneToOnes.splice(idx,1); const r = saveData(state.data); if(!r.ok) showStatus(t('not_saved')+': '+r.error, true); renderOneList(); }
+      if(idx>=0){
+        const removed = state.data.oneToOnes.splice(idx,1)[0];
+        const r = saveData(state.data);
+        if(!r.ok){
+          // rollback deletion and show translated error
+          state.data.oneToOnes.splice(idx,0,removed);
+          showStatus(t('not_saved')+': '+(r.code ? t(r.code) : (r.detail || '')), true);
+        } else {
+          renderOneList();
+        }
+      }
     });
     li.append(left, open, copy, pbtn, del);
     ul.appendChild(li);
@@ -250,8 +260,17 @@ function renderTreeSummary(){
   parts.push(d.company.name);
   parts.push(d.company.desc);
   const section = (title, arr) => {
-    const names = arr.map(a=>a.name).filter(Boolean).join(', ');
-    if (names) parts.push(`${title}: ${names}`);
+    const rows = [];
+    for (const a of arr) {
+      if (!a || (!a.name && !(a.contacts||[]).some(Boolean))) continue;
+      const contacts = (a.contacts||[]).filter(Boolean).join(', ');
+      const line = [a.name||'', contacts].filter(Boolean).join(' — ');
+      if (line) rows.push(line);
+    }
+    if (rows.length) {
+      parts.push(`${title}:`);
+      parts.push(...rows.map(r=>`  • ${r}`));
+    }
   };
   section(t('summary_wanted'), d.wanted.areas);
   section(t('summary_current'), d.current.areas);
@@ -280,7 +299,8 @@ function bindEvents(){
   qs('#btn-save-ask').addEventListener('click', ()=>{
     const sel = qs('#ask-branch'); const i = sel.value==='' ? -1 : Number(sel.value);
     if(Number.isInteger(i) && i>=0){
-      if(!state.data.weekly.usedAreaIndexes.includes(i)) state.data.weekly.usedAreaIndexes.push(i);
+      const pushed = !state.data.weekly.usedAreaIndexes.includes(i);
+      if(pushed) state.data.weekly.usedAreaIndexes.push(i);
       const entry = {
         week: isoWeek(new Date()),
         areaIndex: i,
@@ -289,7 +309,13 @@ function bindEvents(){
         short: qs('#ask-short').textContent
       };
       state.data.weekly.history.unshift(entry);
-      const r = saveData(state.data); if(!r.ok) showStatus(t('not_saved')+': '+r.error, true);
+      const r = saveData(state.data);
+      if(!r.ok){
+        // rollback
+        state.data.weekly.history.shift();
+        if(pushed){ const idx = state.data.weekly.usedAreaIndexes.indexOf(i); if(idx>=0) state.data.weekly.usedAreaIndexes.splice(idx,1); }
+        showStatus(t('not_saved')+': '+(r.code ? t(r.code) : (r.detail || '')), true);
+      }
       renderWeekly();
     } else {
       showStatus(t('select_branch'), true);
@@ -380,8 +406,30 @@ function bindEvents(){
       const key = code || 'import_malformed'; showStatus(t(key), true);
     }
   });
-  qs('#btn-print').addEventListener('click', ()=>window.print());
-  const btnPrintM1 = qs('#btn-print-m1'); if(btnPrintM1){ btnPrintM1.addEventListener('click', ()=>{ activateTab('m1'); window.print(); }); }
+  qs('#btn-print').addEventListener('click', ()=>{
+    const curr = {
+      who: qs('#one-who').value.trim(),
+      where: qs('#one-where').value.trim(),
+      time: qs('#one-time').value,
+      goals: qs('#one-goals').value.trim(),
+      fields: {
+        vision: qs('#ag-vision').value.trim(),
+        interests: qs('#ag-interests').value.trim(),
+        networks: qs('#ag-networks').value.trim(),
+        skills: qs('#ag-skills').value.trim(),
+        projects: qs('#ag-projects').value.trim(),
+        listen: qs('#ag-listen').value.trim(),
+        intro: qs('#ag-intro').value.trim(),
+        offer: qs('#ag-offer').value.trim(),
+        next: qs('#ag-next').value.trim(),
+        nextmeet: qs('#ag-nextmeet').value.trim()
+      }
+    };
+    const summary = build121Summary(curr);
+    const pr = qs('#one-print'); if(pr){ pr.textContent = summary; }
+    window.print();
+  });
+  const btnPrintM1 = qs('#btn-print-m1'); if(btnPrintM1){ btnPrintM1.addEventListener('click', ()=>{ activateTab('m1'); renderTreeSummary(); window.print(); }); }
   const btnExpBackup = qs('#btn-export-backup'); if(btnExpBackup){ btnExpBackup.addEventListener('click', ()=>{ const r = exportRecoveryJson(); if(!r.ok && r.code){ showStatus(t(r.code), true); } }); }
   const btnExpBackupPrev = qs('#btn-export-backup-prev'); if(btnExpBackupPrev){ btnExpBackupPrev.addEventListener('click', ()=>{ const r = exportRecoveryPrevJson(); if(!r.ok && r.code){ showStatus(t(r.code), true); } }); }
   const btnExpThenClear = qs('#btn-export-then-clear'); if(btnExpThenClear){ btnExpThenClear.addEventListener('click', ()=>{ const r = exportAndClearRecovery(); if(r && r.ok){ const b1=qs('#btn-export-backup'); if(b1) b1.hidden = true; btnExpThenClear.hidden = true; showStatus('', false); } else if(r && r.code){ showStatus(t(r.code), true); } }); }

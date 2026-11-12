@@ -4,3 +4,9 @@
   .card{page-break-inside:avoid}
   .badge{border:1px solid #999}
 }
+
+/* Ensure M3 print block preserves newlines and wraps long words */
+#one-print{
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
