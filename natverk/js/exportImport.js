@@ -112,17 +112,12 @@ export function exportAndClearRecovery(){
     // Replace primary with defaults explicitly allowed
     const r = saveData(defaultData(), { allowReplaceCorrupt: true });
     if (!r.ok) {
-      // Roll back prev/prev2 to originals
-      try{
-        if (orig.origPrev1 !== undefined) {
-          if (orig.origPrev1 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev, orig.origPrev1);
-          else localStorage.removeItem(CONFIG.storageKeys.dataPrev);
-        }
-        if (orig.origPrev2 !== undefined) {
-          if (orig.origPrev2 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev2, orig.origPrev2);
-          else localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
-        }
-      }catch{}
+      // Roll back prev/prev2 to originals using restoreAll
+      const steps = [];
+      if (orig.origPrev1 !== undefined) steps.push({ key: CONFIG.storageKeys.dataPrev, value: orig.origPrev1 });
+      if (orig.origPrev2 !== undefined) steps.push({ key: CONFIG.storageKeys.dataPrev2, value: orig.origPrev2 });
+      const rest = restoreAll(steps);
+      if (!rest.ok) return rest;
       return r;
     }
     try { localStorage.removeItem(CONFIG.storageKeys.recovery); } catch {}
@@ -218,27 +213,13 @@ export function importJsonString(text){
     // Save new data, explicitly allowed to replace corrupt
     const res = saveData(parsed, { allowReplaceCorrupt: true });
     if(!res.ok){
-      // Roll back prev/prev2 to originals, attempt both and collect failures
-      const failed = [];
-      // Newest first: prev, then prev2
-      try{
-        if (orig.origPrev1 !== undefined) {
-          if (orig.origPrev1 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev, orig.origPrev1);
-          else localStorage.removeItem(CONFIG.storageKeys.dataPrev);
-        }
-      }catch{
-        failed.push(slotInfoFor(CONFIG.storageKeys.dataPrev));
-      }
-      try{
-        if (orig.origPrev2 !== undefined) {
-          if (orig.origPrev2 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev2, orig.origPrev2);
-          else localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
-        }
-      }catch{
-        failed.push(slotInfoFor(CONFIG.storageKeys.dataPrev2));
-      }
+      // Roll back prev/prev2 to originals using restoreAll
+      const steps = [];
+      if (orig.origPrev1 !== undefined) steps.push({ key: CONFIG.storageKeys.dataPrev, value: orig.origPrev1 });
+      if (orig.origPrev2 !== undefined) steps.push({ key: CONFIG.storageKeys.dataPrev2, value: orig.origPrev2 });
       try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
-      if (failed.length) return { ok:false, code:'rollback_failed', slots: failed };
+      const rest = restoreAll(steps);
+      if (!rest.ok) return rest;
       return { ok:false, code:'import_storage_failed' };
     }
     // Promote archive and clear current recovery; on failure, roll back to originalPrimary and originalPrev
@@ -249,35 +230,20 @@ export function importJsonString(text){
         localStorage.removeItem(CONFIG.storageKeys.recovery);
         movedPrev = true;
       }catch(e){
-        // Roll back primary, archives, and recovery to original state; attempt each and collect failures
-        const failed = [];
-        try{
-          if (originalPrimary !== null) localStorage.setItem(CONFIG.storageKeys.data, originalPrimary);
-          else localStorage.removeItem(CONFIG.storageKeys.data);
-        }catch{ failed.push(slotInfoFor(CONFIG.storageKeys.data)); }
-        // Restore rotated archives using orig snapshots
-        try{
-          if (orig && 'origPrev1' in orig) {
-            if (orig.origPrev1 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev, orig.origPrev1);
-            else localStorage.removeItem(CONFIG.storageKeys.dataPrev);
-          }
-        }catch{ failed.push(slotInfoFor(CONFIG.storageKeys.dataPrev)); }
-        try{
-          if (orig && 'origPrev2' in orig) {
-            if (orig.origPrev2 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev2, orig.origPrev2);
-            else localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
-          }
-        }catch{ failed.push(slotInfoFor(CONFIG.storageKeys.dataPrev2)); }
-        try{
-          if (originalPrev !== null) localStorage.setItem(CONFIG.storageKeys.recoveryPrev, originalPrev);
-          else localStorage.removeItem(CONFIG.storageKeys.recoveryPrev);
-        }catch{ failed.push(slotInfoFor(CONFIG.storageKeys.recoveryPrev)); }
-        try{
-          if (originalRecovery !== null) localStorage.setItem(CONFIG.storageKeys.recovery, originalRecovery);
-          else localStorage.removeItem(CONFIG.storageKeys.recovery);
-        }catch{ failed.push(slotInfoFor(CONFIG.storageKeys.recovery)); }
+        // Roll back using restoreAll (newest-ish first)
+        const steps = [];
+        // Archives from rotation
+        if (orig && 'origPrev1' in orig) steps.push({ key: CONFIG.storageKeys.dataPrev, value: orig.origPrev1 });
+        if (orig && 'origPrev2' in orig) steps.push({ key: CONFIG.storageKeys.dataPrev2, value: orig.origPrev2 });
+        // Primary
+        steps.push({ key: CONFIG.storageKeys.data, value: originalPrimary });
+        // Recovery snapshots
+        steps.push({ key: CONFIG.storageKeys.recoveryPrev, value: originalPrev });
+        steps.push({ key: CONFIG.storageKeys.recovery, value: originalRecovery });
         try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
-        return { ok:false, code: failed.length ? 'rollback_failed' : 'promotion_failed', slots: failed.length ? failed : undefined };
+        const rest = restoreAll(steps);
+        if (!rest.ok) return rest;
+        return { ok:false, code:'promotion_failed' };
       }
     } else {
       // No recovery present — ensure any temp is cleared defensively
