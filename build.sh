@@ -4,7 +4,7 @@
 # so deploy dist/ instead of the repo root:  npx wrangler pages deploy dist --project-name=referenskortet
 set -euo pipefail
 cd "$(dirname "$0")"
-PUBLIC=(index.html 404.html _headers robots.txt sitemap.xml favicon.svg apple-touch-icon.png icon-192.png icon-512.png og-image.png site.webmanifest fonts vendor)
+PUBLIC=(index.html 404.html _headers robots.txt sitemap.xml favicon.svg apple-touch-icon.png icon-192.png icon-512.png og-image.png site.webmanifest fonts vendor natverk)
 rm -rf dist && mkdir dist
 for f in "${PUBLIC[@]}"; do [ -e "$f" ] || { echo "ERROR: missing public file $f" >&2; exit 1; }; cp -R "$f" dist/; done
 # Verify the CSP hash in _headers matches the inline app script (the only executable inline <script> in index.html).

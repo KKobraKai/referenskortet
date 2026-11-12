@@ -1,0 +1,7 @@
+@media print{
+  .panel{display:block !important}
+  .tree-grid{grid-template-columns:1fr 1fr}
+  .area{break-inside:avoid}
+  .card{page-break-inside:avoid}
+  .badge{border:1px solid #999}
+}

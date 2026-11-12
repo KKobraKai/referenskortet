@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nätverk – verktyg för BNI-medlemmar</title>
+    <meta name="description" content="Ett telefonförst, lokalt verktyg för BNI-medlemmar – inspirerat av Grundutbildningens metod. Ej affilierat med eller godkänt av BNI." />
+    <link rel="preload" href="/fonts/work-sans-latin.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="/fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./print.css" media="print" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="/" class="brand" aria-label="Till startsidan">referralcard.ai</a>
+      <div class="header-actions">
+        <label class="lang-switch">
+          <span id="i18n-label-language">Språk</span>
+          <select id="lang-select" aria-labelledby="i18n-label-language">
+            <option value="sv">Svenska</option>
+            <option value="en">English</option>
+          </select>
+        </label>
+        <button id="btn-export" class="btn" type="button" data-i18n="export">Exportera</button>
+        <label for="import-file" class="btn" role="button" tabindex="0" data-i18n="import">Importera</label>
+        <input id="import-file" type="file" accept="application/json" aria-label="Importera JSON" />
+        <button id="btn-print" class="btn" type="button" data-i18n="print">Skriv ut</button>
+      </div>
+    </header>
+
+    <main id="app" class="app">
+      <p class="disclaimer" id="disclaimer">
+        Ett frivilligt verktyg för BNI-medlemmar, inspirerat av Grundutbildningens metod.
+        Ej affilierat med eller godkänt av BNI.
+      </p>
+
+      <nav class="tabs" aria-label="Moduler">
+        <button class="tab active" data-tab="m1" id="tab-m1">Sökträdet</button>
+        <button class="tab" data-tab="m2" id="tab-m2">Veckans sökning</button>
+        <button class="tab" data-tab="m3" id="tab-m3">1‑2‑1</button>
+      </nav>
+
+      <section id="panel-m1" class="panel active" aria-labelledby="tab-m1">
+        <h1 data-i18n="m1_title">Sökträdet</h1>
+
+        <form id="company-form" class="card" autocomplete="off">
+          <fieldset>
+            <legend data-i18n="company_center">Mitt företag (centrum)</legend>
+            <label>
+              <span data-i18n="company_name">Företagsnamn</span>
+              <input name="companyName" id="companyName" type="text" maxlength="120" />
+            </label>
+            <label>
+              <span data-i18n="company_desc">Kort beskrivning</span>
+              <textarea name="companyDesc" id="companyDesc" rows="3" maxlength="300"></textarea>
+            </label>
+          </fieldset>
+        </form>
+
+        <div class="tree-grid">
+          <div class="tree-col">
+            <div class="card">
+              <h2 data-i18n="wanted_areas">Önskade områden</h2>
+              <div id="wanted-areas" class="areas" data-side="wanted"></div>
+            </div>
+            <div class="card">
+              <h2 data-i18n="wanted_partners">Önskade partners</h2>
+              <div id="wanted-partners" class="partners" data-side="wanted"></div>
+            </div>
+          </div>
+          <div class="tree-col">
+            <div class="card">
+              <h2 data-i18n="current_areas">Nuvarande områden</h2>
+              <div id="current-areas" class="areas" data-side="current"></div>
+            </div>
+            <div class="card">
+              <h2 data-i18n="current_partners">Nuvarande partners</h2>
+              <div id="current-partners" class="partners" data-side="current"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gaps card" id="gaps-summary" aria-live="polite"></div>
+
+        <div class="actions">
+          <button id="btn-print-m1" class="btn secondary" type="button" data-i18n="print_page">Skriv ut denna sida</button>
+        </div>
+      </section>
+
+      <section id="panel-m2" class="panel" aria-labelledby="tab-m2">
+        <h1 data-i18n="m2_title">Veckans sökning</h1>
+        <div class="card">
+          <p class="hint" id="rotation-hint"></p>
+          <label>
+            <span data-i18n="select_branch">Välj önskat område</span>
+            <select id="ask-branch"></select>
+          </label>
+          <label>
+            <span data-i18n="ask_who">Specifik person/roll eller företag</span>
+            <input id="ask-who" type="text" maxlength="120" />
+          </label>
+          <label>
+            <span data-i18n="ask_why">Varför passar det bra?</span>
+            <textarea id="ask-why" rows="3" maxlength="300"></textarea>
+          </label>
+          <div class="row">
+            <span id="spoken-hint" class="hint"></span>
+            <button id="btn-save-ask" class="btn" type="button" data-i18n="save">Spara</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="short_version">Kort version (~10 sek)</h2>
+          <output id="ask-short"></output>
+        </div>
+      </section>
+
+      <section id="panel-m3" class="panel" aria-labelledby="tab-m3">
+        <h1 data-i18n="m3_title">1‑2‑1 förberedelser och anteckningar</h1>
+        <div class="card">
+          <div class="grid two">
+            <label><span data-i18n="one_who">Vem</span><input id="one-who" type="text" maxlength="120" /></label>
+            <label><span data-i18n="one_where">Plats</span><input id="one-where" type="text" maxlength="120" /></label>
+            <label><span data-i18n="one_time">Tid</span><input id="one-time" type="datetime-local" /></label>
+            <label><span data-i18n="one_goals">Mål</span><input id="one-goals" type="text" maxlength="200" /></label>
+          </div>
+          <button id="btn-pull-summary" class="btn secondary" type="button" data-i18n="pull_summary">Hämta Sökträdet‑sammanfattning</button>
+        </div>
+        <div class="card">
+          <div class="grid two">
+            <label><span data-i18n="agenda_vision">Vision/mål</span><textarea id="ag-vision" rows="2"></textarea></label>
+            <label><span data-i18n="agenda_interests">Intressen/familj</span><textarea id="ag-interests" rows="2"></textarea></label>
+            <label><span data-i18n="agenda_networks">Andra nätverk</span><textarea id="ag-networks" rows="2"></textarea></label>
+            <label><span data-i18n="agenda_skills">Färdigheter</span><textarea id="ag-skills" rows="2"></textarea></label>
+            <label><span data-i18n="agenda_projects">Tidigare projekt & nöjda kunder</span><textarea id="ag-projects" rows="2"></textarea></label>
+            <label><span data-i18n="agenda_listen">Vad lyssna efter</span><textarea id="ag-listen" rows="2"></textarea></label>
+            <label><span data-i18n="agenda_intro_me">Så här introducerar du mig</span><textarea id="ag-intro" rows="2"></textarea></label>
+            <label><span data-i18n="agenda_offer">Vad kan jag göra för dig</span><textarea id="ag-offer" rows="2"></textarea></label>
+            <label><span data-i18n="agenda_next_step">Nästa steg</span><textarea id="ag-next" rows="2"></textarea></label>
+            <label><span data-i18n="agenda_next_meeting">Nästa möte</span><textarea id="ag-nextmeet" rows="2"></textarea></label>
+          </div>
+          <div class="row">
+            <button id="btn-save-121" class="btn" type="button" data-i18n="save_121">Spara 1‑2‑1</button>
+            <button id="btn-export-121" class="btn secondary" type="button" data-i18n="export_summary">Exportera sammanfattning</button>
+            <a id="bni-connect" class="link" href="https://bniconnectglobal.com/" rel="noopener" target="_blank" data-i18n="log_bnic">Logga 1‑2‑1 i BNI Connect</a>
+          </div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="saved_121">Sparade 1‑2‑1</h2>
+          <ul id="one-list" class="list"></ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <small id="footer-note">
+        För BNI‑medlemmar, inspirerat av Grundutbildningen; ej affilierat med eller godkänt av BNI.
+      </small>
+    </footer>
+
+    <script type="module" src="./js/app.js"></script>
+  </body>
+  </html>
+
