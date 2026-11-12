@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { scanSource as scan } from './lib/catchScanner.js';
+import { scanSource as scan } from '../tools/catchScanner.js';
 
 // Stricter guard: parse catch blocks (multi-line), fail on unbound catch,
 // and on bodies with no real statements (empty or comment-only).
