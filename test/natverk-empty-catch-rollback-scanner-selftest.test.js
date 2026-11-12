@@ -34,3 +34,17 @@ test('scanner ok: bound with real statement', () => {
   assert.equal(offenders.length, 0, 'expected valid bound catch not to be flagged');
 });
 
+// Bypass 1: comment between parameter and body brace must be skipped
+test('scanner flags: comment before brace (param then /* */ then { })', () => {
+  const src = 'try { a() } catch(e) /* explanation */ {}';
+  const offenders = scan(src, 'm');
+  assert.ok(offenders.length >= 1, 'expected comment-before-brace to be flagged');
+});
+
+// Bypass 2: nested catch inside body must be inspected
+test('scanner flags: nested empty catch inside catch body', () => {
+  const src = 'try { a() } catch(e) { try { b() } catch(inner) {} }';
+  const offenders = scan(src, 'm');
+  assert.ok(offenders.length >= 1, 'expected nested empty catch to be flagged');
+});
+
