@@ -1,20 +1,8 @@
 import { CONFIG } from './config.js';
 import { loadData, saveData, defaultData } from './storage.js';
 import { validateData } from './schema.js';
-import { t, I18N } from './i18n.js';
-import { safeReadSlot } from './storageOps.js';
-
-function slotInfoFor(key){
-  const map = {
-    [CONFIG.storageKeys.data]: 'slot_primary',
-    [CONFIG.storageKeys.recovery]: 'slot_recovery',
-    [CONFIG.storageKeys.recoveryPrev]: 'slot_recovery_prev',
-    [CONFIG.storageKeys.dataPrev]: 'slot_data_prev',
-    [CONFIG.storageKeys.dataPrev2]: 'slot_data_prev_2'
-  };
-  const k = map[key] || key;
-  return { key: k, sv: (I18N.sv && I18N.sv[k]) || k, en: (I18N.en && I18N.en[k]) || k };
-}
+import { t } from './i18n.js';
+import { safeReadSlot, restoreAll, slotInfoFor } from './storageOps.js';
 
 function rotateArchivePrimaryOrFail(){
   // Bounded rotation: tmp <- primary (verify), prev2 <- prev, prev <- tmp
@@ -59,12 +47,10 @@ function rotateArchivePrimaryOrFail(){
       localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
     }
   }catch{
-    // Attempt to restore prev2 to its original state
-    try{
-      if (origPrev2 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev2, origPrev2);
-      else localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
-    }catch{}
+    // Attempt to restore prev2 to its original state; report rollback_failed on failure
+    const rest = restoreAll([{ key: CONFIG.storageKeys.dataPrev2, value: origPrev2 }]);
     try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}
+    if (!rest.ok) return rest;
     return { ok:false, code:'rotation_failed' };
   }
   // Promote tmp -> prev
@@ -73,17 +59,13 @@ function rotateArchivePrimaryOrFail(){
     const check = localStorage.getItem(CONFIG.storageKeys.dataPrev);
     if (check !== primaryStr) throw new Error('mismatch');
   }catch{
-    // Roll back prev2 to original value
-    try{
-      if (origPrev2 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev2, origPrev2);
-      else localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
-    }catch{}
-    // Roll back prev to original value
-    try{
-      if (origPrev1 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev, origPrev1);
-      else localStorage.removeItem(CONFIG.storageKeys.dataPrev);
-    }catch{}
+    // Restore newest first: prev, then prev2
+    const rest = restoreAll([
+      { key: CONFIG.storageKeys.dataPrev, value: origPrev1 },
+      { key: CONFIG.storageKeys.dataPrev2, value: origPrev2 }
+    ]);
     try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}
+    if (!rest.ok) return rest;
     return { ok:false, code:'rotation_failed' };
   }
   try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}
