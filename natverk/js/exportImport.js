@@ -2,20 +2,32 @@ import { CONFIG } from './config.js';
 import { loadData, saveData, defaultData } from './storage.js';
 import { validateData } from './schema.js';
 import { t } from './i18n.js';
+import { safeReadSlot } from './storageOps.js';
 
 function rotateArchivePrimaryOrFail(){
   // Bounded rotation: tmp <- primary (verify), prev2 <- prev, prev <- tmp
   // On any failure, do not modify any slot and return coded error
-  let primaryStr;
-  try{
-    primaryStr = localStorage.getItem(CONFIG.storageKeys.data);
-  }catch{
-    return { ok:false, code:'primary_read_failed' };
+  const pr = safeReadSlot(CONFIG.storageKeys.data);
+  if (!pr.ok) return { ok:false, code:'primary_read_failed' };
+  const primaryStr = pr.value;
+  if (primaryStr === null) {
+    const p1 = safeReadSlot(CONFIG.storageKeys.dataPrev);
+    if (!p1.ok) return { ok:false, code:'rotation_failed' };
+    const p2 = safeReadSlot(CONFIG.storageKeys.dataPrev2);
+    if (!p2.ok) return { ok:false, code:'rotation_failed' };
+    return { ok:true, origPrev1: p1.value, origPrev2: p2.value };
   }
-  if (primaryStr === null) return { ok:true, origPrev1: null, origPrev2: null };
   let origPrev1 = null, origPrev2 = null;
-  try{ origPrev1 = localStorage.getItem(CONFIG.storageKeys.dataPrev); }catch{ origPrev1 = null; }
-  try{ origPrev2 = localStorage.getItem(CONFIG.storageKeys.dataPrev2); }catch{ origPrev2 = null; }
+  {
+    const r1 = safeReadSlot(CONFIG.storageKeys.dataPrev);
+    if (!r1.ok) return { ok:false, code:'rotation_failed' };
+    origPrev1 = r1.value;
+  }
+  {
+    const r2 = safeReadSlot(CONFIG.storageKeys.dataPrev2);
+    if (!r2.ok) return { ok:false, code:'rotation_failed' };
+    origPrev2 = r2.value;
+  }
   // Stage tmp with verify
   try{
     localStorage.setItem(CONFIG.storageKeys.dataPrevTmp, primaryStr);
