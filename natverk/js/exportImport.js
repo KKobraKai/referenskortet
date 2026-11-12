@@ -7,6 +7,7 @@ import { safeReadSlot, restoreAll, slotInfoFor } from './storageOps.js';
 function rotateArchivePrimaryOrFail(){
   // Bounded rotation: tmp <- primary (verify), prev2 <- prev, prev <- tmp
   // On any failure, do not modify any slot and return coded error
+  const cleanup_warnings = [];
   const pr = safeReadSlot(CONFIG.storageKeys.data);
   if (!pr.ok) return { ok:false, code:'primary_read_failed' };
   const primaryStr = pr.value;
@@ -32,8 +33,8 @@ function rotateArchivePrimaryOrFail(){
   try{
     localStorage.setItem(CONFIG.storageKeys.dataPrevTmp, primaryStr);
     const tmp = localStorage.getItem(CONFIG.storageKeys.dataPrevTmp);
-    if (tmp !== primaryStr) { try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}; return { ok:false, code:'primary_archive_failed' }; }
-  }catch{
+    if (tmp !== primaryStr) { try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch(e){ cleanup_warnings.push({ slot: CONFIG.storageKeys.dataPrevTmp, error: String(e && e.message || e) }); }; return { ok:false, code:'primary_archive_failed', cleanup_warnings }; }
+  }catch(e){
     return { ok:false, code:'primary_archive_failed' };
   }
   // Shift prev -> prev2
@@ -49,27 +50,27 @@ function rotateArchivePrimaryOrFail(){
   }catch{
     // Attempt to restore prev2 to its original state; report rollback_failed on failure
     const rest = restoreAll([{ key: CONFIG.storageKeys.dataPrev2, value: origPrev2 }]);
-    try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}
+    try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch(e){ cleanup_warnings.push({ slot: CONFIG.storageKeys.dataPrevTmp, error: String(e && e.message || e) }); }
     if (!rest.ok) return rest;
-    return { ok:false, code:'rotation_failed' };
+    return { ok:false, code:'rotation_failed', cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
   }
   // Promote tmp -> prev
   try{
     localStorage.setItem(CONFIG.storageKeys.dataPrev, primaryStr);
     const check = localStorage.getItem(CONFIG.storageKeys.dataPrev);
     if (check !== primaryStr) throw new Error('mismatch');
-  }catch{
+  }catch(e){
     // Restore newest first: prev, then prev2
     const rest = restoreAll([
       { key: CONFIG.storageKeys.dataPrev, value: origPrev1 },
       { key: CONFIG.storageKeys.dataPrev2, value: origPrev2 }
     ]);
-    try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}
+    try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch(err){ cleanup_warnings.push({ slot: CONFIG.storageKeys.dataPrevTmp, error: String(err && err.message || err) }); }
     if (!rest.ok) return rest;
-    return { ok:false, code:'rotation_failed' };
+    return { ok:false, code:'rotation_failed', cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
   }
-  try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}
-  return { ok:true, origPrev1, origPrev2 };
+  try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch(e){ cleanup_warnings.push({ slot: CONFIG.storageKeys.dataPrevTmp, error: String(e && e.message || e) }); }
+  return { ok:true, origPrev1, origPrev2, cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
 }
 
 export function exportJson(){
@@ -96,6 +97,7 @@ export function exportRecoveryJson(){
 
 export function exportAndClearRecovery(){
   try{
+    const cleanup_warnings = [];
     const res = exportRecoveryJson();
     if(!res.ok) return res;
     // Ask user to confirm a reset
@@ -104,11 +106,20 @@ export function exportAndClearRecovery(){
       if (typeof window !== 'undefined' && window && typeof window.confirm === 'function') {
         confirmed = !!window.confirm(t('confirm_reset'));
       }
-    }catch{}
+    }catch(e){
+      // Record UI confirm failure but proceed as unconfirmed
+      cleanup_warnings.push({ slot: 'ui_confirm', error: String(e && e.message || e) });
+    }
     if (!confirmed) return { ok:false, code:'reset_cancelled' };
     // Rotate-archive primary before replacing it
     const orig = rotateArchivePrimaryOrFail();
-    if (!orig.ok) return orig;
+    if (!orig.ok) {
+      // propagate any rotation warnings
+      if (orig.cleanup_warnings && orig.cleanup_warnings.length) {
+        orig.cleanup_warnings = (orig.cleanup_warnings || []).concat(cleanup_warnings);
+      }
+      return orig;
+    }
     // Replace primary with defaults explicitly allowed
     const r = saveData(defaultData(), { allowReplaceCorrupt: true });
     if (!r.ok) {
@@ -117,12 +128,12 @@ export function exportAndClearRecovery(){
       if (orig.origPrev1 !== undefined) steps.push({ key: CONFIG.storageKeys.dataPrev, value: orig.origPrev1 });
       if (orig.origPrev2 !== undefined) steps.push({ key: CONFIG.storageKeys.dataPrev2, value: orig.origPrev2 });
       const rest = restoreAll(steps);
-      if (!rest.ok) return rest;
-      return r;
+      if (!rest.ok) return { ...rest, cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
+      return { ...r, cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
     }
-    try { localStorage.removeItem(CONFIG.storageKeys.recovery); } catch {}
-    return { ok:true };
-  }catch{
+    try { localStorage.removeItem(CONFIG.storageKeys.recovery); } catch(e) { cleanup_warnings.push({ slot: CONFIG.storageKeys.recovery, error: String(e && e.message || e) }); }
+    return { ok:true, cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
+  }catch(e){
     return { ok:false, code:'export_failed' };
   }
 }
@@ -162,6 +173,7 @@ export async function importJsonFile(file){
 
 export function importJsonString(text){
   try{
+    const cleanup_warnings = [];
     const parsed = JSON.parse(text);
     const v = validateData(parsed);
     if(!v.ok){
@@ -189,7 +201,7 @@ export function importJsonString(text){
       recoveryValue = localStorage.getItem(CONFIG.storageKeys.recovery);
       originalRecovery = recoveryValue;
       hadRecovery = recoveryValue !== null;
-    }catch{
+    }catch(e){
       // Fail closed if reading recovery fails
       return { ok:false, code:'archive_failed' };
     }
@@ -199,7 +211,7 @@ export function importJsonString(text){
         localStorage.setItem(CONFIG.storageKeys.recoveryPrevTmp, recoveryValue);
         const tmp = localStorage.getItem(CONFIG.storageKeys.recoveryPrevTmp);
         if (tmp !== recoveryValue) return { ok:false, code:'archive_failed' };
-      }catch{
+      }catch(e){
         return { ok:false, code:'archive_failed' };
       }
     }
@@ -207,9 +219,11 @@ export function importJsonString(text){
     const orig = rotateArchivePrimaryOrFail();
     if (!orig.ok) {
       // Clean up staged recovery tmp if present
-      try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
-      return orig;
+      try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch(e){ cleanup_warnings.push({ slot: CONFIG.storageKeys.recoveryPrevTmp, error: String(e && e.message || e) }); }
+      if (orig.cleanup_warnings && orig.cleanup_warnings.length) cleanup_warnings.push(...orig.cleanup_warnings);
+      return { ...orig, cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
     }
+    if (orig.cleanup_warnings && orig.cleanup_warnings.length) cleanup_warnings.push(...orig.cleanup_warnings);
     // Save new data, explicitly allowed to replace corrupt
     const res = saveData(parsed, { allowReplaceCorrupt: true });
     if(!res.ok){
@@ -217,10 +231,10 @@ export function importJsonString(text){
       const steps = [];
       if (orig.origPrev1 !== undefined) steps.push({ key: CONFIG.storageKeys.dataPrev, value: orig.origPrev1 });
       if (orig.origPrev2 !== undefined) steps.push({ key: CONFIG.storageKeys.dataPrev2, value: orig.origPrev2 });
-      try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
+      try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch(e){ cleanup_warnings.push({ slot: CONFIG.storageKeys.recoveryPrevTmp, error: String(e && e.message || e) }); }
       const rest = restoreAll(steps);
-      if (!rest.ok) return rest;
-      return { ok:false, code:'import_storage_failed' };
+      if (!rest.ok) return { ...rest, cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
+      return { ok:false, code:'import_storage_failed', cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
     }
     // Promote archive and clear current recovery; on failure, roll back to originalPrimary and originalPrev
     if (hadRecovery) {
@@ -240,21 +254,23 @@ export function importJsonString(text){
         // Recovery snapshots
         steps.push({ key: CONFIG.storageKeys.recoveryPrev, value: originalPrev });
         steps.push({ key: CONFIG.storageKeys.recovery, value: originalRecovery });
-        try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
+        try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch(err){ cleanup_warnings.push({ slot: CONFIG.storageKeys.recoveryPrevTmp, error: String(err && err.message || err) }); }
         const rest = restoreAll(steps);
-        if (!rest.ok) return rest;
-        return { ok:false, code:'promotion_failed' };
+        if (!rest.ok) return { ...rest, cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
+        return { ok:false, code:'promotion_failed', cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
       }
     } else {
       // No recovery present — ensure any temp is cleared defensively
-      try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
+      try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch(e){ cleanup_warnings.push({ slot: CONFIG.storageKeys.recoveryPrevTmp, error: String(e && e.message || e) }); }
     }
     try{
       if (movedPrev && typeof window !== 'undefined' && window && window.dispatchEvent) {
         window.dispatchEvent(new CustomEvent('natverk:import-archived-prev'));
       }
-    }catch{}
-    return { ok:true, movedPrev }
+    }catch(e){
+      cleanup_warnings.push({ slot: 'ui_dispatch', error: String(e && e.message || e) });
+    }
+    return { ok:true, movedPrev, cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined }
   }catch(e){
     return { ok:false, code:'import_malformed' };
   }
