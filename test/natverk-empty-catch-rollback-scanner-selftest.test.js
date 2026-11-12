@@ -1,8 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { selectScanner } from './lib/catchScanner.js';
-
-const scan = selectScanner();
+import { scanSource as scan } from './lib/catchScanner.js';
 
 test('scanner flags: bound-empty', () => {
   const src = 'try{ doWork() }catch(e){}';
