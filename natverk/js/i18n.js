@@ -243,6 +243,11 @@ try{
 if (!I18N[current]) current = 'sv';
 
 export function t(key, vars = {}) {
+  // Ensure current reflects saved preference if available (guards module cache across tests)
+  try{
+    const saved = localStorage.getItem(CONFIG.storageKeys.lang);
+    if (saved && I18N[saved] && saved !== current) current = saved;
+  }catch{}
   const str = (I18N[current] && I18N[current][key]) || key;
   return Object.keys(vars).reduce((s,k)=>s.replaceAll(`{${k}}`, String(vars[k])) , str);
 }
@@ -252,11 +257,6 @@ export function setLang(lang){
   try { localStorage.setItem(CONFIG.storageKeys.lang, current); } catch {}
 }
 export function applyI18n(root=document){
-  // Sync current language with saved preference before applying
-  try{
-    const saved = localStorage.getItem(CONFIG.storageKeys.lang);
-    if (saved && I18N[saved]) current = saved;
-  }catch{}
   root.querySelectorAll('[data-i18n]').forEach(el=>{
     const key = el.getAttribute('data-i18n');
     el.textContent = t(key);
