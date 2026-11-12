@@ -11,7 +11,7 @@ export function exportJson(){
 export function exportRecoveryJson(){
   try{
     const raw = localStorage.getItem(CONFIG.storageKeys.recovery);
-    if(!raw) return { ok:false, error:'No backup' };
+    if(!raw) return { ok:false, code:'no_backup' };
     const blob = new Blob([raw], { type:'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -20,7 +20,18 @@ export function exportRecoveryJson(){
     URL.revokeObjectURL(url);
     return { ok:true };
   }catch(e){
-    return { ok:false, error:String(e && e.message || e) };
+    return { ok:false, code:'export_failed' };
+  }
+}
+
+export function exportAndClearRecovery(){
+  try{
+    const res = exportRecoveryJson();
+    if(!res.ok) return res;
+    try { localStorage.removeItem(CONFIG.storageKeys.recovery); } catch {}
+    return { ok:true };
+  }catch{
+    return { ok:false, code:'export_failed' };
   }
 }
 
@@ -46,16 +57,30 @@ export function importJsonString(text){
     const parsed = JSON.parse(text);
     const v = validateData(parsed);
     if(!v.ok){
-      if(v.error === 'Unsupported schemaVersion') return { ok:false, error:'Unsupported schemaVersion' };
-      return { ok:false, error:'Invalid JSON structure' };
+      if(v.error === 'Unsupported schemaVersion') return { ok:false, code:'import_unsupported_schema' };
+      return { ok:false, code:'import_invalid_structure' };
     }
+    // If a recovery is present, resolve it on import: clear before saving,
+    // restore only if the save fails.
+    let hadRecovery = false;
+    let recoveryValue = null;
+    try{
+      recoveryValue = localStorage.getItem(CONFIG.storageKeys.recovery);
+      hadRecovery = !!recoveryValue;
+      if (hadRecovery) localStorage.removeItem(CONFIG.storageKeys.recovery);
+    }catch{}
     const res = saveData(parsed);
     if(!res.ok){
-      return { ok:false, error:'Storage write failed' };
+      // restore recovery if we cleared it
+      if (hadRecovery) {
+        try{ localStorage.setItem(CONFIG.storageKeys.recovery, recoveryValue); }catch{}
+      }
+      return { ok:false, code:'import_storage_failed' };
     }
+    // Success: recovery stays cleared (if it existed)
     return { ok:true }
   }catch(e){
-    return { ok:false, error:'Malformed JSON' };
+    return { ok:false, code:'import_malformed' };
   }
 }
 
