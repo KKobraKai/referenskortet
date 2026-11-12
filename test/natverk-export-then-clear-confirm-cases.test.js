@@ -43,6 +43,10 @@ test('N2 reset: missing confirm => no reset (coded error shown)', async () => {
   const corrupt = '{"schemaVersion":1,';
   globalThis.localStorage.setItem(CONFIG.storageKeys.data, corrupt);
   globalThis.localStorage.setItem(CONFIG.storageKeys.recovery, corrupt);
+  // Seed non-null archives so byte-identical has meaning
+  globalThis.localStorage.setItem(CONFIG.storageKeys.dataPrev, '{"p":"1"}');
+  globalThis.localStorage.setItem(CONFIG.storageKeys.dataPrev2, '{"p2":"2"}');
+  globalThis.localStorage.setItem(CONFIG.storageKeys.recoveryPrev, '{"rp":"1"}');
   // Take byte snapshots
   const before = {
     data: globalThis.localStorage.getItem(CONFIG.storageKeys.data),
@@ -76,6 +80,10 @@ test('N2 reset: throwing confirm => no reset (coded error shown)', async () => {
   const corrupt = '{"schemaVersion":1,';
   globalThis.localStorage.setItem(CONFIG.storageKeys.data, corrupt);
   globalThis.localStorage.setItem(CONFIG.storageKeys.recovery, corrupt);
+  // Seed non-null archives so byte-identical has meaning
+  globalThis.localStorage.setItem(CONFIG.storageKeys.dataPrev, '{"p":"1"}');
+  globalThis.localStorage.setItem(CONFIG.storageKeys.dataPrev2, '{"p2":"2"}');
+  globalThis.localStorage.setItem(CONFIG.storageKeys.recoveryPrev, '{"rp":"1"}');
   const before = {
     data: globalThis.localStorage.getItem(CONFIG.storageKeys.data),
     recovery: globalThis.localStorage.getItem(CONFIG.storageKeys.recovery),
