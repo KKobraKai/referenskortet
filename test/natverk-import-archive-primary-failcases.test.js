@@ -41,14 +41,15 @@ test('N5 import: existing primary-archive differs — report conflict and do not
   const origBytes = JSON.stringify(original);
   globalThis.localStorage.setItem(CONFIG.storageKeys.data, origBytes);
   globalThis.localStorage.removeItem(CONFIG.storageKeys.recovery);
-  // Seed a mismatching previous archive
-  globalThis.localStorage.setItem('natverk:data-prev', '{"mismatch":true}');
+  // Seed a mismatching previous archive that should be rotated to data-prev-2
+  const mismatch = '{"mismatch":true}';
+  globalThis.localStorage.setItem('natverk:data-prev', mismatch);
   const next = defaultData(); next.company.name = 'After';
   const res = importJsonString(JSON.stringify(next));
-  assert.equal(res.ok, false);
-  assert.equal(res.code, 'primary_archive_conflict');
-  // Ensure nothing changed
-  assert.equal(globalThis.localStorage.getItem(CONFIG.storageKeys.data), origBytes);
+  assert.equal(res.ok, true);
+  // Rotation: data-prev holds the primary before replace, data-prev-2 holds the old archive
+  assert.equal(globalThis.localStorage.getItem('natverk:data-prev'), origBytes);
+  assert.equal(globalThis.localStorage.getItem('natverk:data-prev-2'), mismatch);
 });
 
 test('N5 import: quota failure archiving primary — fail closed and do nothing', () => {

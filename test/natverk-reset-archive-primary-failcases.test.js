@@ -36,12 +36,13 @@ test('N5 reset: corrupt primary requires primary archive; quota failure returns 
   }
 });
 
-test('N5 reset: existing primary-archive differs — conflict and no replace', () => {
+test('N5 reset: existing primary-archive differs — rotate to prev-2 and replace ok', () => {
   const orig = defaultData(); orig.company.name = 'Keep';
   const origBytes = JSON.stringify(orig);
   globalThis.localStorage.setItem(CONFIG.storageKeys.data, origBytes);
   globalThis.localStorage.setItem(CONFIG.storageKeys.recovery, origBytes);
-  globalThis.localStorage.setItem('natverk:data-prev', '{"mismatch":true}');
+  const mismatch = '{"mismatch":true}';
+  globalThis.localStorage.setItem('natverk:data-prev', mismatch);
   // Minimal DOM stubs
   const { window, document, Blob } = parseHTML('<html><body></body></html>');
   window.URL.createObjectURL = ()=> 'blob:ok';
@@ -49,8 +50,9 @@ test('N5 reset: existing primary-archive differs — conflict and no replace', (
   Object.assign(globalThis, { window, document, Blob });
   window.confirm = ()=>true;
   const res = exportAndClearRecovery();
-  assert.equal(res.ok, false);
-  assert.equal(res.code, 'primary_archive_conflict');
-  assert.equal(globalThis.localStorage.getItem(CONFIG.storageKeys.data), origBytes);
+  assert.equal(res.ok, true);
+  // Rotation: prev holds pre-reset primary (orig), prev-2 carries the mismatch
+  assert.equal(globalThis.localStorage.getItem('natverk:data-prev'), origBytes);
+  assert.equal(globalThis.localStorage.getItem('natverk:data-prev-2'), mismatch);
 });
 

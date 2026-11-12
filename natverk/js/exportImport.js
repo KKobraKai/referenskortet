@@ -3,36 +3,57 @@ import { loadData, saveData, defaultData } from './storage.js';
 import { validateData } from './schema.js';
 import { t } from './i18n.js';
 
-function archivePrimaryOrFail(){
-  // Archive current primary bytes into dataPrev atomically with tmp and verify byte-for-byte
-  let primary = null;
+function rotateArchivePrimaryOrFail(){
+  // Bounded rotation: tmp <- primary (verify), prev2 <- prev, prev <- tmp
+  // On any failure, do not modify any slot and return coded error
+  let primaryStr;
   try{
-    primary = localStorage.getItem(CONFIG.storageKeys.data);
+    primaryStr = localStorage.getItem(CONFIG.storageKeys.data);
   }catch{
-    // Treat read failure as no primary to archive
-    primary = null;
+    return { ok:false, code:'primary_read_failed' };
   }
-  if (primary === null) return { ok:true };
+  if (primaryStr === null) return { ok:true, origPrev1: null, origPrev2: null };
+  let origPrev1 = null, origPrev2 = null;
+  try{ origPrev1 = localStorage.getItem(CONFIG.storageKeys.dataPrev); }catch{ origPrev1 = null; }
+  try{ origPrev2 = localStorage.getItem(CONFIG.storageKeys.dataPrev2); }catch{ origPrev2 = null; }
+  // Stage tmp with verify
   try{
-    const existing = localStorage.getItem(CONFIG.storageKeys.dataPrev);
-    if (existing !== null && existing !== primary) {
-      return { ok:false, code:'primary_archive_conflict' };
-    }
-  }catch{
-    // continue to attempt fresh archive
-  }
-  try{
-    localStorage.setItem(CONFIG.storageKeys.dataPrevTmp, primary);
+    localStorage.setItem(CONFIG.storageKeys.dataPrevTmp, primaryStr);
     const tmp = localStorage.getItem(CONFIG.storageKeys.dataPrevTmp);
-    if (tmp !== primary) return { ok:false, code:'primary_archive_failed' };
-    localStorage.setItem(CONFIG.storageKeys.dataPrev, primary);
-    const check = localStorage.getItem(CONFIG.storageKeys.dataPrev);
-    if (check !== primary) return { ok:false, code:'primary_archive_failed' };
-    try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}
-    return { ok:true };
+    if (tmp !== primaryStr) { try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}; return { ok:false, code:'primary_archive_failed' }; }
   }catch{
     return { ok:false, code:'primary_archive_failed' };
   }
+  // Shift prev -> prev2
+  try{
+    if (origPrev1 !== null) {
+      localStorage.setItem(CONFIG.storageKeys.dataPrev2, origPrev1);
+      const v = localStorage.getItem(CONFIG.storageKeys.dataPrev2);
+      if (v !== origPrev1) { throw new Error('mismatch'); }
+    } else {
+      // No previous prev — clear prev2 if existed
+      localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
+    }
+  }catch{
+    try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}
+    return { ok:false, code:'rotation_failed' };
+  }
+  // Promote tmp -> prev
+  try{
+    localStorage.setItem(CONFIG.storageKeys.dataPrev, primaryStr);
+    const check = localStorage.getItem(CONFIG.storageKeys.dataPrev);
+    if (check !== primaryStr) throw new Error('mismatch');
+  }catch{
+    // Roll back prev2 to original value
+    try{
+      if (origPrev2 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev2, origPrev2);
+      else localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
+    }catch{}
+    try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}
+    return { ok:false, code:'rotation_failed' };
+  }
+  try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}
+  return { ok:true, origPrev1, origPrev2 };
 }
 
 export function exportJson(){
@@ -69,14 +90,25 @@ export function exportAndClearRecovery(){
       }
     }catch{}
     if (!confirmed) return { ok:false, code:'reset_cancelled' };
-    // Archive primary before replacing it
-    {
-      const ap = archivePrimaryOrFail();
-      if (!ap.ok) return ap;
-    }
+    // Rotate-archive primary before replacing it
+    const orig = rotateArchivePrimaryOrFail();
+    if (!orig.ok) return orig;
     // Replace primary with defaults explicitly allowed
     const r = saveData(defaultData(), { allowReplaceCorrupt: true });
-    if (!r.ok) return r;
+    if (!r.ok) {
+      // Roll back prev/prev2 to originals
+      try{
+        if (orig.origPrev1 !== undefined) {
+          if (orig.origPrev1 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev, orig.origPrev1);
+          else localStorage.removeItem(CONFIG.storageKeys.dataPrev);
+        }
+        if (orig.origPrev2 !== undefined) {
+          if (orig.origPrev2 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev2, orig.origPrev2);
+          else localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
+        }
+      }catch{}
+      return r;
+    }
     try { localStorage.removeItem(CONFIG.storageKeys.recovery); } catch {}
     return { ok:true };
   }catch{
@@ -152,18 +184,27 @@ export function importJsonString(text){
         return { ok:false, code:'archive_failed' };
       }
     }
-    // Archive primary before any allowReplaceCorrupt write
-    {
-      const ap = archivePrimaryOrFail();
-      if (!ap.ok) {
-        // Clean up staged recovery tmp if present
-        try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
-        return ap;
-      }
+    // Rotate-archive primary before any allowReplaceCorrupt write
+    const orig = rotateArchivePrimaryOrFail();
+    if (!orig.ok) {
+      // Clean up staged recovery tmp if present
+      try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
+      return orig;
     }
     // Save new data, explicitly allowed to replace corrupt
     const res = saveData(parsed, { allowReplaceCorrupt: true });
     if(!res.ok){
+      // Roll back prev/prev2 to originals
+      try{
+        if (orig.origPrev1 !== undefined) {
+          if (orig.origPrev1 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev, orig.origPrev1);
+          else localStorage.removeItem(CONFIG.storageKeys.dataPrev);
+        }
+        if (orig.origPrev2 !== undefined) {
+          if (orig.origPrev2 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev2, orig.origPrev2);
+          else localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
+        }
+      }catch{}
       try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
       return { ok:false, code:'import_storage_failed' };
     }

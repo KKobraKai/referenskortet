@@ -23,7 +23,8 @@ export const CONFIG = {
     recoveryPrevTmp: 'natverk:recovery-prev:tmp',
     // Archive of primary before any allowReplaceCorrupt writes
     dataPrev: 'natverk:data-prev',
-    dataPrevTmp: 'natverk:data-prev:tmp'
+    dataPrevTmp: 'natverk:data-prev:tmp',
+    dataPrev2: 'natverk:data-prev-2'
   }
 };
 

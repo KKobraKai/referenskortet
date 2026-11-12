@@ -98,6 +98,8 @@ const sv = {
   primary_archive_failed: 'Arkivering av huvuddata misslyckades',
   primary_archive_conflict: 'Konflikt: tidigare arkiv skiljer sig från huvuddata',
   rollback_failed: 'Återställning misslyckades',
+  primary_read_failed: 'Kunde inte läsa huvuddata',
+  rotation_failed: 'Rotation av arkiv misslyckades',
   // 121 validation errors
   err_who_too_long: 'Vem är för lång',
   err_where_too_long: 'Plats är för lång',
@@ -212,6 +214,8 @@ const en = {
   primary_archive_failed: 'Primary archive failed',
   primary_archive_conflict: 'Conflict: existing archive differs from primary',
   rollback_failed: 'Rollback failed',
+  primary_read_failed: 'Primary read failed',
+  rotation_failed: 'Archive rotation failed',
   // 121 validation errors
   err_who_too_long: 'Who too long',
   err_where_too_long: 'Where too long',
