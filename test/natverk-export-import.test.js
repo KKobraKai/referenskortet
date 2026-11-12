@@ -30,3 +30,29 @@ test('malformed import rejected without changing stored data', () => {
   const current = loadData();
   assert.equal(current.company.name, 'KeepMe');
 });
+
+test('nested bad import leaves storage unchanged', () => {
+  const start = defaultData();
+  start.company.name = 'Good';
+  saveData(start);
+  const bad = JSON.stringify({
+    schemaVersion: 1,
+    company: { name: 'X', desc: 'Y' },
+    current: start.current,
+    wanted: start.wanted,
+    weekly: { usedAreaIndexes: [0], history: [ { week: 5, areaIndex: 0, who: 'A', why: 'B', short: 'C' } ] },
+    oneToOnes: [ null ] // invalid
+  });
+  const res = importJsonString(bad);
+  assert.equal(res.ok, false);
+  const after = loadData();
+  assert.equal(after.company.name, 'Good');
+});
+
+test('unsupported schemaVersion rejected', () => {
+  const start = defaultData();
+  saveData(start);
+  const bad = JSON.stringify({ ...start, schemaVersion: 999 });
+  const res = importJsonString(bad);
+  assert.equal(res.ok, false);
+});

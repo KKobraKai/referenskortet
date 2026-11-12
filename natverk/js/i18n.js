@@ -5,6 +5,11 @@ const sv = {
   export: 'Exportera',
   import: 'Importera',
   print: 'Skriv ut',
+  brand: 'referralcard.ai',
+  disclaimer_text: 'Ett frivilligt verktyg för BNI-medlemmar, inspirerat av Grundutbildningens metod. Ej affilierat med eller godkänt av BNI.',
+  tab_m1: 'Sökträdet',
+  tab_m2: 'Veckans sökning',
+  tab_m3: '1‑2‑1',
   m1_title: 'Sökträdet',
   company_center: 'Mitt företag (centrum)',
   company_name: 'Företagsnamn',
@@ -17,13 +22,22 @@ const sv = {
   contact_n: 'Kontakt',
   partner_n: 'Partner',
   gaps_summary: 'Tomma platser',
+  gaps_wanted_areas: 'Önskade områden',
+  gaps_wanted_contacts: 'Önskade kontakter',
+  gaps_wanted_partners: 'Önskade partners',
+  gaps_current_areas: 'Nuvarande områden',
+  gaps_current_contacts: 'Nuvarande kontakter',
+  gaps_current_partners: 'Nuvarande partners',
   print_page: 'Skriv ut denna sida',
   m2_title: 'Veckans sökning',
   select_branch: 'Välj önskat område',
+  select_branch_placeholder: '— Välj område —',
   ask_who: 'Specifik person/roll eller företag',
   ask_why: 'Varför passar det bra?',
   save: 'Spara',
   short_version: 'Kort version (~10 sek)',
+  target_words: 'mål 25–30 ord',
+  ask_history: 'Sparad historik',
   m3_title: '1‑2‑1 förberedelser och anteckningar',
   one_who: 'Vem',
   one_where: 'Plats',
@@ -44,6 +58,14 @@ const sv = {
   export_summary: 'Exportera sammanfattning',
   log_bnic: 'Logga 1‑2‑1 i BNI Connect',
   saved_121: 'Sparade 1‑2‑1',
+  open: 'Öppna',
+  copy: 'Kopiera',
+  print_meeting: 'Skriv ut',
+  summary: 'Sammanfattning',
+  delete: 'Ta bort',
+  import_ok: 'Import klar',
+  import_malformed: 'Import misslyckades',
+  not_saved: 'Kunde inte spara',
   weekly_suggestion: 'För vecka {week}: föreslaget område “{name}”',
   word_count: '{words} ord',
   not_affiliated: 'Ej affilierat med eller godkänt av BNI.',
@@ -54,6 +76,11 @@ const en = {
   export: 'Export',
   import: 'Import',
   print: 'Print',
+  brand: 'referralcard.ai',
+  disclaimer_text: 'A voluntary tool for BNI members, inspired by the Grundutbildning method. Not affiliated with or endorsed by BNI.',
+  tab_m1: 'Search Tree',
+  tab_m2: 'Weekly ask',
+  tab_m3: '1‑2‑1',
   m1_title: 'Search Tree',
   company_center: 'My company (center)',
   company_name: 'Company name',
@@ -66,13 +93,22 @@ const en = {
   contact_n: 'Contact',
   partner_n: 'Partner',
   gaps_summary: 'Empty slots',
+  gaps_wanted_areas: 'Wanted areas',
+  gaps_wanted_contacts: 'Wanted contacts',
+  gaps_wanted_partners: 'Wanted partners',
+  gaps_current_areas: 'Current areas',
+  gaps_current_contacts: 'Current contacts',
+  gaps_current_partners: 'Current partners',
   print_page: 'Print this page',
   m2_title: 'Weekly ask',
   select_branch: 'Pick wanted area',
+  select_branch_placeholder: '— Pick area —',
   ask_who: 'Specific person/role or company',
   ask_why: 'Why is it a good fit?',
   save: 'Save',
   short_version: 'Short version (~10 sec)',
+  target_words: 'target 25–30 words',
+  ask_history: 'Saved history',
   m3_title: '1‑2‑1 prep & notes',
   one_who: 'Who',
   one_where: 'Where',
@@ -93,6 +129,14 @@ const en = {
   export_summary: 'Export summary',
   log_bnic: 'Log the 1‑2‑1 in BNI Connect',
   saved_121: 'Saved 1‑2‑1s',
+  open: 'Open',
+  copy: 'Copy',
+  print_meeting: 'Print',
+  summary: 'Summary',
+  delete: 'Delete',
+  import_ok: 'Import complete',
+  import_malformed: 'Import failed',
+  not_saved: 'Could not save',
   weekly_suggestion: 'Week {week}: suggested area “{name}”',
   word_count: '{words} words',
   not_affiliated: 'Not affiliated with or endorsed by BNI.',
@@ -111,7 +155,7 @@ export function t(key, vars = {}) {
 export function getLang(){ return current; }
 export function setLang(lang){
   current = I18N[lang] ? lang : 'sv';
-  localStorage.setItem(CONFIG.storageKeys.lang, current);
+  try { localStorage.setItem(CONFIG.storageKeys.lang, current); } catch {}
 }
 export function applyI18n(root=document){
   root.querySelectorAll('[data-i18n]').forEach(el=>{
@@ -121,4 +165,7 @@ export function applyI18n(root=document){
   // Some static labels by id:
   const label = root.getElementById('i18n-label-language');
   if (label) label.textContent = t('language');
+  if (root && root.documentElement) {
+    root.documentElement.setAttribute('lang', getLang());
+  }
 }

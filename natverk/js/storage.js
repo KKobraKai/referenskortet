@@ -1,5 +1,6 @@
 import './localStorageShim.js';
 import { CONFIG } from './config.js';
+import { validateData } from './schema.js';
 
 export function defaultData(){
   const limits = CONFIG.limits;
@@ -24,10 +25,12 @@ export function defaultData(){
 
 export function loadData(){
   try{
-    const raw = localStorage.getItem(CONFIG.storageKeys.data);
+    let raw = null;
+    try { raw = localStorage.getItem(CONFIG.storageKeys.data); } catch { raw = null; }
     if(!raw) return defaultData();
     const data = JSON.parse(raw);
-    if(!validateDataShape(data)) return defaultData();
+    const v = validateData(data);
+    if(!v.ok) return defaultData();
     return migrateIfNeeded(data);
   }catch{
     return defaultData();
@@ -36,19 +39,23 @@ export function loadData(){
 
 export function saveData(data){
   const copy = structuredClone(data);
-  localStorage.setItem(CONFIG.storageKeys.data, JSON.stringify(copy));
+  try{
+    localStorage.setItem(CONFIG.storageKeys.data, JSON.stringify(copy));
+    return { ok:true };
+  }catch(e){
+    // Notify UI if available
+    try{
+      if (typeof window !== 'undefined' && window && window.dispatchEvent) {
+        window.dispatchEvent(new CustomEvent('natverk:storage-error', { detail: { error: String(e && e.message || e) } }));
+      }
+    }catch{}
+    return { ok:false, error: String(e && e.message || e) };
+  }
 }
 
 export function validateDataShape(obj){
-  if(!obj || typeof obj!=='object') return false;
-  if(typeof obj.schemaVersion!=='number') return false;
-  if(!obj.company || typeof obj.company.name!=='string' || typeof obj.company.desc!=='string') return false;
-  for (const side of ['current','wanted']){
-    if(!obj[side] || !Array.isArray(obj[side].areas) || !Array.isArray(obj[side].partners)) return false;
-  }
-  if(!obj.weekly || !Array.isArray(obj.weekly.usedAreaIndexes) || !Array.isArray(obj.weekly.history)) return false;
-  if(!Array.isArray(obj.oneToOnes)) return false;
-  return true;
+  // Backward compat no-op; delegate to validateData
+  return validateData(obj).ok;
 }
 
 export function migrateIfNeeded(data){

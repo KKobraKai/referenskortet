@@ -13,7 +13,7 @@
   </head>
   <body>
     <header class="site-header">
-      <a href="/" class="brand" aria-label="Till startsidan">referralcard.ai</a>
+      <a href="/" class="brand" aria-label="Till startsidan" data-i18n="brand">referralcard.ai</a>
       <div class="header-actions">
         <label class="lang-switch">
           <span id="i18n-label-language">Språk</span>
@@ -23,22 +23,20 @@
           </select>
         </label>
         <button id="btn-export" class="btn" type="button" data-i18n="export">Exportera</button>
-        <label for="import-file" class="btn" role="button" tabindex="0" data-i18n="import">Importera</label>
+        <button id="btn-import" class="btn" type="button" data-i18n="import">Importera</button>
         <input id="import-file" type="file" accept="application/json" aria-label="Importera JSON" />
         <button id="btn-print" class="btn" type="button" data-i18n="print">Skriv ut</button>
       </div>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
     </header>
 
     <main id="app" class="app">
-      <p class="disclaimer" id="disclaimer">
-        Ett frivilligt verktyg för BNI-medlemmar, inspirerat av Grundutbildningens metod.
-        Ej affilierat med eller godkänt av BNI.
-      </p>
+      <p class="disclaimer" id="disclaimer" data-i18n="disclaimer_text">Ett frivilligt verktyg för BNI-medlemmar, inspirerat av Grundutbildningens metod. Ej affilierat med eller godkänt av BNI.</p>
 
       <nav class="tabs" aria-label="Moduler">
-        <button class="tab active" data-tab="m1" id="tab-m1">Sökträdet</button>
-        <button class="tab" data-tab="m2" id="tab-m2">Veckans sökning</button>
-        <button class="tab" data-tab="m3" id="tab-m3">1‑2‑1</button>
+        <button class="tab active" data-tab="m1" id="tab-m1" data-i18n="tab_m1">Sökträdet</button>
+        <button class="tab" data-tab="m2" id="tab-m2" data-i18n="tab_m2">Veckans sökning</button>
+        <button class="tab" data-tab="m3" id="tab-m3" data-i18n="tab_m3">1‑2‑1</button>
       </nav>
 
       <section id="panel-m1" class="panel active" aria-labelledby="tab-m1">
@@ -105,13 +103,17 @@
             <textarea id="ask-why" rows="3" maxlength="300"></textarea>
           </label>
           <div class="row">
-            <span id="spoken-hint" class="hint"></span>
+            <span id="spoken-hint" class="hint"></span><span class="hint" id="target-hint" data-i18n="target_words">mål 25–30 ord</span>
             <button id="btn-save-ask" class="btn" type="button" data-i18n="save">Spara</button>
           </div>
         </div>
         <div class="card">
           <h2 data-i18n="short_version">Kort version (~10 sek)</h2>
           <output id="ask-short"></output>
+        </div>
+        <div class="card">
+          <h2 data-i18n="ask_history">Sparad historik</h2>
+          <ul id="ask-history" class="list"></ul>
         </div>
       </section>
 
@@ -149,13 +151,15 @@
           <h2 data-i18n="saved_121">Sparade 1‑2‑1</h2>
           <ul id="one-list" class="list"></ul>
         </div>
+        <div class="card">
+          <h2 data-i18n="summary">Sammanfattning</h2>
+          <textarea id="one-summary" rows="6" readonly></textarea>
+        </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <small id="footer-note">
-        För BNI‑medlemmar, inspirerat av Grundutbildningen; ej affilierat med eller godkänt av BNI.
-      </small>
+      <small id="footer-note" data-i18n="disclaimer_text">För BNI‑medlemmar, inspirerat av Grundutbildningen; ej affilierat med eller godkänt av BNI.</small>
     </footer>
 
     <script type="module" src="./js/app.js"></script>

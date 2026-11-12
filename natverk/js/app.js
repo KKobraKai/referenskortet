@@ -12,6 +12,12 @@ const state = {
 function qs(sel){ return document.querySelector(sel); }
 function ce(tag, cls){ const el = document.createElement(tag); if(cls) el.className=cls; return el; }
 
+function showStatus(msg, isError=true){
+  const el = qs('#status'); if(!el) return;
+  el.textContent = msg || '';
+  el.style.color = isError ? 'var(--danger)' : 'var(--accent-2)';
+}
+
 function render(){
   const d = state.data;
   // Company
@@ -21,28 +27,32 @@ function render(){
   renderSide('wanted', '#wanted-areas', '#wanted-partners');
   renderSide('current', '#current-areas', '#current-partners');
 
-  // Gaps
-  const gaps = computeGaps(d);
-  const gapsEl = qs('#gaps-summary');
-  gapsEl.innerHTML = '';
-  const items = [
-    ['wantedAreas','Önskade områden'],
-    ['wantedContacts','Önskade kontakter'],
-    ['wantedPartners','Önskade partners'],
-    ['currentAreas','Nuvarande områden'],
-    ['currentContacts','Nuvarande kontakter'],
-    ['currentPartners','Nuvarande partners'],
-  ];
-  for(const [k,label] of items){
-    const b = ce('span','badge'); b.textContent = `${label}: ${gaps[k]}`;
-    gapsEl.appendChild(b);
-  }
+  updateGaps();
 
   // Weekly ask panel
   renderWeekly();
 
   // Saved 1-2-1s
   renderOneList();
+}
+
+function updateGaps(){
+  const d = state.data;
+  const gaps = computeGaps(d);
+  const gapsEl = qs('#gaps-summary');
+  gapsEl.innerHTML = '';
+  const items = [
+    ['wantedAreas', t('gaps_wanted_areas')],
+    ['wantedContacts', t('gaps_wanted_contacts')],
+    ['wantedPartners', t('gaps_wanted_partners')],
+    ['currentAreas', t('gaps_current_areas')],
+    ['currentContacts', t('gaps_current_contacts')],
+    ['currentPartners', t('gaps_current_partners')],
+  ];
+  for(const [k,label] of items){
+    const b = ce('span','badge'); b.textContent = `${label}: ${gaps[k]}`;
+    gapsEl.appendChild(b);
+  }
 }
 
 function renderSide(side, areasSel, partnersSel){
@@ -56,7 +66,9 @@ function renderSide(side, areasSel, partnersSel){
     const h = ce('h3'); h.textContent = `${i+1}. ${t('area_name')}`;
     const name = ce('input'); name.value = a.name; name.maxLength=80; name.setAttribute('aria-label', `${t('area_name')} ${i+1}`);
     name.addEventListener('input', ()=>{
-      setAreaName(state.data, side, i, name.value); saveData(state.data); renderWeekly();
+      setAreaName(state.data, side, i, name.value);
+      const res = saveData(state.data); if(!res.ok) showStatus(t('not_saved')+': '+res.error, true);
+      renderWeekly(); updateGaps();
     });
     card.appendChild(h); card.appendChild(name);
     const slots = ce('div','slots');
@@ -66,7 +78,9 @@ function renderSide(side, areasSel, partnersSel){
       const inp = ce('input'); inp.value = a.contacts[j]; inp.maxLength=100;
       inp.setAttribute('aria-label', `${t('contact_n')} ${j+1} (${i+1})`);
       inp.addEventListener('input', ()=>{
-        setAreaContact(state.data, side, i, j, inp.value); saveData(state.data);
+        setAreaContact(state.data, side, i, j, inp.value);
+        const res = saveData(state.data); if(!res.ok) showStatus(t('not_saved')+': '+res.error, true);
+        updateGaps();
       });
       row.appendChild(num); row.appendChild(inp);
       slots.appendChild(row);
@@ -83,7 +97,9 @@ function renderSide(side, areasSel, partnersSel){
     const inp = ce('input'); inp.value = d.partners[i]; inp.maxLength=100;
     inp.setAttribute('aria-label', `${t('partner_n')} ${i+1}`);
     inp.addEventListener('input', ()=>{
-      setPartner(state.data, side, i, inp.value); saveData(state.data);
+      setPartner(state.data, side, i, inp.value);
+      const res = saveData(state.data); if(!res.ok) showStatus(t('not_saved')+': '+res.error, true);
+      updateGaps();
     });
     row.appendChild(num); row.appendChild(inp);
     part.appendChild(row);
@@ -106,19 +122,23 @@ function renderWeekly(){
   const sel = qs('#ask-branch');
   const prev = sel.value;
   sel.innerHTML = '';
+  // Placeholder
+  const ph = ce('option'); ph.value=''; ph.textContent = t('select_branch_placeholder'); ph.disabled = true; ph.selected = true;
+  sel.appendChild(ph);
   d.wanted.areas.forEach((a,i)=>{
     if(a.name && a.name.trim()){
       const opt = ce('option'); opt.value = String(i); opt.textContent = a.name;
-      if(String(i)===String(prev) || i===idx) opt.selected = true;
+      if(String(i)===String(prev) || i===idx) { ph.selected = false; opt.selected = true; }
       sel.appendChild(opt);
     }
   });
   updateShortAsk();
+  renderAskHistory();
 }
 
 function updateShortAsk(){
   const sel = qs('#ask-branch');
-  const i = Number(sel.value ?? -1);
+  const i = sel.value==='' ? -1 : Number(sel.value);
   const name = (Number.isInteger(i) && state.data.wanted.areas[i]) ? state.data.wanted.areas[i].name : '';
   const who = qs('#ask-who').value.trim();
   const why = qs('#ask-why').value.trim();
@@ -128,6 +148,16 @@ function updateShortAsk(){
   qs('#spoken-hint').textContent = t('word_count', { words });
 }
 
+function renderAskHistory(){
+  const ul = qs('#ask-history'); if(!ul) return;
+  ul.innerHTML = '';
+  for(const h of state.data.weekly.history){
+    const li = ce('li');
+    li.textContent = `v${h.week} — ${h.short}`;
+    ul.appendChild(li);
+  }
+}
+
 function renderOneList(){
   const ul = qs('#one-list');
   ul.innerHTML = '';
@@ -135,14 +165,78 @@ function renderOneList(){
     const li = ce('li');
     const left = ce('div');
     left.textContent = `${item.who || ''} — ${new Date(item.time||Date.now()).toLocaleString()}`;
-    const del = ce('button','btn danger'); del.textContent = 'Ta bort';
+    const open = ce('button','btn'); open.textContent = t('open');
+    open.addEventListener('click', ()=>{
+      // load into form
+      qs('#one-who').value = item.who || '';
+      qs('#one-where').value = item.where || '';
+      qs('#one-time').value = item.time || '';
+      qs('#one-goals').value = item.goals || '';
+      qs('#ag-vision').value = item.fields.vision || '';
+      qs('#ag-interests').value = item.fields.interests || '';
+      qs('#ag-networks').value = item.fields.networks || '';
+      qs('#ag-skills').value = item.fields.skills || '';
+      qs('#ag-projects').value = item.fields.projects || '';
+      qs('#ag-listen').value = item.fields.listen || '';
+      qs('#ag-intro').value = item.fields.intro || '';
+      qs('#ag-offer').value = item.fields.offer || '';
+      qs('#ag-next').value = item.fields.next || '';
+      qs('#ag-nextmeet').value = item.fields.nextmeet || '';
+      const summary = build121Summary(item);
+      const ta = qs('#one-summary'); if(ta) ta.value = summary;
+      // switch to tab m3
+      activateTab('m3');
+    });
+    const copy = ce('button','btn secondary'); copy.textContent = t('copy');
+    copy.addEventListener('click', async ()=>{
+      const summary = build121Summary(item);
+      try { await navigator.clipboard.writeText(summary); showStatus('Copied', false); } catch { showStatus('Cannot copy', true); }
+    });
+    const pbtn = ce('button','btn secondary'); pbtn.textContent = t('print_meeting');
+    pbtn.addEventListener('click', ()=>{
+      const summary = build121Summary(item);
+      const ta = qs('#one-summary'); if(ta) ta.value = summary;
+      activateTab('m3');
+      window.print();
+    });
+    const del = ce('button','btn danger'); del.textContent = t('delete') || 'Delete';
     del.addEventListener('click', ()=>{
       const idx = state.data.oneToOnes.findIndex(x=>x.id===item.id);
-      if(idx>=0){ state.data.oneToOnes.splice(idx,1); saveData(state.data); renderOneList(); }
+      if(idx>=0){ state.data.oneToOnes.splice(idx,1); const r = saveData(state.data); if(!r.ok) showStatus(t('not_saved')+': '+r.error, true); renderOneList(); }
     });
-    li.append(left, del);
+    li.append(left, open, copy, pbtn, del);
     ul.appendChild(li);
   }
+}
+
+function build121Summary(item){
+  const lines = [];
+  lines.push(`${t('one_who')}: ${item.who||''}`);
+  lines.push(`${t('one_where')}: ${item.where||''}`);
+  lines.push(`${t('one_time')}: ${item.time||''}`);
+  lines.push(`${t('one_goals')}: ${item.goals||''}`);
+  const F = item.fields || {};
+  const map = [
+    ['agenda_vision','vision'],
+    ['agenda_interests','interests'],
+    ['agenda_networks','networks'],
+    ['agenda_skills','skills'],
+    ['agenda_projects','projects'],
+    ['agenda_listen','listen'],
+    ['agenda_intro_me','intro'],
+    ['agenda_offer','offer'],
+    ['agenda_next_step','next'],
+    ['agenda_next_meeting','nextmeet'],
+  ];
+  for(const [key, field] of map){
+    lines.push(`${t(key)}: ${F[field]||''}`);
+  }
+  return lines.join('\n');
+}
+
+function activateTab(tab){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b.getAttribute('data-tab')===tab));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id===`panel-${tab}`));
 }
 
 function bindEvents(){
@@ -150,19 +244,18 @@ function bindEvents(){
   document.querySelectorAll('.tab').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const tab = btn.getAttribute('data-tab');
-      document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b===btn));
-      document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id===`panel-${tab}`));
+      activateTab(tab);
     });
   });
   // Company form
-  qs('#companyName').addEventListener('input', e=>{ setCompany(state.data, e.target.value, state.data.company.desc); saveData(state.data); });
-  qs('#companyDesc').addEventListener('input', e=>{ setCompany(state.data, state.data.company.name, e.target.value); saveData(state.data); });
+  qs('#companyName').addEventListener('input', e=>{ setCompany(state.data, e.target.value, state.data.company.desc); const r=saveData(state.data); if(!r.ok) showStatus(t('not_saved')+': '+r.error, true); });
+  qs('#companyDesc').addEventListener('input', e=>{ setCompany(state.data, state.data.company.name, e.target.value); const r=saveData(state.data); if(!r.ok) showStatus(t('not_saved')+': '+r.error, true); });
   // Weekly ask
   qs('#ask-branch').addEventListener('change', updateShortAsk);
   qs('#ask-who').addEventListener('input', updateShortAsk);
   qs('#ask-why').addEventListener('input', updateShortAsk);
   qs('#btn-save-ask').addEventListener('click', ()=>{
-    const sel = qs('#ask-branch'); const i = Number(sel.value);
+    const sel = qs('#ask-branch'); const i = sel.value==='' ? -1 : Number(sel.value);
     if(Number.isInteger(i) && i>=0){
       if(!state.data.weekly.usedAreaIndexes.includes(i)) state.data.weekly.usedAreaIndexes.push(i);
       const entry = {
@@ -173,8 +266,10 @@ function bindEvents(){
         short: qs('#ask-short').textContent
       };
       state.data.weekly.history.unshift(entry);
-      saveData(state.data);
+      const r = saveData(state.data); if(!r.ok) showStatus(t('not_saved')+': '+r.error, true);
       renderWeekly();
+    } else {
+      showStatus(t('select_branch'), true);
     }
   });
   // 1-2-1
@@ -217,15 +312,17 @@ function bindEvents(){
   });
   // Export/import/print
   qs('#btn-export').addEventListener('click', ()=>downloadJson());
+  qs('#btn-import').addEventListener('click', ()=>qs('#import-file').click());
   qs('#import-file').addEventListener('change', async (e)=>{
     const file = e.target.files && e.target.files[0];
     if(!file) return;
     const { ok, error } = await importJsonFile(file);
     e.target.value = '';
-    if(ok){ state.data = loadData(); render(); alert('Import klar'); }
-    else { alert('Import misslyckades: '+error); }
+    if(ok){ state.data = loadData(); render(); showStatus(t('import_ok'), false); }
+    else { showStatus((t('import_malformed')+': '+error), true); }
   });
   qs('#btn-print').addEventListener('click', ()=>window.print());
+  const btnPrintM1 = qs('#btn-print-m1'); if(btnPrintM1){ btnPrintM1.addEventListener('click', ()=>{ activateTab('m1'); window.print(); }); }
 
   // Language
   const langSel = qs('#lang-select');
@@ -233,6 +330,7 @@ function bindEvents(){
   langSel.addEventListener('change', ()=>{
     setLang(langSel.value);
     applyI18n(document);
+    render();
   });
 }
 
@@ -254,6 +352,10 @@ function init(){
   bindEvents();
   applyI18n(document);
   render();
+  // Listen for storage errors
+  try{
+    window.addEventListener('natverk:storage-error', (e)=> showStatus(t('not_saved')+': '+(e.detail && e.detail.error || ''), true));
+  }catch{}
 }
 
 document.addEventListener('DOMContentLoaded', init);
