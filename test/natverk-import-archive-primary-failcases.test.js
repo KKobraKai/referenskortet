@@ -36,7 +36,7 @@ test('N5 import: schema-invalid primary with no recovery — archive required an
   assert.notEqual(globalThis.localStorage.getItem(CONFIG.storageKeys.data), invalid);
 });
 
-test('N5 import: existing primary-archive differs — report conflict and do nothing', () => {
+test('N5 import: existing primary-archive differs — rotate to prev-2 and replace ok', () => {
   const original = defaultData(); original.company.name = 'Orig';
   const origBytes = JSON.stringify(original);
   globalThis.localStorage.setItem(CONFIG.storageKeys.data, origBytes);

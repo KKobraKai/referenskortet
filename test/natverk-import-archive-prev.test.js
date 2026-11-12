@@ -13,6 +13,10 @@ async function bootAppDom(lang='en') {
   const html = fs.readFileSync(path.join(process.cwd(), 'natverk/index.html'), 'utf-8');
   const { window, document, CustomEvent, Blob } = parseHTML(html);
   globalThis.localStorage.setItem(CONFIG.storageKeys.lang, lang);
+  // Ensure language isolation regardless of module cache ordering
+  const i18nPath = path.join(process.cwd(), 'natverk/js/i18n.js');
+  const i18n = await import(url.pathToFileURL(i18nPath).href);
+  if (i18n && typeof i18n.setLang === 'function') i18n.setLang(lang);
   // Make select.value writable for linkedom
   const sel = document.getElementById('lang-select');
   if (sel) {
