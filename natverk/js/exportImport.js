@@ -47,6 +47,11 @@ function rotateArchivePrimaryOrFail(){
       localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
     }
   }catch{
+    // Attempt to restore prev2 to its original state
+    try{
+      if (origPrev2 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev2, origPrev2);
+      else localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
+    }catch{}
     try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}
     return { ok:false, code:'rotation_failed' };
   }
@@ -60,6 +65,11 @@ function rotateArchivePrimaryOrFail(){
     try{
       if (origPrev2 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev2, origPrev2);
       else localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
+    }catch{}
+    // Roll back prev to original value
+    try{
+      if (origPrev1 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev, origPrev1);
+      else localStorage.removeItem(CONFIG.storageKeys.dataPrev);
     }catch{}
     try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}
     return { ok:false, code:'rotation_failed' };
