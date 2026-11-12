@@ -47,16 +47,25 @@ input:focus,textarea:focus,select:focus{outline:2px solid var(--accent)}
 #import-file{position:absolute;left:-9999px}
 .status{min-height:1.25rem;color:var(--danger);font-weight:600}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.print-only{display:none}
+.screen-only{display:initial}
 
 /* Print */
 @media print{
-  .site-header,.tabs,.actions,.header-actions,#btn-print,#btn-export,#btn-import,#import-file,.site-footer{display:none !important}
+  .site-header,.tabs,.actions,.header-actions,#btn-print,#btn-export,#btn-import,#btn-export-backup,#import-file,.site-footer{display:none !important}
   body{background:white;color:black}
   .card{border:none}
   /* Only print currently visible panel; do not force hidden panels visible */
   .panel:not(.active){display:none !important}
+  .print-only{display:block}
+  .screen-only{display:none}
+  body, .app{font-size:12px; line-height:1.25}
   /* Compact M1 tree */
   #panel-m1 .tree-grid{grid-template-columns:1fr 1fr}
   #panel-m1 .area{border:1px solid #999;padding:.25rem}
   #panel-m1 input, #panel-m1 textarea{border:none;padding:.25rem}
+  /* Hide M3 form; show only print block */
+  #panel-m3 .card{border:none}
+  #panel-m3 .grid, #panel-m3 .row, #panel-m3 #one-list, #panel-m3 #one-summary{display:none !important}
+  #panel-m3 #one-print{display:block}
 }

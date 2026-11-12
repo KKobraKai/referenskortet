@@ -56,3 +56,34 @@ test('unsupported schemaVersion rejected', () => {
   const res = importJsonString(bad);
   assert.equal(res.ok, false);
 });
+
+test('oneToOnes fields must be real strings: null/missing rejected, storage unchanged', () => {
+  const start = defaultData();
+  start.company.name = 'Base';
+  saveData(start);
+  const base = loadData();
+  // null field
+  const bad1 = JSON.stringify({
+    schemaVersion: CONFIG.schemaVersion,
+    company: base.company,
+    current: base.current,
+    wanted: base.wanted,
+    weekly: { usedAreaIndexes: [], history: [] },
+    oneToOnes: [ { id:'1', who:'A', where:'B', time:'', goals:'', fields:{ vision:null, interests:'', networks:'', skills:'', projects:'', listen:'', intro:'', offer:'', next:'', nextmeet:'' } } ]
+  });
+  const r1 = importJsonString(bad1);
+  assert.equal(r1.ok, false);
+  assert.deepEqual(loadData().company, base.company);
+  // missing field
+  const bad2 = JSON.stringify({
+    schemaVersion: CONFIG.schemaVersion,
+    company: base.company,
+    current: base.current,
+    wanted: base.wanted,
+    weekly: { usedAreaIndexes: [], history: [] },
+    oneToOnes: [ { id:'2', who:'A', where:'B', time:'', goals:'', fields:{ /* vision missing */ interests:'', networks:'', skills:'', projects:'', listen:'', intro:'', offer:'', next:'', nextmeet:'' } } ]
+  });
+  const r2 = importJsonString(bad2);
+  assert.equal(r2.ok, false);
+  assert.deepEqual(loadData().company, base.company);
+});

@@ -17,7 +17,8 @@ export const CONFIG = {
   },
   storageKeys: {
     data: 'natverk_data_v1',
-    lang: 'natverk_lang'
+    lang: 'natverk_lang',
+    recovery: 'natverk_data_v1_recovery'
   }
 };
 

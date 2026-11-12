@@ -30,7 +30,19 @@ export function loadData(){
     if(!raw) return defaultData();
     const data = JSON.parse(raw);
     const v = validateData(data);
-    if(!v.ok) return defaultData();
+    if(!v.ok) {
+      // Preserve raw as recovery; dispatch event to inform UI
+      try {
+        const existing = localStorage.getItem(CONFIG.storageKeys.recovery);
+        if (!existing) localStorage.setItem(CONFIG.storageKeys.recovery, raw);
+      }catch{}
+      try{
+        if (typeof window !== 'undefined' && window && window.dispatchEvent) {
+          window.dispatchEvent(new CustomEvent('natverk:data-invalid', { detail: { error: v.error || 'invalid' } }));
+        }
+      }catch{}
+      return defaultData();
+    }
     return migrateIfNeeded(data);
   }catch{
     return defaultData();
@@ -40,6 +52,13 @@ export function loadData(){
 export function saveData(data){
   const copy = structuredClone(data);
   try{
+    // If recovery exists, refuse to overwrite primary until user resolves
+    try{
+      const rec = localStorage.getItem(CONFIG.storageKeys.recovery);
+      if (rec) {
+        return { ok:false, error:'Recovery present; export/clear before saving' };
+      }
+    }catch{}
     localStorage.setItem(CONFIG.storageKeys.data, JSON.stringify(copy));
     return { ok:true };
   }catch(e){
@@ -61,4 +80,23 @@ export function validateDataShape(obj){
 export function migrateIfNeeded(data){
   // For future schema upgrades
   return data;
+}
+
+export function canUseStorage(){
+  try{
+    const k = '__natverk_probe__';
+    localStorage.setItem(k, '1');
+    localStorage.removeItem(k);
+    return true;
+  }catch{
+    return false;
+  }
+}
+
+export function hasRecovery(){
+  try{
+    return !!localStorage.getItem(CONFIG.storageKeys.recovery);
+  }catch{
+    return false;
+  }
 }

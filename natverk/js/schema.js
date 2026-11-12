@@ -82,7 +82,7 @@ export function validateData(data) {
     const fields = it.fields;
     const fieldKeys = ['vision', 'interests', 'networks', 'skills', 'projects', 'listen', 'intro', 'offer', 'next', 'nextmeet'];
     for (const key of fieldKeys) {
-      if (!isString(fields[key] ?? '', 600)) return { ok: false, error: `oneToOnes[${i}].fields.${key} invalid` };
+      if (!isString(fields[key], 600)) return { ok: false, error: `oneToOnes[${i}].fields.${key} invalid` };
     }
   }
 

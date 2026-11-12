@@ -66,6 +66,13 @@ const sv = {
   import_ok: 'Import klar',
   import_malformed: 'Import misslyckades',
   not_saved: 'Kunde inte spara',
+  storage_unavailable: 'Lagring otillgänglig – ändringar sparas inte',
+  export_backup: 'Exportera säkerhetskopia',
+  week_prefix: 'v',
+  summary_wanted: 'Önskade områden',
+  summary_current: 'Nuvarande områden',
+  copy_ok: 'Kopierat',
+  copy_fail: 'Kan inte kopiera',
   weekly_suggestion: 'För vecka {week}: föreslaget område “{name}”',
   word_count: '{words} ord',
   not_affiliated: 'Ej affilierat med eller godkänt av BNI.',
@@ -137,6 +144,13 @@ const en = {
   import_ok: 'Import complete',
   import_malformed: 'Import failed',
   not_saved: 'Could not save',
+  storage_unavailable: 'Storage unavailable — changes will not be saved',
+  export_backup: 'Export backup',
+  week_prefix: 'W',
+  summary_wanted: 'Wanted areas',
+  summary_current: 'Current areas',
+  copy_ok: 'Copied',
+  copy_fail: 'Cannot copy',
   weekly_suggestion: 'Week {week}: suggested area “{name}”',
   word_count: '{words} words',
   not_affiliated: 'Not affiliated with or endorsed by BNI.',
@@ -145,7 +159,11 @@ const en = {
 
 export const I18N = { sv, en };
 
-let current = (localStorage.getItem(CONFIG.storageKeys.lang) || 'sv');
+let current = 'sv';
+try{
+  const saved = localStorage.getItem(CONFIG.storageKeys.lang);
+  if (saved && I18N[saved]) current = saved;
+}catch{}
 if (!I18N[current]) current = 'sv';
 
 export function t(key, vars = {}) {

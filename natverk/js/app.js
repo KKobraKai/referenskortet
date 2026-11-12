@@ -1,9 +1,10 @@
 import { CONFIG, enabledModules } from './config.js';
 import { I18N, t, getLang, setLang, applyI18n } from './i18n.js';
-import { defaultData, loadData, saveData } from './storage.js';
+import { defaultData, loadData, saveData, canUseStorage, hasRecovery } from './storage.js';
 import { setCompany, setAreaName, setAreaContact, setPartner, computeGaps } from './model.js';
 import { isoWeek, pickNextWantedIndex, summarizeAsk } from './rotation.js';
-import { downloadJson, importJsonFile } from './exportImport.js';
+import { downloadJson, importJsonFile, exportRecoveryJson } from './exportImport.js';
+import { validate121 } from './validate.js';
 
 const state = {
   data: defaultData()
@@ -34,6 +35,8 @@ function render(){
 
   // Saved 1-2-1s
   renderOneList();
+  // Summaries for print
+  renderTreeSummary();
 }
 
 function updateGaps(){
@@ -153,7 +156,7 @@ function renderAskHistory(){
   ul.innerHTML = '';
   for(const h of state.data.weekly.history){
     const li = ce('li');
-    li.textContent = `v${h.week} — ${h.short}`;
+    li.textContent = `${t('week_prefix')}${h.week} — ${h.short}`;
     ul.appendChild(li);
   }
 }
@@ -190,16 +193,17 @@ function renderOneList(){
     const copy = ce('button','btn secondary'); copy.textContent = t('copy');
     copy.addEventListener('click', async ()=>{
       const summary = build121Summary(item);
-      try { await navigator.clipboard.writeText(summary); showStatus('Copied', false); } catch { showStatus('Cannot copy', true); }
+      try { await navigator.clipboard.writeText(summary); showStatus(t('copy_ok'), false); } catch { showStatus(t('copy_fail'), true); }
     });
     const pbtn = ce('button','btn secondary'); pbtn.textContent = t('print_meeting');
     pbtn.addEventListener('click', ()=>{
       const summary = build121Summary(item);
       const ta = qs('#one-summary'); if(ta) ta.value = summary;
+      const pr = qs('#one-print'); if(pr){ pr.textContent = summary; }
       activateTab('m3');
       window.print();
     });
-    const del = ce('button','btn danger'); del.textContent = t('delete') || 'Delete';
+    const del = ce('button','btn danger'); del.textContent = t('delete');
     del.addEventListener('click', ()=>{
       const idx = state.data.oneToOnes.findIndex(x=>x.id===item.id);
       if(idx>=0){ state.data.oneToOnes.splice(idx,1); const r = saveData(state.data); if(!r.ok) showStatus(t('not_saved')+': '+r.error, true); renderOneList(); }
@@ -237,6 +241,25 @@ function build121Summary(item){
 function activateTab(tab){
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b.getAttribute('data-tab')===tab));
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id===`panel-${tab}`));
+}
+
+function renderTreeSummary(){
+  const d = state.data;
+  const el = qs('#tree-summary'); if(!el) return;
+  const parts = [];
+  parts.push(d.company.name);
+  parts.push(d.company.desc);
+  const section = (title, arr) => {
+    const names = arr.map(a=>a.name).filter(Boolean).join(', ');
+    if (names) parts.push(`${title}: ${names}`);
+  };
+  section(t('summary_wanted'), d.wanted.areas);
+  section(t('summary_current'), d.current.areas);
+  const partnersWanted = d.wanted.partners.filter(Boolean).join(', ');
+  if (partnersWanted) parts.push(`${t('wanted_partners')}: ${partnersWanted}`);
+  const partnersCurrent = d.current.partners.filter(Boolean).join(', ');
+  if (partnersCurrent) parts.push(`${t('current_partners')}: ${partnersCurrent}`);
+  el.textContent = parts.filter(Boolean).join('\n');
 }
 
 function bindEvents(){
@@ -278,9 +301,9 @@ function bindEvents(){
     parts.push(state.data.company.name);
     parts.push(state.data.company.desc);
     const wanted = state.data.wanted.areas.map(a=>a.name).filter(Boolean).join(', ');
-    if(wanted) parts.push('Önskade områden: '+wanted);
+    if(wanted) parts.push(t('summary_wanted')+': '+wanted);
     const current = state.data.current.areas.map(a=>a.name).filter(Boolean).join(', ');
-    if(current) parts.push('Nuvarande områden: '+current);
+    if(current) parts.push(t('summary_current')+': '+current);
     qs('#ag-intro').value = parts.filter(Boolean).join(' — ');
   });
   qs('#btn-save-121').addEventListener('click', ()=>{
@@ -303,11 +326,33 @@ function bindEvents(){
         nextmeet: qs('#ag-nextmeet').value.trim()
       }
     };
+    const v = validate121(it);
+    if(!v.ok){ showStatus(t('not_saved')+': '+v.error, true); return; }
     state.data.oneToOnes.unshift(it);
     saveData(state.data);
     renderOneList();
   });
   qs('#btn-export-121').addEventListener('click', ()=>{
+    const curr = {
+      who: qs('#one-who').value.trim(),
+      where: qs('#one-where').value.trim(),
+      time: qs('#one-time').value,
+      goals: qs('#one-goals').value.trim(),
+      fields: {
+        vision: qs('#ag-vision').value.trim(),
+        interests: qs('#ag-interests').value.trim(),
+        networks: qs('#ag-networks').value.trim(),
+        skills: qs('#ag-skills').value.trim(),
+        projects: qs('#ag-projects').value.trim(),
+        listen: qs('#ag-listen').value.trim(),
+        intro: qs('#ag-intro').value.trim(),
+        offer: qs('#ag-offer').value.trim(),
+        next: qs('#ag-next').value.trim(),
+        nextmeet: qs('#ag-nextmeet').value.trim()
+      }
+    };
+    const summary = build121Summary(curr);
+    const pr = qs('#one-print'); if(pr){ pr.textContent = summary; }
     window.print();
   });
   // Export/import/print
@@ -323,6 +368,7 @@ function bindEvents(){
   });
   qs('#btn-print').addEventListener('click', ()=>window.print());
   const btnPrintM1 = qs('#btn-print-m1'); if(btnPrintM1){ btnPrintM1.addEventListener('click', ()=>{ activateTab('m1'); window.print(); }); }
+  const btnExpBackup = qs('#btn-export-backup'); if(btnExpBackup){ btnExpBackup.addEventListener('click', ()=>{ exportRecoveryJson(); }); }
 
   // Language
   const langSel = qs('#lang-select');
@@ -355,7 +401,12 @@ function init(){
   // Listen for storage errors
   try{
     window.addEventListener('natverk:storage-error', (e)=> showStatus(t('not_saved')+': '+(e.detail && e.detail.error || ''), true));
+    window.addEventListener('natverk:data-invalid', ()=> { showStatus(t('not_saved')+': data invalid', true); const b=qs('#btn-export-backup'); if(b) b.style.display=''; });
   }catch{}
+  // Check storage availability
+  if(!canUseStorage()){ showStatus(t('storage_unavailable'), true); }
+  // Recovery present?
+  if(hasRecovery()){ const b=qs('#btn-export-backup'); if(b) b.style.display=''; }
 }
 
 document.addEventListener('DOMContentLoaded', init);

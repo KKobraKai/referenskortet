@@ -8,6 +8,22 @@ export function exportJson(){
   return { json, blob: new Blob([json], { type:'application/json' }) };
 }
 
+export function exportRecoveryJson(){
+  try{
+    const raw = localStorage.getItem(CONFIG.storageKeys.recovery);
+    if(!raw) return { ok:false, error:'No backup' };
+    const blob = new Blob([raw], { type:'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'natverk-data-recovery.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    return { ok:true };
+  }catch(e){
+    return { ok:false, error:String(e && e.message || e) };
+  }
+}
+
 export function downloadJson(filename = 'natverk-data.json'){
   const { blob } = exportJson();
   const url = URL.createObjectURL(blob);
