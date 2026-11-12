@@ -427,6 +427,8 @@ function bindEvents(){
     };
     const summary = build121Summary(curr);
     const pr = qs('#one-print'); if(pr){ pr.textContent = summary; }
+    // Rebuild M1 summary from live state for print
+    renderTreeSummary();
     window.print();
   });
   const btnPrintM1 = qs('#btn-print-m1'); if(btnPrintM1){ btnPrintM1.addEventListener('click', ()=>{ activateTab('m1'); renderTreeSummary(); window.print(); }); }
@@ -458,6 +460,11 @@ function applyFlags(){
 
 function init(){
   applyFlags();
+  // Ensure language follows saved preference before initial render
+  try{
+    const savedLang = localStorage.getItem(CONFIG.storageKeys.lang);
+    if (savedLang) setLang(savedLang);
+  }catch{}
   // Listen for storage errors
   try{
     window.addEventListener('natverk:storage-error', ()=> showStatus(t('storage_error'), true));
@@ -469,7 +476,10 @@ function init(){
   applyI18n(document);
   render();
   // Check storage availability
-  if(!canUseStorage()){ showStatus(t('storage_unavailable'), true); }
+  if(!canUseStorage()){
+    showStatus(t('storage_unavailable'), true);
+    const persist = qs('#storage-note'); if (persist) persist.textContent = t('storage_unavailable');
+  }
   // Recovery present?
   if(hasRecovery()){ const b1=qs('#btn-export-backup'); if(b1) b1.hidden = false; const b2=qs('#btn-export-then-clear'); if(b2) b2.hidden = false; }
   if(hasRecoveryPrev()){ const b3=qs('#btn-export-backup-prev'); if(b3) b3.hidden = false; }

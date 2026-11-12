@@ -93,6 +93,8 @@ const sv = {
   import_invalid_structure: 'Ogiltig JSON‑struktur',
   import_storage_failed: 'Sparning misslyckades vid import',
   import_unsupported_schema: 'SchemaVersion stöds inte',
+  archive_failed: 'Arkivering misslyckades',
+  promotion_failed: 'Främjande av säkerhetskopia misslyckades',
   // 121 validation errors
   err_who_too_long: 'Vem är för lång',
   err_where_too_long: 'Plats är för lång',
@@ -202,6 +204,8 @@ const en = {
   import_invalid_structure: 'Invalid JSON structure',
   import_storage_failed: 'Storage write failed on import',
   import_unsupported_schema: 'Unsupported schemaVersion',
+  archive_failed: 'Archiving failed',
+  promotion_failed: 'Promotion failed',
   // 121 validation errors
   err_who_too_long: 'Who too long',
   err_where_too_long: 'Where too long',

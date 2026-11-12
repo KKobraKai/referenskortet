@@ -47,11 +47,13 @@ async function bootAppDom() {
 test('Export, then clear — clears recovery and enables saving again', async () => {
   // Arrange: put a recovery backup to block saves
   globalThis.localStorage.setItem(CONFIG.storageKeys.recovery, '{"broken":true}');
-  const { document } = await bootAppDom();
+  const { window, document } = await bootAppDom();
   const btn = document.querySelector('#btn-export-then-clear');
   assert.ok(btn, 'button must exist');
   assert.notEqual(btn.style.display, 'none', 'button must be visible when recovery present');
   // Act: click it
+  // Confirm the reset explicitly
+  if (window) window.confirm = ()=>true;
   btn.click();
   // Assert: recovery cleared and save works
   assert.equal(globalThis.localStorage.getItem(CONFIG.storageKeys.recovery), null);

@@ -10,3 +10,9 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+/* M1 print summary preserves newlines and wraps long words */
+#tree-summary{
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

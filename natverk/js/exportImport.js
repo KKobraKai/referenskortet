@@ -1,6 +1,7 @@
 import { CONFIG } from './config.js';
 import { loadData, saveData, defaultData } from './storage.js';
 import { validateData } from './schema.js';
+import { t } from './i18n.js';
 
 export function exportJson(){
   const data = loadData();
@@ -29,10 +30,10 @@ export function exportAndClearRecovery(){
     const res = exportRecoveryJson();
     if(!res.ok) return res;
     // Ask user to confirm a reset
-    let confirmed = true;
+    let confirmed = false;
     try{
       if (typeof window !== 'undefined' && window && typeof window.confirm === 'function') {
-        confirmed = window.confirm('Reset stored data?');
+        confirmed = !!window.confirm(t('confirm_reset'));
       }
     }catch{}
     if (!confirmed) return { ok:false, code:'reset_cancelled' };
@@ -87,13 +88,23 @@ export function importJsonString(text){
       if(v.error === 'Unsupported schemaVersion') return { ok:false, code:'import_unsupported_schema' };
       return { ok:false, code:'import_invalid_structure' };
     }
+    // Snapshot originals
+    let originalPrimary = null;
+    let originalRecovery = null;
+    let originalPrev = null;
+    try { originalPrimary = localStorage.getItem(CONFIG.storageKeys.data); } catch {}
+    try { originalPrev = localStorage.getItem(CONFIG.storageKeys.recoveryPrev); } catch {}
     // If a recovery is present, stage archive FIRST to a temp key with byte verification.
     let hadRecovery = false;
     let recoveryValue = null;
     try{
       recoveryValue = localStorage.getItem(CONFIG.storageKeys.recovery);
-      hadRecovery = !!recoveryValue;
-    }catch{}
+      originalRecovery = recoveryValue;
+      hadRecovery = recoveryValue !== null;
+    }catch{
+      // Fail closed if reading recovery fails
+      return { ok:false, code:'archive_failed' };
+    }
     let movedPrev = false;
     if (hadRecovery) {
       try{
@@ -110,14 +121,35 @@ export function importJsonString(text){
       try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
       return { ok:false, code:'import_storage_failed' };
     }
-    // Promote archive and clear current recovery
+    // Promote archive and clear current recovery; on failure, roll back to originalPrimary and originalPrev
     if (hadRecovery) {
       try{
         localStorage.setItem(CONFIG.storageKeys.recoveryPrev, recoveryValue);
         localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp);
         localStorage.removeItem(CONFIG.storageKeys.recovery);
         movedPrev = true;
-      }catch{}
+      }catch(e){
+        // Roll back primary and prev to original state
+        try{
+          if (originalPrimary !== null) {
+            localStorage.setItem(CONFIG.storageKeys.data, originalPrimary);
+          } else {
+            localStorage.removeItem(CONFIG.storageKeys.data);
+          }
+        }catch{}
+        try{
+          if (originalPrev !== null) {
+            localStorage.setItem(CONFIG.storageKeys.recoveryPrev, originalPrev);
+          } else {
+            localStorage.removeItem(CONFIG.storageKeys.recoveryPrev);
+          }
+        }catch{}
+        try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
+        return { ok:false, code:'promotion_failed' };
+      }
+    } else {
+      // No recovery present — ensure any temp is cleared defensively
+      try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
     }
     try{
       if (movedPrev && typeof window !== 'undefined' && window && window.dispatchEvent) {

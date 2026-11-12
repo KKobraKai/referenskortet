@@ -70,8 +70,15 @@ export function saveData(data, opts = {}){
         const raw = localStorage.getItem(CONFIG.storageKeys.data);
         if (typeof raw === 'string') {
           let parsedOk = true;
-          try{ JSON.parse(raw); }catch{ parsedOk = false; }
-          if (!parsedOk) {
+          let schemaOk = true;
+          try{
+            const obj = JSON.parse(raw);
+            const v = validateData(obj);
+            schemaOk = !!(v && v.ok);
+          }catch{
+            parsedOk = false;
+          }
+          if (!parsedOk || !schemaOk) {
             const rec = localStorage.getItem(CONFIG.storageKeys.recovery);
             if (!rec || rec !== raw) {
               try{
