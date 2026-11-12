@@ -1,8 +1,20 @@
 import { CONFIG } from './config.js';
 import { loadData, saveData, defaultData } from './storage.js';
 import { validateData } from './schema.js';
-import { t } from './i18n.js';
+import { t, I18N } from './i18n.js';
 import { safeReadSlot } from './storageOps.js';
+
+function slotInfoFor(key){
+  const map = {
+    [CONFIG.storageKeys.data]: 'slot_primary',
+    [CONFIG.storageKeys.recovery]: 'slot_recovery',
+    [CONFIG.storageKeys.recoveryPrev]: 'slot_recovery_prev',
+    [CONFIG.storageKeys.dataPrev]: 'slot_data_prev',
+    [CONFIG.storageKeys.dataPrev2]: 'slot_data_prev_2'
+  };
+  const k = map[key] || key;
+  return { key: k, sv: (I18N.sv && I18N.sv[k]) || k, en: (I18N.en && I18N.en[k]) || k };
+}
 
 function rotateArchivePrimaryOrFail(){
   // Bounded rotation: tmp <- primary (verify), prev2 <- prev, prev <- tmp
@@ -216,18 +228,27 @@ export function importJsonString(text){
     // Save new data, explicitly allowed to replace corrupt
     const res = saveData(parsed, { allowReplaceCorrupt: true });
     if(!res.ok){
-      // Roll back prev/prev2 to originals
+      // Roll back prev/prev2 to originals, attempt both and collect failures
+      const failed = [];
+      // Newest first: prev, then prev2
       try{
         if (orig.origPrev1 !== undefined) {
           if (orig.origPrev1 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev, orig.origPrev1);
           else localStorage.removeItem(CONFIG.storageKeys.dataPrev);
         }
+      }catch{
+        failed.push(slotInfoFor(CONFIG.storageKeys.dataPrev));
+      }
+      try{
         if (orig.origPrev2 !== undefined) {
           if (orig.origPrev2 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev2, orig.origPrev2);
           else localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
         }
-      }catch{}
+      }catch{
+        failed.push(slotInfoFor(CONFIG.storageKeys.dataPrev2));
+      }
       try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
+      if (failed.length) return { ok:false, code:'rollback_failed', slots: failed };
       return { ok:false, code:'import_storage_failed' };
     }
     // Promote archive and clear current recovery; on failure, roll back to originalPrimary and originalPrev
@@ -238,31 +259,35 @@ export function importJsonString(text){
         localStorage.removeItem(CONFIG.storageKeys.recovery);
         movedPrev = true;
       }catch(e){
-        // Roll back primary, prev, and recovery to original state
-        let rollbackError = false;
+        // Roll back primary, archives, and recovery to original state; attempt each and collect failures
+        const failed = [];
         try{
-          if (originalPrimary !== null) {
-            localStorage.setItem(CONFIG.storageKeys.data, originalPrimary);
-          } else {
-            localStorage.removeItem(CONFIG.storageKeys.data);
-          }
-        }catch{ rollbackError = true; }
+          if (originalPrimary !== null) localStorage.setItem(CONFIG.storageKeys.data, originalPrimary);
+          else localStorage.removeItem(CONFIG.storageKeys.data);
+        }catch{ failed.push(slotInfoFor(CONFIG.storageKeys.data)); }
+        // Restore rotated archives using orig snapshots
         try{
-          if (originalPrev !== null) {
-            localStorage.setItem(CONFIG.storageKeys.recoveryPrev, originalPrev);
-          } else {
-            localStorage.removeItem(CONFIG.storageKeys.recoveryPrev);
+          if (orig && 'origPrev1' in orig) {
+            if (orig.origPrev1 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev, orig.origPrev1);
+            else localStorage.removeItem(CONFIG.storageKeys.dataPrev);
           }
-        }catch{ rollbackError = true; }
+        }catch{ failed.push(slotInfoFor(CONFIG.storageKeys.dataPrev)); }
         try{
-          if (originalRecovery !== null) {
-            localStorage.setItem(CONFIG.storageKeys.recovery, originalRecovery);
-          } else {
-            localStorage.removeItem(CONFIG.storageKeys.recovery);
+          if (orig && 'origPrev2' in orig) {
+            if (orig.origPrev2 !== null) localStorage.setItem(CONFIG.storageKeys.dataPrev2, orig.origPrev2);
+            else localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
           }
-        }catch{ rollbackError = true; }
+        }catch{ failed.push(slotInfoFor(CONFIG.storageKeys.dataPrev2)); }
+        try{
+          if (originalPrev !== null) localStorage.setItem(CONFIG.storageKeys.recoveryPrev, originalPrev);
+          else localStorage.removeItem(CONFIG.storageKeys.recoveryPrev);
+        }catch{ failed.push(slotInfoFor(CONFIG.storageKeys.recoveryPrev)); }
+        try{
+          if (originalRecovery !== null) localStorage.setItem(CONFIG.storageKeys.recovery, originalRecovery);
+          else localStorage.removeItem(CONFIG.storageKeys.recovery);
+        }catch{ failed.push(slotInfoFor(CONFIG.storageKeys.recovery)); }
         try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
-        return { ok:false, code: rollbackError ? 'rollback_failed' : 'promotion_failed' };
+        return { ok:false, code: failed.length ? 'rollback_failed' : 'promotion_failed', slots: failed.length ? failed : undefined };
       }
     } else {
       // No recovery present — ensure any temp is cleared defensively

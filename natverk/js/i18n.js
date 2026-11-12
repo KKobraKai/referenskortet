@@ -100,6 +100,12 @@ const sv = {
   rollback_failed: 'Återställning misslyckades',
   primary_read_failed: 'Kunde inte läsa huvuddata',
   rotation_failed: 'Rotation av arkiv misslyckades',
+  // Slot labels
+  slot_primary: 'Huvuddata',
+  slot_recovery: 'Säkerhetskopia',
+  slot_recovery_prev: 'Tidigare säkerhetskopia',
+  slot_data_prev: 'Arkiv (föregående)',
+  slot_data_prev_2: 'Arkiv (äldre)',
   // 121 validation errors
   err_who_too_long: 'Vem är för lång',
   err_where_too_long: 'Plats är för lång',
@@ -216,6 +222,12 @@ const en = {
   rollback_failed: 'Rollback failed',
   primary_read_failed: 'Primary read failed',
   rotation_failed: 'Archive rotation failed',
+  // Slot labels
+  slot_primary: 'Primary data',
+  slot_recovery: 'Recovery',
+  slot_recovery_prev: 'Recovery previous',
+  slot_data_prev: 'Archive (previous)',
+  slot_data_prev_2: 'Archive (older)',
   // 121 validation errors
   err_who_too_long: 'Who too long',
   err_where_too_long: 'Where too long',
