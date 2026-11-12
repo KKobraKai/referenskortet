@@ -95,6 +95,9 @@ const sv = {
   import_unsupported_schema: 'SchemaVersion stöds inte',
   archive_failed: 'Arkivering misslyckades',
   promotion_failed: 'Främjande av säkerhetskopia misslyckades',
+  primary_archive_failed: 'Arkivering av huvuddata misslyckades',
+  primary_archive_conflict: 'Konflikt: tidigare arkiv skiljer sig från huvuddata',
+  rollback_failed: 'Återställning misslyckades',
   // 121 validation errors
   err_who_too_long: 'Vem är för lång',
   err_where_too_long: 'Plats är för lång',
@@ -206,6 +209,9 @@ const en = {
   import_unsupported_schema: 'Unsupported schemaVersion',
   archive_failed: 'Archiving failed',
   promotion_failed: 'Promotion failed',
+  primary_archive_failed: 'Primary archive failed',
+  primary_archive_conflict: 'Conflict: existing archive differs from primary',
+  rollback_failed: 'Rollback failed',
   // 121 validation errors
   err_who_too_long: 'Who too long',
   err_where_too_long: 'Where too long',
@@ -242,6 +248,11 @@ export function setLang(lang){
   try { localStorage.setItem(CONFIG.storageKeys.lang, current); } catch {}
 }
 export function applyI18n(root=document){
+  // Sync current language with saved preference before applying
+  try{
+    const saved = localStorage.getItem(CONFIG.storageKeys.lang);
+    if (saved && I18N[saved]) current = saved;
+  }catch{}
   root.querySelectorAll('[data-i18n]').forEach(el=>{
     const key = el.getAttribute('data-i18n');
     el.textContent = t(key);

@@ -20,7 +20,10 @@ export const CONFIG = {
     lang: 'natverk_lang',
     recovery: 'natverk_data_v1_recovery',
     recoveryPrev: 'natverk:recovery-prev',
-    recoveryPrevTmp: 'natverk:recovery-prev:tmp'
+    recoveryPrevTmp: 'natverk:recovery-prev:tmp',
+    // Archive of primary before any allowReplaceCorrupt writes
+    dataPrev: 'natverk:data-prev',
+    dataPrevTmp: 'natverk:data-prev:tmp'
   }
 };
 

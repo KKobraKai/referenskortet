@@ -460,11 +460,6 @@ function applyFlags(){
 
 function init(){
   applyFlags();
-  // Ensure language follows saved preference before initial render
-  try{
-    const savedLang = localStorage.getItem(CONFIG.storageKeys.lang);
-    if (savedLang) setLang(savedLang);
-  }catch{}
   // Listen for storage errors
   try{
     window.addEventListener('natverk:storage-error', ()=> showStatus(t('storage_error'), true));

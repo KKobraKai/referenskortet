@@ -3,6 +3,38 @@ import { loadData, saveData, defaultData } from './storage.js';
 import { validateData } from './schema.js';
 import { t } from './i18n.js';
 
+function archivePrimaryOrFail(){
+  // Archive current primary bytes into dataPrev atomically with tmp and verify byte-for-byte
+  let primary = null;
+  try{
+    primary = localStorage.getItem(CONFIG.storageKeys.data);
+  }catch{
+    // Treat read failure as no primary to archive
+    primary = null;
+  }
+  if (primary === null) return { ok:true };
+  try{
+    const existing = localStorage.getItem(CONFIG.storageKeys.dataPrev);
+    if (existing !== null && existing !== primary) {
+      return { ok:false, code:'primary_archive_conflict' };
+    }
+  }catch{
+    // continue to attempt fresh archive
+  }
+  try{
+    localStorage.setItem(CONFIG.storageKeys.dataPrevTmp, primary);
+    const tmp = localStorage.getItem(CONFIG.storageKeys.dataPrevTmp);
+    if (tmp !== primary) return { ok:false, code:'primary_archive_failed' };
+    localStorage.setItem(CONFIG.storageKeys.dataPrev, primary);
+    const check = localStorage.getItem(CONFIG.storageKeys.dataPrev);
+    if (check !== primary) return { ok:false, code:'primary_archive_failed' };
+    try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch{}
+    return { ok:true };
+  }catch{
+    return { ok:false, code:'primary_archive_failed' };
+  }
+}
+
 export function exportJson(){
   const data = loadData();
   const json = JSON.stringify(data, null, 2);
@@ -37,6 +69,11 @@ export function exportAndClearRecovery(){
       }
     }catch{}
     if (!confirmed) return { ok:false, code:'reset_cancelled' };
+    // Archive primary before replacing it
+    {
+      const ap = archivePrimaryOrFail();
+      if (!ap.ok) return ap;
+    }
     // Replace primary with defaults explicitly allowed
     const r = saveData(defaultData(), { allowReplaceCorrupt: true });
     if (!r.ok) return r;
@@ -115,6 +152,15 @@ export function importJsonString(text){
         return { ok:false, code:'archive_failed' };
       }
     }
+    // Archive primary before any allowReplaceCorrupt write
+    {
+      const ap = archivePrimaryOrFail();
+      if (!ap.ok) {
+        // Clean up staged recovery tmp if present
+        try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
+        return ap;
+      }
+    }
     // Save new data, explicitly allowed to replace corrupt
     const res = saveData(parsed, { allowReplaceCorrupt: true });
     if(!res.ok){
@@ -129,23 +175,31 @@ export function importJsonString(text){
         localStorage.removeItem(CONFIG.storageKeys.recovery);
         movedPrev = true;
       }catch(e){
-        // Roll back primary and prev to original state
+        // Roll back primary, prev, and recovery to original state
+        let rollbackError = false;
         try{
           if (originalPrimary !== null) {
             localStorage.setItem(CONFIG.storageKeys.data, originalPrimary);
           } else {
             localStorage.removeItem(CONFIG.storageKeys.data);
           }
-        }catch{}
+        }catch{ rollbackError = true; }
         try{
           if (originalPrev !== null) {
             localStorage.setItem(CONFIG.storageKeys.recoveryPrev, originalPrev);
           } else {
             localStorage.removeItem(CONFIG.storageKeys.recoveryPrev);
           }
-        }catch{}
+        }catch{ rollbackError = true; }
+        try{
+          if (originalRecovery !== null) {
+            localStorage.setItem(CONFIG.storageKeys.recovery, originalRecovery);
+          } else {
+            localStorage.removeItem(CONFIG.storageKeys.recovery);
+          }
+        }catch{ rollbackError = true; }
         try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
-        return { ok:false, code:'promotion_failed' };
+        return { ok:false, code: rollbackError ? 'rollback_failed' : 'promotion_failed' };
       }
     } else {
       // No recovery present — ensure any temp is cleared defensively
