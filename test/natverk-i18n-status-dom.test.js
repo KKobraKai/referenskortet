@@ -44,7 +44,7 @@ test('status messages are translated: EN mode', async () => {
   // Trigger a storage error event
   window.dispatchEvent(new window.CustomEvent('natverk:storage-error', { detail: { error: 'quota exceeded' } }));
   const msg1 = document.querySelector('#status').textContent || '';
-  assert.match(msg1, /Could not save/i);
+  assert.match(msg1, /Storage error/i);
   // Trigger a validate121 failure
   document.querySelector('#one-who').value = 'x'.repeat(121); // >120
   document.querySelector('#btn-save-121').click();
@@ -65,7 +65,7 @@ test('status messages are translated: SV mode', async () => {
   // Trigger a storage error event
   window.dispatchEvent(new window.CustomEvent('natverk:storage-error', { detail: { error: 'quota exceeded' } }));
   const msg1 = document.querySelector('#status').textContent || '';
-  assert.match(msg1, /Kunde inte spara/i);
+  assert.match(msg1, /Lagringsfel/i);
   // Trigger a validate121 failure
   document.querySelector('#one-who').value = 'x'.repeat(121); // >120
   document.querySelector('#btn-save-121').click();

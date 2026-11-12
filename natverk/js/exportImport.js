@@ -35,6 +35,22 @@ export function exportAndClearRecovery(){
   }
 }
 
+export function exportRecoveryPrevJson(){
+  try{
+    const raw = localStorage.getItem(CONFIG.storageKeys.recoveryPrev);
+    if(!raw) return { ok:false, code:'no_backup' };
+    const blob = new Blob([raw], { type:'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'natverk-data-recovery-prev.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    return { ok:true };
+  }catch{
+    return { ok:false, code:'export_failed' };
+  }
+}
+
 export function downloadJson(filename = 'natverk-data.json'){
   const { blob } = exportJson();
   const url = URL.createObjectURL(blob);
@@ -60,25 +76,39 @@ export function importJsonString(text){
       if(v.error === 'Unsupported schemaVersion') return { ok:false, code:'import_unsupported_schema' };
       return { ok:false, code:'import_invalid_structure' };
     }
-    // If a recovery is present, resolve it on import: clear before saving,
-    // restore only if the save fails.
+    // If a recovery is present, archive it on successful import
     let hadRecovery = false;
     let recoveryValue = null;
     try{
       recoveryValue = localStorage.getItem(CONFIG.storageKeys.recovery);
       hadRecovery = !!recoveryValue;
-      if (hadRecovery) localStorage.removeItem(CONFIG.storageKeys.recovery);
     }catch{}
+    // Temporarily clear recovery to allow save; restore on failure; archive on success
+    let tempCleared = false;
+    if (hadRecovery) {
+      try { localStorage.removeItem(CONFIG.storageKeys.recovery); tempCleared = true; } catch {}
+    }
     const res = saveData(parsed);
     if(!res.ok){
-      // restore recovery if we cleared it
-      if (hadRecovery) {
+      // restore recovery if we had cleared it
+      if (hadRecovery && tempCleared) {
         try{ localStorage.setItem(CONFIG.storageKeys.recovery, recoveryValue); }catch{}
       }
       return { ok:false, code:'import_storage_failed' };
     }
-    // Success: recovery stays cleared (if it existed)
-    return { ok:true }
+    // Success: if there was a recovery, move it to archive slot then clear current
+    let movedPrev = false;
+    if (hadRecovery) {
+      try{
+        localStorage.setItem(CONFIG.storageKeys.recoveryPrev, recoveryValue);
+        localStorage.removeItem(CONFIG.storageKeys.recovery);
+        movedPrev = true;
+        if (typeof window !== 'undefined' && window && window.dispatchEvent) {
+          window.dispatchEvent(new CustomEvent('natverk:import-archived-prev'));
+        }
+      }catch{}
+    }
+    return { ok:true, movedPrev }
   }catch(e){
     return { ok:false, code:'import_malformed' };
   }

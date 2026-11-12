@@ -1,9 +1,9 @@
 import { CONFIG, enabledModules } from './config.js';
 import { I18N, t, getLang, setLang, applyI18n } from './i18n.js';
-import { defaultData, loadData, saveData, canUseStorage, hasRecovery } from './storage.js';
+import { defaultData, loadData, saveData, canUseStorage, hasRecovery, hasRecoveryPrev } from './storage.js';
 import { setCompany, setAreaName, setAreaContact, setPartner, computeGaps } from './model.js';
 import { isoWeek, pickNextWantedIndex, summarizeAsk } from './rotation.js';
-import { downloadJson, importJsonFile, exportRecoveryJson, exportAndClearRecovery } from './exportImport.js';
+import { downloadJson, importJsonFile, exportRecoveryJson, exportRecoveryPrevJson, exportAndClearRecovery } from './exportImport.js';
 import { validate121 } from './validate.js';
 
 const state = {
@@ -368,15 +368,23 @@ function bindEvents(){
   qs('#import-file').addEventListener('change', async (e)=>{
     const file = e.target.files && e.target.files[0];
     if(!file) return;
-    const { ok, code } = await importJsonFile(file);
+    const { ok, code, movedPrev } = await importJsonFile(file);
     e.target.value = '';
-    if(ok){ state.data = loadData(); render(); showStatus(t('import_ok'), false); const b1=qs('#btn-export-backup'); if(b1) b1.style.display='none'; const b2=qs('#btn-export-then-clear'); if(b2) b2.style.display='none'; }
-    else { const key = code || 'import_malformed'; showStatus(t(key), true); }
+    if(ok){
+      state.data = loadData(); render(); showStatus(t('import_ok'), false);
+      const b1=qs('#btn-export-backup'); if(b1) b1.hidden = true;
+      const b2=qs('#btn-export-then-clear'); if(b2) b2.hidden = true;
+      const b3=qs('#btn-export-backup-prev'); if(b3) b3.hidden = !movedPrev;
+      if (movedPrev) showStatus(t('previous_data_kept'), false);
+    } else {
+      const key = code || 'import_malformed'; showStatus(t(key), true);
+    }
   });
   qs('#btn-print').addEventListener('click', ()=>window.print());
   const btnPrintM1 = qs('#btn-print-m1'); if(btnPrintM1){ btnPrintM1.addEventListener('click', ()=>{ activateTab('m1'); window.print(); }); }
-  const btnExpBackup = qs('#btn-export-backup'); if(btnExpBackup){ btnExpBackup.addEventListener('click', ()=>{ exportRecoveryJson(); }); }
-  const btnExpThenClear = qs('#btn-export-then-clear'); if(btnExpThenClear){ btnExpThenClear.addEventListener('click', ()=>{ const r = exportAndClearRecovery(); if(r && r.ok){ const b1=qs('#btn-export-backup'); if(b1) b1.style.display='none'; btnExpThenClear.style.display='none'; showStatus('', false); } }); }
+  const btnExpBackup = qs('#btn-export-backup'); if(btnExpBackup){ btnExpBackup.addEventListener('click', ()=>{ const r = exportRecoveryJson(); if(!r.ok && r.code){ showStatus(t(r.code), true); } }); }
+  const btnExpBackupPrev = qs('#btn-export-backup-prev'); if(btnExpBackupPrev){ btnExpBackupPrev.addEventListener('click', ()=>{ const r = exportRecoveryPrevJson(); if(!r.ok && r.code){ showStatus(t(r.code), true); } }); }
+  const btnExpThenClear = qs('#btn-export-then-clear'); if(btnExpThenClear){ btnExpThenClear.addEventListener('click', ()=>{ const r = exportAndClearRecovery(); if(r && r.ok){ const b1=qs('#btn-export-backup'); if(b1) b1.hidden = true; btnExpThenClear.hidden = true; showStatus('', false); } else if(r && r.code){ showStatus(t(r.code), true); } }); }
 
   // Language
   const langSel = qs('#lang-select');
@@ -404,8 +412,9 @@ function init(){
   applyFlags();
   // Listen for storage errors
   try{
-    window.addEventListener('natverk:storage-error', (e)=> showStatus(t('not_saved')+': '+(e.detail && e.detail.error ? String(e.detail.error) : ''), true));
-    window.addEventListener('natverk:data-invalid', ()=> { showStatus(t('not_saved')+': '+t('data_invalid'), true); const b1=qs('#btn-export-backup'); if(b1) b1.style.display=''; const b2=qs('#btn-export-then-clear'); if(b2) b2.style.display=''; });
+    window.addEventListener('natverk:storage-error', ()=> showStatus(t('storage_error'), true));
+    window.addEventListener('natverk:data-invalid', ()=> { showStatus(t('not_saved')+': '+t('data_invalid'), true); const b1=qs('#btn-export-backup'); if(b1) b1.hidden = false; const b2=qs('#btn-export-then-clear'); if(b2) b2.hidden = false; });
+    window.addEventListener('natverk:import-archived-prev', ()=> { showStatus(t('previous_data_kept'), false); const b3=qs('#btn-export-backup-prev'); if(b3) b3.hidden = false; });
   }catch{}
   state.data = loadData();
   bindEvents();
@@ -414,7 +423,8 @@ function init(){
   // Check storage availability
   if(!canUseStorage()){ showStatus(t('storage_unavailable'), true); }
   // Recovery present?
-  if(hasRecovery()){ const b1=qs('#btn-export-backup'); if(b1) b1.style.display=''; const b2=qs('#btn-export-then-clear'); if(b2) b2.style.display=''; }
+  if(hasRecovery()){ const b1=qs('#btn-export-backup'); if(b1) b1.hidden = false; const b2=qs('#btn-export-then-clear'); if(b2) b2.hidden = false; }
+  if(hasRecoveryPrev()){ const b3=qs('#btn-export-backup-prev'); if(b3) b3.hidden = false; }
 }
 
 document.addEventListener('DOMContentLoaded', init);

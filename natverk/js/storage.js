@@ -113,3 +113,11 @@ export function hasRecovery(){
     return false;
   }
 }
+
+export function hasRecoveryPrev(){
+  try{
+    return !!localStorage.getItem(CONFIG.storageKeys.recoveryPrev);
+  }catch{
+    return false;
+  }
+}
