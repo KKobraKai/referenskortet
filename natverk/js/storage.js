@@ -100,7 +100,9 @@ export function saveData(data, opts = {}){
       if (rec) {
         if (!opts.allowReplaceCorrupt) return { ok:false, code:'recovery_present' };
       }
-    }catch{}
+    }catch{
+      return { ok:false, code:'storage_get_failed' };
+    }
     localStorage.setItem(CONFIG.storageKeys.data, JSON.stringify(copy));
     return { ok:true };
   }catch(e){
