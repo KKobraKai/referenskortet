@@ -27,7 +27,7 @@ test('guard: no empty or unbound catch blocks in target files', () => {
           let depth = 1; j++;
           while (j < len && depth > 0) {
             if (src[j] === '(') depth++;
-            else if (src[j] === ')') depth--;
+            else if (src[j] === ')') { depth--; j++; continue; }
             else if (src[j] === '"' || src[j] === "'" || src[j] === '`') {
               const q = src[j++]; while (j < len && src[j] !== q) { if (src[j] === '\\') j++; j++; }
             }
