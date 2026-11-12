@@ -3,7 +3,7 @@ import { I18N, t, getLang, setLang, applyI18n } from './i18n.js';
 import { defaultData, loadData, saveData, canUseStorage, hasRecovery } from './storage.js';
 import { setCompany, setAreaName, setAreaContact, setPartner, computeGaps } from './model.js';
 import { isoWeek, pickNextWantedIndex, summarizeAsk } from './rotation.js';
-import { downloadJson, importJsonFile, exportRecoveryJson } from './exportImport.js';
+import { downloadJson, importJsonFile, exportRecoveryJson, exportAndClearRecovery } from './exportImport.js';
 import { validate121 } from './validate.js';
 
 const state = {
@@ -70,7 +70,7 @@ function renderSide(side, areasSel, partnersSel){
     const name = ce('input'); name.value = a.name; name.maxLength=80; name.setAttribute('aria-label', `${t('area_name')} ${i+1}`);
     name.addEventListener('input', ()=>{
       setAreaName(state.data, side, i, name.value);
-      const res = saveData(state.data); if(!res.ok) showStatus(t('not_saved')+': '+res.error, true);
+      const res = saveData(state.data); if(!res.ok) showStatus(t('not_saved')+': '+(res.code ? t(res.code) : (res.detail || '')), true);
       renderWeekly(); updateGaps();
     });
     card.appendChild(h); card.appendChild(name);
@@ -82,7 +82,7 @@ function renderSide(side, areasSel, partnersSel){
       inp.setAttribute('aria-label', `${t('contact_n')} ${j+1} (${i+1})`);
       inp.addEventListener('input', ()=>{
         setAreaContact(state.data, side, i, j, inp.value);
-        const res = saveData(state.data); if(!res.ok) showStatus(t('not_saved')+': '+res.error, true);
+        const res = saveData(state.data); if(!res.ok) showStatus(t('not_saved')+': '+(res.code ? t(res.code) : (res.detail || '')), true);
         updateGaps();
       });
       row.appendChild(num); row.appendChild(inp);
@@ -101,7 +101,7 @@ function renderSide(side, areasSel, partnersSel){
     inp.setAttribute('aria-label', `${t('partner_n')} ${i+1}`);
     inp.addEventListener('input', ()=>{
       setPartner(state.data, side, i, inp.value);
-      const res = saveData(state.data); if(!res.ok) showStatus(t('not_saved')+': '+res.error, true);
+      const res = saveData(state.data); if(!res.ok) showStatus(t('not_saved')+': '+(res.code ? t(res.code) : (res.detail || '')), true);
       updateGaps();
     });
     row.appendChild(num); row.appendChild(inp);
@@ -271,8 +271,8 @@ function bindEvents(){
     });
   });
   // Company form
-  qs('#companyName').addEventListener('input', e=>{ setCompany(state.data, e.target.value, state.data.company.desc); const r=saveData(state.data); if(!r.ok) showStatus(t('not_saved')+': '+r.error, true); });
-  qs('#companyDesc').addEventListener('input', e=>{ setCompany(state.data, state.data.company.name, e.target.value); const r=saveData(state.data); if(!r.ok) showStatus(t('not_saved')+': '+r.error, true); });
+  qs('#companyName').addEventListener('input', e=>{ setCompany(state.data, e.target.value, state.data.company.desc); const r=saveData(state.data); if(!r.ok) showStatus(t('not_saved')+': '+(r.code ? t(r.code) : (r.detail || '')), true); });
+  qs('#companyDesc').addEventListener('input', e=>{ setCompany(state.data, state.data.company.name, e.target.value); const r=saveData(state.data); if(!r.ok) showStatus(t('not_saved')+': '+(r.code ? t(r.code) : (r.detail || '')), true); });
   // Weekly ask
   qs('#ask-branch').addEventListener('change', updateShortAsk);
   qs('#ask-who').addEventListener('input', updateShortAsk);
@@ -327,10 +327,17 @@ function bindEvents(){
       }
     };
     const v = validate121(it);
-    if(!v.ok){ showStatus(t('not_saved')+': '+v.error, true); return; }
+    if(!v.ok){ const msg = v.code ? t(v.code) : (v.error || ''); showStatus(t('not_saved')+': '+msg, true); return; }
+    // Try to save, only update UI if saved successfully
     state.data.oneToOnes.unshift(it);
-    saveData(state.data);
-    renderOneList();
+    const r = saveData(state.data);
+    if(!r.ok){
+      // roll back and surface error
+      state.data.oneToOnes.shift();
+      showStatus(t('not_saved')+': '+(r.code ? t(r.code) : (r.detail || '')), true);
+    }else{
+      renderOneList();
+    }
   });
   qs('#btn-export-121').addEventListener('click', ()=>{
     const curr = {
@@ -361,14 +368,15 @@ function bindEvents(){
   qs('#import-file').addEventListener('change', async (e)=>{
     const file = e.target.files && e.target.files[0];
     if(!file) return;
-    const { ok, error } = await importJsonFile(file);
+    const { ok, code } = await importJsonFile(file);
     e.target.value = '';
-    if(ok){ state.data = loadData(); render(); showStatus(t('import_ok'), false); }
-    else { showStatus((t('import_malformed')+': '+error), true); }
+    if(ok){ state.data = loadData(); render(); showStatus(t('import_ok'), false); const b1=qs('#btn-export-backup'); if(b1) b1.style.display='none'; const b2=qs('#btn-export-then-clear'); if(b2) b2.style.display='none'; }
+    else { const key = code || 'import_malformed'; showStatus(t(key), true); }
   });
   qs('#btn-print').addEventListener('click', ()=>window.print());
   const btnPrintM1 = qs('#btn-print-m1'); if(btnPrintM1){ btnPrintM1.addEventListener('click', ()=>{ activateTab('m1'); window.print(); }); }
   const btnExpBackup = qs('#btn-export-backup'); if(btnExpBackup){ btnExpBackup.addEventListener('click', ()=>{ exportRecoveryJson(); }); }
+  const btnExpThenClear = qs('#btn-export-then-clear'); if(btnExpThenClear){ btnExpThenClear.addEventListener('click', ()=>{ const r = exportAndClearRecovery(); if(r && r.ok){ const b1=qs('#btn-export-backup'); if(b1) b1.style.display='none'; btnExpThenClear.style.display='none'; showStatus('', false); } }); }
 
   // Language
   const langSel = qs('#lang-select');
@@ -394,19 +402,19 @@ function applyFlags(){
 
 function init(){
   applyFlags();
+  // Listen for storage errors
+  try{
+    window.addEventListener('natverk:storage-error', (e)=> showStatus(t('not_saved')+': '+(e.detail && e.detail.error ? String(e.detail.error) : ''), true));
+    window.addEventListener('natverk:data-invalid', ()=> { showStatus(t('not_saved')+': '+t('data_invalid'), true); const b1=qs('#btn-export-backup'); if(b1) b1.style.display=''; const b2=qs('#btn-export-then-clear'); if(b2) b2.style.display=''; });
+  }catch{}
   state.data = loadData();
   bindEvents();
   applyI18n(document);
   render();
-  // Listen for storage errors
-  try{
-    window.addEventListener('natverk:storage-error', (e)=> showStatus(t('not_saved')+': '+(e.detail && e.detail.error || ''), true));
-    window.addEventListener('natverk:data-invalid', ()=> { showStatus(t('not_saved')+': data invalid', true); const b=qs('#btn-export-backup'); if(b) b.style.display=''; });
-  }catch{}
   // Check storage availability
   if(!canUseStorage()){ showStatus(t('storage_unavailable'), true); }
   // Recovery present?
-  if(hasRecovery()){ const b=qs('#btn-export-backup'); if(b) b.style.display=''; }
+  if(hasRecovery()){ const b1=qs('#btn-export-backup'); if(b1) b1.style.display=''; const b2=qs('#btn-export-then-clear'); if(b2) b2.style.display=''; }
 }
 
 document.addEventListener('DOMContentLoaded', init);
