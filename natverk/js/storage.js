@@ -44,7 +44,19 @@ export function loadData(){
       return defaultData();
     }
     return migrateIfNeeded(data);
-  }catch{
+  }catch(e){
+    // JSON.parse failed or other error — preserve raw if present
+    try{
+      const existing = localStorage.getItem(CONFIG.storageKeys.recovery);
+      if (!existing) {
+        // Use the last-read raw string if available; otherwise re-read
+        let toSave = typeof raw === 'string' ? raw : null;
+        if (toSave === null) {
+          try { toSave = localStorage.getItem(CONFIG.storageKeys.data); } catch { toSave = null; }
+        }
+        if (toSave !== null) localStorage.setItem(CONFIG.storageKeys.recovery, toSave);
+      }
+    }catch{}
     return defaultData();
   }
 }
@@ -56,7 +68,7 @@ export function saveData(data){
     try{
       const rec = localStorage.getItem(CONFIG.storageKeys.recovery);
       if (rec) {
-        return { ok:false, error:'Recovery present; export/clear before saving' };
+        return { ok:false, code:'recovery_present' };
       }
     }catch{}
     localStorage.setItem(CONFIG.storageKeys.data, JSON.stringify(copy));
@@ -68,7 +80,8 @@ export function saveData(data){
         window.dispatchEvent(new CustomEvent('natverk:storage-error', { detail: { error: String(e && e.message || e) } }));
       }
     }catch{}
-    return { ok:false, error: String(e && e.message || e) };
+    const detail = String(e && e.message || e);
+    return { ok:false, code:'storage_error', detail, error: detail };
   }
 }
 
