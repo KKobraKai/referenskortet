@@ -17,7 +17,9 @@ test('scanner flags: bound-comment-only (single-line)', () => {
 });
 
 test('scanner flags: multi-line-empty', () => {
-  const src = 'try{ a() }catch(e){\\n    \\n}';
+  const src = `try{ a() }catch(e){
+    
+}`;
   const offenders = scan(src, 'mem');
   assert.ok(offenders.length >= 1, 'expected multi-line empty to be flagged');
 });
