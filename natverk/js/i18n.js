@@ -76,7 +76,32 @@ const sv = {
   weekly_suggestion: 'För vecka {week}: föreslaget område “{name}”',
   word_count: '{words} ord',
   not_affiliated: 'Ej affilierat med eller godkänt av BNI.',
-  language: 'Språk'
+  language: 'Språk',
+  // Errors and system
+  data_invalid: 'Ogiltig data',
+  recovery_present: 'Säkerhetskopia finns; exportera och rensa innan du sparar',
+  storage_error: 'Lagringsfel',
+  export_then_clear: 'Exportera, sedan rensa',
+  no_backup: 'Ingen säkerhetskopia',
+  export_failed: 'Export misslyckades',
+  import_invalid_structure: 'Ogiltig JSON‑struktur',
+  import_storage_failed: 'Sparning misslyckades vid import',
+  import_unsupported_schema: 'SchemaVersion stöds inte',
+  // 121 validation errors
+  err_who_too_long: 'Vem är för lång',
+  err_where_too_long: 'Plats är för lång',
+  err_time_too_long: 'Tid är för lång',
+  err_goals_too_long: 'Mål är för lång',
+  err_vision_too_long: 'Vision/mål är för lång',
+  err_interests_too_long: 'Intressen/familj är för lång',
+  err_networks_too_long: 'Andra nätverk är för lång',
+  err_skills_too_long: 'Färdigheter är för lång',
+  err_projects_too_long: 'Tidigare projekt är för lång',
+  err_listen_too_long: 'Vad lyssna efter är för lång',
+  err_intro_too_long: 'Introduktion är för lång',
+  err_offer_too_long: 'Erbjudande är för lång',
+  err_next_too_long: 'Nästa steg är för lång',
+  err_nextmeet_too_long: 'Nästa möte är för lång'
 };
 
 const en = {
@@ -154,7 +179,32 @@ const en = {
   weekly_suggestion: 'Week {week}: suggested area “{name}”',
   word_count: '{words} words',
   not_affiliated: 'Not affiliated with or endorsed by BNI.',
-  language: 'Language'
+  language: 'Language',
+  // Errors and system
+  data_invalid: 'Data invalid',
+  recovery_present: 'Recovery present; export and clear before saving',
+  storage_error: 'Storage error',
+  export_then_clear: 'Export, then clear',
+  no_backup: 'No backup',
+  export_failed: 'Export failed',
+  import_invalid_structure: 'Invalid JSON structure',
+  import_storage_failed: 'Storage write failed on import',
+  import_unsupported_schema: 'Unsupported schemaVersion',
+  // 121 validation errors
+  err_who_too_long: 'Who too long',
+  err_where_too_long: 'Where too long',
+  err_time_too_long: 'Time too long',
+  err_goals_too_long: 'Goals too long',
+  err_vision_too_long: 'Vision/goals too long',
+  err_interests_too_long: 'Interests/family too long',
+  err_networks_too_long: 'Other networks too long',
+  err_skills_too_long: 'Skills too long',
+  err_projects_too_long: 'Past projects too long',
+  err_listen_too_long: 'What to listen for too long',
+  err_intro_too_long: 'How to introduce me too long',
+  err_offer_too_long: 'What I can do for you too long',
+  err_next_too_long: 'Next step too long',
+  err_nextmeet_too_long: 'Next meeting too long'
 };
 
 export const I18N = { sv, en };
