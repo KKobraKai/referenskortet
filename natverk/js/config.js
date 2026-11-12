@@ -19,7 +19,8 @@ export const CONFIG = {
     data: 'natverk_data_v1',
     lang: 'natverk_lang',
     recovery: 'natverk_data_v1_recovery',
-    recoveryPrev: 'natverk:recovery-prev'
+    recoveryPrev: 'natverk:recovery-prev',
+    recoveryPrevTmp: 'natverk:recovery-prev:tmp'
   }
 };
 

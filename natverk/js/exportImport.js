@@ -1,5 +1,5 @@
 import { CONFIG } from './config.js';
-import { loadData, saveData } from './storage.js';
+import { loadData, saveData, defaultData } from './storage.js';
 import { validateData } from './schema.js';
 
 export function exportJson(){
@@ -28,6 +28,17 @@ export function exportAndClearRecovery(){
   try{
     const res = exportRecoveryJson();
     if(!res.ok) return res;
+    // Ask user to confirm a reset
+    let confirmed = true;
+    try{
+      if (typeof window !== 'undefined' && window && typeof window.confirm === 'function') {
+        confirmed = window.confirm('Reset stored data?');
+      }
+    }catch{}
+    if (!confirmed) return { ok:false, code:'reset_cancelled' };
+    // Replace primary with defaults explicitly allowed
+    const r = saveData(defaultData(), { allowReplaceCorrupt: true });
+    if (!r.ok) return r;
     try { localStorage.removeItem(CONFIG.storageKeys.recovery); } catch {}
     return { ok:true };
   }catch{
@@ -76,46 +87,43 @@ export function importJsonString(text){
       if(v.error === 'Unsupported schemaVersion') return { ok:false, code:'import_unsupported_schema' };
       return { ok:false, code:'import_invalid_structure' };
     }
-    // If a recovery is present, archive it FIRST with byte verification.
+    // If a recovery is present, stage archive FIRST to a temp key with byte verification.
     let hadRecovery = false;
     let recoveryValue = null;
     try{
       recoveryValue = localStorage.getItem(CONFIG.storageKeys.recovery);
       hadRecovery = !!recoveryValue;
     }catch{}
-    // Archive and verify before removing recovery and saving
     let movedPrev = false;
     if (hadRecovery) {
       try{
-        localStorage.setItem(CONFIG.storageKeys.recoveryPrev, recoveryValue);
-        const roundtrip = localStorage.getItem(CONFIG.storageKeys.recoveryPrev);
-        if (roundtrip !== recoveryValue) {
-          return { ok:false, code:'archive_failed' };
-        }
-        movedPrev = true;
+        localStorage.setItem(CONFIG.storageKeys.recoveryPrevTmp, recoveryValue);
+        const tmp = localStorage.getItem(CONFIG.storageKeys.recoveryPrevTmp);
+        if (tmp !== recoveryValue) return { ok:false, code:'archive_failed' };
       }catch{
         return { ok:false, code:'archive_failed' };
       }
     }
-    // Remove recovery only after successful archive
-    if (hadRecovery) {
-      try { localStorage.removeItem(CONFIG.storageKeys.recovery); } catch {}
-    }
-    // Now save the new data; on failure, try to restore recovery
-    const res = saveData(parsed);
+    // Save new data, explicitly allowed to replace corrupt
+    const res = saveData(parsed, { allowReplaceCorrupt: true });
     if(!res.ok){
-      if (hadRecovery) {
-        try{ localStorage.setItem(CONFIG.storageKeys.recovery, recoveryValue); }catch{}
-      }
+      try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch{}
       return { ok:false, code:'import_storage_failed' };
     }
-    if (movedPrev) {
+    // Promote archive and clear current recovery
+    if (hadRecovery) {
       try{
-        if (typeof window !== 'undefined' && window && window.dispatchEvent) {
-          window.dispatchEvent(new CustomEvent('natverk:import-archived-prev'));
-        }
+        localStorage.setItem(CONFIG.storageKeys.recoveryPrev, recoveryValue);
+        localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp);
+        localStorage.removeItem(CONFIG.storageKeys.recovery);
+        movedPrev = true;
       }catch{}
     }
+    try{
+      if (movedPrev && typeof window !== 'undefined' && window && window.dispatchEvent) {
+        window.dispatchEvent(new CustomEvent('natverk:import-archived-prev'));
+      }
+    }catch{}
     return { ok:true, movedPrev }
   }catch(e){
     return { ok:false, code:'import_malformed' };

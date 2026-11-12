@@ -15,7 +15,7 @@ test('import archives recovery first; archive failure returns error and changes 
   // Monkey-patch setItem to fail only for recoveryPrev
   const origSet = globalThis.localStorage.setItem.bind(globalThis.localStorage);
   globalThis.localStorage.setItem = (k, v) => {
-    if (k === CONFIG.storageKeys.recoveryPrev) {
+    if (k === CONFIG.storageKeys.recoveryPrevTmp) {
       throw new Error('archive denied');
     }
     return origSet(k, v);
