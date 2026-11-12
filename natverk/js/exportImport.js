@@ -197,7 +197,7 @@ export function importJsonString(text){
     let originalPrev = null;
     {
       const r = safeReadSlot(CONFIG.storageKeys.data);
-      if (!r.ok) return { ok:false, code:'archive_failed' };
+      if (!r.ok) return { ok:false, code:'primary_read_failed' };
       originalPrimary = r.value;
     }
     {
