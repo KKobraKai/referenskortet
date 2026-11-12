@@ -10,10 +10,31 @@ function scanSource(src, fileLabel) {
   let i = 0;
   const len = src.length;
   const isIdent = c => /[A-Za-z0-9_\$]/.test(c);
+  function skipSpaceAndComments(k) {
+    while (k < len) {
+      // whitespace
+      if (/\s/.test(src[k])) { k++; continue; }
+      // line comment //
+      if (src[k] === '/' && src[k+1] === '/') {
+        k += 2;
+        while (k < len && src[k] !== '\n') k++;
+        continue;
+      }
+      // block comment /* ... */
+      if (src[k] === '/' && src[k+1] === '*') {
+        k += 2;
+        while (k < len && !(src[k] === '*' && src[k+1] === '/')) k++;
+        if (k < len) k += 2;
+        continue;
+      }
+      break;
+    }
+    return k;
+  }
   while (i < len) {
     if (src.startsWith('catch', i) && (i === 0 || !isIdent(src[i - 1]))) {
       let j = i + 5;
-      while (j < len && /\s/.test(src[j])) j++;
+      j = skipSpaceAndComments(j);
       let hasParam = false;
       if (src[j] === '(') {
         hasParam = true;
@@ -32,7 +53,7 @@ function scanSource(src, fileLabel) {
           }
           else j++;
         }
-        while (j < len && /\s/.test(src[j])) j++;
+        j = skipSpaceAndComments(j);
       }
       if (src[j] === '{') {
         // capture block body
@@ -93,7 +114,7 @@ function scanSource(src, fileLabel) {
           const line = before.split('\n').length;
           offenders.push(`${fileLabel}:${line}`);
         }
-        i = j;
+        i = startBody; // continue scanning inside body to catch nested catches
         continue;
       }
     }
