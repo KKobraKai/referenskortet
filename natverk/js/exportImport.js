@@ -47,11 +47,11 @@ function rotateArchivePrimaryOrFail(){
       // No previous prev — clear prev2 if existed
       localStorage.removeItem(CONFIG.storageKeys.dataPrev2);
     }
-  }catch{
+  }catch(e){
     // Attempt to restore prev2 to its original state; report rollback_failed on failure
     const rest = restoreAll([{ key: CONFIG.storageKeys.dataPrev2, value: origPrev2 }]);
     try{ localStorage.removeItem(CONFIG.storageKeys.dataPrevTmp); }catch(e){ cleanup_warnings.push({ slot: CONFIG.storageKeys.dataPrevTmp, error: String(e && e.message || e) }); }
-    if (!rest.ok) return rest;
+    if (!rest.ok) return { ...rest, cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
     return { ok:false, code:'rotation_failed', cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
   }
   // Promote tmp -> prev
@@ -110,7 +110,7 @@ export function exportAndClearRecovery(){
       // Record UI confirm failure but proceed as unconfirmed
       cleanup_warnings.push({ slot: 'ui_confirm', error: String(e && e.message || e) });
     }
-    if (!confirmed) return { ok:false, code:'reset_cancelled' };
+    if (!confirmed) return { ok:false, code:'reset_cancelled', cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };
     // Rotate-archive primary before replacing it
     const orig = rotateArchivePrimaryOrFail();
     if (!orig.ok) {
@@ -119,6 +119,10 @@ export function exportAndClearRecovery(){
         orig.cleanup_warnings = (orig.cleanup_warnings || []).concat(cleanup_warnings);
       }
       return orig;
+    }
+    // carry over warnings from successful rotation
+    if (orig.cleanup_warnings && orig.cleanup_warnings.length) {
+      cleanup_warnings.push(...orig.cleanup_warnings);
     }
     // Replace primary with defaults explicitly allowed
     const r = saveData(defaultData(), { allowReplaceCorrupt: true });
@@ -149,7 +153,7 @@ export function exportRecoveryPrevJson(){
     document.body.appendChild(a); a.click(); a.remove();
     URL.revokeObjectURL(url);
     return { ok:true };
-  }catch{
+  }catch(e){
     return { ok:false, code:'export_failed' };
   }
 }
@@ -244,16 +248,16 @@ export function importJsonString(text){
         localStorage.removeItem(CONFIG.storageKeys.recovery);
         movedPrev = true;
       }catch(e){
-        // Roll back using restoreAll (newest-ish first)
+        // Roll back using restoreAll: restore live copy and current recovery first
         const steps = [];
-        // Archives from rotation
+        // Primary live copy first
+        steps.push({ key: CONFIG.storageKeys.data, value: originalPrimary });
+        // Then archives from rotation
         if (orig && 'origPrev1' in orig) steps.push({ key: CONFIG.storageKeys.dataPrev, value: orig.origPrev1 });
         if (orig && 'origPrev2' in orig) steps.push({ key: CONFIG.storageKeys.dataPrev2, value: orig.origPrev2 });
-        // Primary
-        steps.push({ key: CONFIG.storageKeys.data, value: originalPrimary });
-        // Recovery snapshots
-        steps.push({ key: CONFIG.storageKeys.recoveryPrev, value: originalPrev });
+        // Then recovery live copy first, then previous
         steps.push({ key: CONFIG.storageKeys.recovery, value: originalRecovery });
+        steps.push({ key: CONFIG.storageKeys.recoveryPrev, value: originalPrev });
         try{ localStorage.removeItem(CONFIG.storageKeys.recoveryPrevTmp); }catch(err){ cleanup_warnings.push({ slot: CONFIG.storageKeys.recoveryPrevTmp, error: String(err && err.message || err) }); }
         const rest = restoreAll(steps);
         if (!rest.ok) return { ...rest, cleanup_warnings: cleanup_warnings.length ? cleanup_warnings : undefined };

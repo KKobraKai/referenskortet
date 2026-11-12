@@ -3,7 +3,7 @@
 export function safeReadSlot(key){
   try{
     return { ok:true, value: localStorage.getItem(key) };
-  }catch{
+  }catch(e){
     return { ok:false };
   }
 }
@@ -32,8 +32,9 @@ export function restoreAll(steps){
     try{
       if (value === null) localStorage.removeItem(key);
       else localStorage.setItem(key, value);
-    }catch{
-      failed.push(slotInfoFor(key));
+    }catch(e){
+      const info = slotInfoFor(key);
+      failed.push({ slot: key, sv: info.sv, en: info.en, error: String(e && e.message || e) });
     }
   }
   if (failed.length) return { ok:false, code:'rollback_failed', slots: failed };
