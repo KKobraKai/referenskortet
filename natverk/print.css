@@ -1,0 +1,18 @@
+@media print{
+  .tree-grid{grid-template-columns:1fr 1fr}
+  .area{break-inside:avoid}
+  .card{page-break-inside:avoid}
+  .badge{border:1px solid #999}
+}
+
+/* Ensure M3 print block preserves newlines and wraps long words */
+#one-print{
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* M1 print summary preserves newlines and wraps long words */
+#tree-summary{
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

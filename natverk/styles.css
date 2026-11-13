@@ -1,0 +1,71 @@
+:root{
+  --bg:#0b0c10; --surface:#12141a; --muted:#2a2e39; --text:#f2f5f8; --dim:#c7ced6; --accent:#6ec1e4; --accent-2:#8ef0b0; --danger:#ff6b6b;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:'Work Sans',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+a{color:var(--accent)}
+.site-header,.site-footer{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.75rem 1rem;background:var(--surface);position:sticky;top:0;z-index:10}
+.site-footer{position:static;opacity:.8}
+.brand{font-weight:600;color:var(--text);text-decoration:none}
+.header-actions{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.site-header{flex-wrap:wrap}
+@media(max-width:420px){
+  .header-actions{width:100%;justify-content:flex-end}
+}
+.btn{background:var(--accent);color:#07222e;border:none;padding:.5rem .75rem;border-radius:.5rem;cursor:pointer;font-weight:600}
+.btn.secondary{background:var(--muted);color:var(--text)}
+.btn.danger{background:var(--danger);color:#2b0000}
+label{display:grid;gap:.25rem;margin:.5rem 0}
+input,textarea,select{width:100%;padding:.5rem;border-radius:.5rem;border:1px solid var(--muted);background:#0f1117;color:var(--text)}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent)}
+.hint{color:var(--dim);font-size:.9rem}
+.app{max-width:1100px;margin:0 auto;padding:1rem}
+.tabs{display:flex;gap:.5rem;margin:.5rem 0}
+.tab{background:var(--muted);color:var(--text);border:none;padding:.5rem .75rem;border-radius:.5rem;cursor:pointer}
+.tab.active{background:var(--accent);color:#07222e}
+.panel{display:none;margin-top:.5rem}
+.panel.active{display:block}
+.card{background:var(--surface);border:1px solid var(--muted);border-radius:.75rem;padding:1rem;margin:.75rem 0}
+.tree-grid{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:880px){.tree-grid{grid-template-columns:1fr 1fr}}
+.areas,.partners{display:grid;grid-template-columns:1fr;gap:.5rem}
+.area{border:1px dashed var(--muted);border-radius:.5rem;padding:.5rem}
+.area h3{margin:.25rem 0 .5rem 0;font-size:1rem}
+.slots{display:grid;grid-template-columns:1fr;gap:.25rem}
+.slot{display:flex;gap:.5rem;align-items:center}
+.slot input{flex:1}
+.slot .num{width:1.5rem;text-align:center;color:var(--dim)}
+.partners .slot{border:1px dashed var(--muted);border-radius:.5rem;padding:.25rem .5rem}
+.gaps{display:flex;flex-wrap:wrap;gap:.5rem}
+.badge{background:var(--muted);padding:.25rem .5rem;border-radius:999px}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.list li{display:flex;justify-content:space-between;align-items:center;gap:.5rem;padding:.5rem;border:1px solid var(--muted);border-radius:.5rem}
+.row{display:flex;gap:.5rem;align-items:center;justify-content:space-between}
+.grid.two{display:grid;grid-template-columns:1fr;gap:.75rem}
+@media(min-width:720px){.grid.two{grid-template-columns:1fr 1fr}}
+.disclaimer{font-size:.9rem;color:var(--dim)}
+#import-file{position:absolute;left:-9999px}
+.status{min-height:1.25rem;color:var(--danger);font-weight:600}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.print-only{display:none}
+.screen-only{display:initial}
+
+/* Print */
+@media print{
+  .site-header,.tabs,.actions,.header-actions,#btn-print,#btn-export,#btn-import,#btn-export-backup,#import-file,.site-footer{display:none !important}
+  body{background:white;color:black}
+  .card{border:none}
+  /* Only print currently visible panel; do not force hidden panels visible */
+  .panel:not(.active){display:none !important}
+  .print-only{display:block}
+  .screen-only{display:none}
+  body, .app{font-size:12px; line-height:1.25}
+  /* Compact M1 tree */
+  #panel-m1 .tree-grid{grid-template-columns:1fr 1fr}
+  #panel-m1 .area{border:1px solid #999;padding:.25rem}
+  #panel-m1 input, #panel-m1 textarea{border:none;padding:.25rem}
+  /* Hide M3 form; show only print block */
+  #panel-m3 .card{border:none}
+  #panel-m3 .grid, #panel-m3 .row, #panel-m3 #one-list, #panel-m3 #one-summary{display:none !important}
+  #panel-m3 #one-print{display:block}
+}
